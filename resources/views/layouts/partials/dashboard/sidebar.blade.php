@@ -6,6 +6,10 @@
             'route' => route('dashboard'),
             'active' => request()->routeIs('dashboard'),
         ],
+        [
+            'header' => 'Panel de CPE',
+            'icon' => 'fa-solid fa-file-invoice',
+        ],
         /* [
             'name' => 'Ventas',
             'icon' => 'fa-solid fa-cash-register',
@@ -60,7 +64,10 @@
                 ],
             ] */
         ],
-
+        [
+            'header' => 'Panel de Maestras',
+            'icon' => 'fa-solid fa-cogs',
+        ],
         [
             'name' => 'Clientes',
             'icon' => 'fa-solid fa-users',
@@ -96,6 +103,10 @@
             'icon' => 'fa-solid fa-users-gear',
             'route' => route('users.index'),
             'active' => request()->routeIs('users.*'),
+        ],
+        [
+            'header' => 'Panel de Configuración',
+            'icon' => 'fa-solid fa-building',
         ],
         [
             'name' => 'Sucursales',
@@ -153,7 +164,9 @@
                 @canany($link['can'] ?? [null])
                     <li>
                         @isset($link['header'])
-                            <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
+                            <div class="text-xs font-semibold text-gray-500 uppercase dark:text-gray-400
+                            pt-4 pb-4 space-y-2 border-t border-gray-300 dark:border-gray-700">
+                            <span class="{{ $link['icon'] }}"></span>
                                 {{ $link['header'] }}
                             </div>
                         @else

@@ -35,9 +35,12 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'confirmed','regex:/^[a-zA-Z0-9]+$/','min:8'],
+            'password' => ['required', 'string', 'confirmed', 'min:8', 'regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@*\/\-_])[a-zA-Z0-9@*\/\-_]{8,}$/'],
             'branch_id' => ['required', 'exists:branches,id'],
-        ], [], [
+        ], [
+            'password.regex' => 'La contraseña debe contener al menos una letra, un número y un carácter especial (@,/, -).',
+
+        ], [
             'branch_id' => 'sucursal',
             'name' => 'Nombres',
             'email' => 'Correo Electronico',
@@ -51,19 +54,18 @@ class UserController extends Controller
             'name' => $data['name'],
             'password' => bcrypt($data['password']),
         ]);
-        
+
         //Verificar si el usuario ya pertenece a la empresa
         $userCompany = DB::table('company_user')
             ->where('user_id', $user->id)
             ->where('company_id', session('company')->id)
             ->first();
 
-        if($userCompany){
+        if ($userCompany) {
 
             throw ValidationException::withMessages([
                 'email' => 'El usuario ya pertenece a la empresa.',
             ]);
-
         }
 
         //Asignar usuario a la empresa

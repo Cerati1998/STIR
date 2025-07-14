@@ -14,20 +14,20 @@ class CompanySeeder extends Seeder
     public function run(): void
     {
         $company = Company::create([
-            'ruc' => '20609278235',
-            'razonSocial' => 'Coders Free SAC',
-            'nombreComercial' => 'Coders Free',
-            'direccion' => 'Psj. San Nicolas 126',
+            'ruc' => '20474360955',
+            'razonSocial' => 'Macromar Logistics S.A.C.',
+            'nombreComercial' => 'Macromar Logistics',
+            'direccion' => 'Av. Elmer Faucett Cdra 30 Nro. S/n Int. 406b Otr. Centro aéreo Comercial (Mod B Sector B 4to Piso Bco de la Nacion)',
             'ubigeo' => '150113',
         ]);
 
         $company->users()->attach(1);
 
         $branch = $company->branches()->create([
-            'name' => 'Principal',
+            'name' => 'Depot Paita - Norte',
             'code' => '0000',
             'ubigeo' => '150113',
-            'address' => 'Psj. San Nicolas 126',
+            'address' => '1-D Z.I. ZONA INDUSTRIAL II COMPLEMENTARIA PIURA – PAITA',
         ]);
 
         $branch->documents()->attach("01", [

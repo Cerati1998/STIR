@@ -1,7 +1,7 @@
 <div>
     <x-wire-card padding="px-4 py-6">
         <x-wire-alert class="mb-4"
-            title="Si no generas un número de serie para cada documento, no podrás emitir todos los comprobantes de pago disponibles."
+            title="Si no generas un número de serie para cada documento, no podrás generar todos los tipos de documento disponibles."
             info />
 
         <div class="flex items-center mb-8">
