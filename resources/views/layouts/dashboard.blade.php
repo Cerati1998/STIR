@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{{asset('vendor/fontawesome-free-6.6.0-web/css/all.min.css')}}">
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('img/logos/favicon.ico') }}">
+    <link rel="icon" href="{{ asset('img/logos/favicon.png') }}">
 
     <!-- Scripts -->
     <wireui:scripts />

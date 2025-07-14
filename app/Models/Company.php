@@ -50,7 +50,7 @@ class Company extends Model
     protected function logo():Attribute
     {
         return new Attribute(
-            get: fn() => $this->logo_path ? Storage::url($this->logo_path) : asset('img/logos/codersfree.png'),
+            get: fn() => $this->logo_path ? Storage::url($this->logo_path) : asset('img/logos/paitadev.png'),
         );
     }
 

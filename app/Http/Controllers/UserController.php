@@ -35,10 +35,13 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'confirmed'],
+            'password' => ['required', 'string', 'confirmed','regex:/^[a-zA-Z0-9]+$/','min:8'],
             'branch_id' => ['required', 'exists:branches,id'],
         ], [], [
             'branch_id' => 'sucursal',
+            'name' => 'Nombres',
+            'email' => 'Correo Electronico',
+            'password' => 'Contraseña',
         ]);
 
         //Buscar o crear usuario

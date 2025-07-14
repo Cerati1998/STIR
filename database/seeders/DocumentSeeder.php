@@ -37,7 +37,31 @@ class DocumentSeeder extends Seeder
             [
                 'id' => '09',
                 'description' => 'Guía de Remisión',
-            ]
+            ],
+            [
+                'id' => '10',
+                'description' => 'Inspeccion GATE IN',
+            ],
+            [
+                'id' => '11',
+                'description' => 'Reporte de Reparación',
+            ],
+            [
+                'id' => '12',
+                'description' => 'Inspeccion GATE OUT',
+            ],
+            [
+                'id' => '13',
+                'description' => 'Orden de Compra',
+            ],
+            [
+                'id' => '14',
+                'description' => 'Orden de Servicio',
+            ],
+            [
+                'id' => '15',
+                'description' => 'Reporte de Leak Test',
+            ],
         ];
 
         foreach ($documents as $document) {

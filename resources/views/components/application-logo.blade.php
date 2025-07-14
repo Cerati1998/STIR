@@ -5,4 +5,4 @@
 </svg>
  --}}
 
- <img class="h-12" src="{{asset('img/logos/codersfree.png')}}" alt="">
+ <img class="h-12" src="{{asset('img/logos/paitadev.png')}}" alt="">
