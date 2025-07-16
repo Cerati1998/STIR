@@ -65,7 +65,7 @@
             ] */
         ],
         [
-            'header' => 'Panel de Maestras',
+            'header' => 'Maestras',
             'icon' => 'fa-solid fa-cogs',
         ],
         [
@@ -74,7 +74,37 @@
             'route' => route('clients.index'),
             'active' => request()->routeIs('clients.*'),
         ],
-
+        [
+            'name' => 'Codigos Inspección',
+            'icon' => 'fa-solid fa-magnifying-glass',
+            'active' => request()->routeIs(['damages.*', 'components.*', 'methods.*', 'locations.*']),
+            'submenu' => [
+                [
+                    'name' => 'Daños',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('damages.index'),
+                    'active' => request()->routeIs('damages.*'),
+                ],
+                [
+                    'name' => 'Componentes',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('components.index'),
+                    'active' => request()->routeIs('components.*'),
+                ],
+                [
+                    'name' => 'Métodos',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('methods.index'),
+                    'active' => request()->routeIs('methods.*'),
+                ],
+                [
+                    'name' => 'Ubicaciones',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('locations.index'),
+                    'active' => request()->routeIs('locations.*'),
+                ],
+            ],
+        ],
 
         /* [
             'name' => 'Inventario',
@@ -91,7 +121,7 @@
                 ],
             ]
         ], */
-        
+
         [
             'name' => 'Productos',
             'icon' => 'fa-solid fa-boxes',
@@ -147,7 +177,7 @@
                     'route' => route('users.index'),
                     'active' => request()->routeIs('users.*'),
                 ] */
-            ]
+            ],
         ],
     ];
 @endphp
@@ -165,9 +195,10 @@
                     <li>
                         @isset($link['header'])
                             <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center gap-2 px-4 py-2 text-[11px] font-semibold tracking-wide uppercase text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded">
+                                <div
+                                    class="flex items-center gap-2 px-4 py-2 text-[11px] font-semibold tracking-wide uppercase text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded">
                                     @if (!empty($link['icon']))
-                                    <i class="{{ $link['icon'] }} text-gray-400 text-sm"></i>
+                                        <i class="{{ $link['icon'] }} text-gray-400 text-sm"></i>
                                     @endif
                                     {{ $link['header'] }}
                                 </div>

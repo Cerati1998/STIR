@@ -3,8 +3,12 @@
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\DamageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DespatchController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\MethodController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoidedController;
@@ -57,12 +61,16 @@ Route::middleware([
         Route::get('branches/{branch}/series', [BranchController::class, 'series',])->name('branches.series');
 
         Route::resource('users', UserController::class);
-
     });
 
     Route::resource('companies', CompanyController::class)
         ->only(['index', 'create', 'show']);
-
+        
+    //maestras para inspecciones
+    Route::resource('damages', DamageController::class)->names('damages')->except('show');
+    Route::resource('components', ComponentController::class)->names('components')->except('show');
+    Route::resource('methods', MethodController::class)->names('methods')->except('show');
+    Route::resource('locations', LocationController::class)->names('locations')->except('show');
 });
 
 Route::get('documentacion', function () {
