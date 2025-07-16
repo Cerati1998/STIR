@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             ProvinceSeeder::class,
             DistrictSeeder::class,
-            
+
 
             DocumentSeeder::class,
             OperationSeeder::class,
@@ -54,6 +54,10 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
 
             PhoneCodeSeeder::class,
+            LocationSeeder::class,
+            DamageSeeder::class,
+            ComponentSeeder::class,
+            MethodSeeder::class,
         ]);
     }
 }
