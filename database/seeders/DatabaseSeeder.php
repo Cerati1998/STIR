@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ShippingLine;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -58,6 +59,12 @@ class DatabaseSeeder extends Seeder
             DamageSeeder::class,
             ComponentSeeder::class,
             MethodSeeder::class,
+            
+            PortSeeder::class,
+            ContainerTypeSeeder::class,
+            ReeferTechnologySeeder::class,
+            ShippingLineSeeder::class,
+            VesselSeeder::class,
         ]);
     }
 }
