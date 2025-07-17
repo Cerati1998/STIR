@@ -28,6 +28,10 @@ class DamageTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->deselected(),
+            Column::make('Acciones')
+                ->label(function ($row) {
+                    return view('codes.damages.actions', ['damage' => $row]);
+                }),
             Column::make("Codigo", "code")
                 ->searchable()
                 ->sortable(),
@@ -36,10 +40,7 @@ class DamageTable extends DataTableComponent
                 ->sortable(),
             Column::make("Creado", "created_at")
                 ->sortable(),
-            Column::make('Acciones')
-                ->label(function ($row) {
-                    return view('codes.damages.actions', ['damage' => $row]);
-                })
+
         ];
     }
 
@@ -97,14 +98,15 @@ class DamageTable extends DataTableComponent
                 Damage::create($this->damage);
             }
 
+            $this->dispatch('swal', [
+                'icon' => 'success',
+                'title' => $this->damage_id ? 'Código actualizado' :  'Código agregado',
+                'text' => $this->damage_id ? 'El código de daño se actualizó correctamente' : 'El código de daño se agregó correctamente',
+            ]);
+
             $this->reset('openModal', 'damage_id', 'damage');
             //$this->dispatch('refreshDamageTable');
 
-            $this->dispatch('swal', [
-                'icon' => 'success',
-                'title' => 'Código agregado',
-                'text' => 'El código de daño se agregó correctamente',
-            ]);
         } catch (Exception $e) {
             Log::error('Error saving damage: ' . $e->getMessage());
             $this->dispatch('swal', [
