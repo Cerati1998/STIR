@@ -2,10 +2,11 @@
 
     <form wire:submit="save">
 
-        <x-wire-modal-card title="Código de Daño" name="damageModal" width="3xl" wire:model="openModal">
+        <x-wire-modal-card title="Código de Daño" name="damageModal" width="3xl" wire:model="openModal"
+            :hide-close="true">
 
             {{-- Si hay errores, se mostrarán aquí --}}
-            <div x-show="errors.length"
+            {{-- <div x-show="errors.length"
                 class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
                 <strong class="font-bold">¡Ups! Algo salió mal.</strong>
                 <ul class="mt-3 list-disc list-inside text-sm text-red-600">
@@ -13,7 +14,8 @@
                         <li x-text="error"></li>
                     </template>
                 </ul>
-            </div>
+            </div> --}}
+            <x-validation-errors class="mb-4" />
 
             <div class="grid grid-cols-1 gap-4">
 
@@ -32,7 +34,10 @@
             </div>
 
             <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-wire-button flat label="Cancel" x-on:click="close" />
+                <x-wire-button flat label="Cancel"
+                    @click="
+                show = false;
+                setTimeout(() => { $wire.closeModal() }, 300);" />
 
                 <x-wire-button type="submit" primary label="Guardar" />
             </x-slot>
@@ -80,19 +85,19 @@
         }
 
         function confirmDelete(damageId) {
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: "¡No podrás revertir esto!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: '¡Sí, bórralo!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        @this.call('destroy', damageId);
-                    }
-                });
-            }
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '¡Sí, bórralo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    @this.call('destroy', damageId);
+                }
+            });
+        }
     </script>
 @endpush

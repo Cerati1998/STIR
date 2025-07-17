@@ -186,6 +186,18 @@ class ProductTable extends DataTableComponent
                 'min:0',
             ],
             'product.descripcion' => 'required',
+        ], [], [
+            'product.codProducto' => 'Código Producto',
+            'product.codBarras' => 'Código de Barras',
+            'product.unidad' => 'Unidad de Medida',
+            'product.mtoValor' => 'Monto Valor',
+            'product.tipAfeIgv' => 'Tipo de Afectación IGV',
+            'product.porcentajeIgv' => 'Porcentaje IGV',
+            'product.tipSisIsc' => 'Tipo de Sistema ISC',
+            'product.porcentajeIsc' => 'Porcentaje ISC',
+            'product.icbper' => 'ICBPER',
+            'product.factorIcbper' => 'Factor ICBPER',
+            'product.descripcion' => 'Descripción del Producto',
         ]);
 
         if (!$this->product['tipSisIsc']) {

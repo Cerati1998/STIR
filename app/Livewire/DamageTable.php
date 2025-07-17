@@ -70,22 +70,27 @@ class DamageTable extends DataTableComponent
         $this->openModal = true;
     }
 
+    public function closeModal()
+    {
+        $this->reset('openModal', 'damage_id', 'damage');
+    }
+
     public function save()
     {
-        try {
-            $this->validate([
-                'damage.code' => [
-                    'required',
-                    'string',
-                    'max:5',
-                    Rule::unique('damages', 'code')->ignore($this->damage_id),
-                ],
-                'damage.description' => 'required|string|max:255',
-            ], [], [
-                'damage.code' => 'Código',
-                'damage.description' => 'Descripción',
-            ]);
 
+        $this->validate([
+            'damage.code' => [
+                'required',
+                'string',
+                'max:5',
+                Rule::unique('damages', 'code')->ignore($this->damage_id),
+            ],
+            'damage.description' => 'required|string|max:255',
+        ], [], [
+            'damage.code' => 'Código',
+            'damage.description' => 'Descripción',
+        ]);
+        try {
             if ($this->damage_id) {
                 Damage::findOrFail($this->damage_id)->update($this->damage);
             } else {
