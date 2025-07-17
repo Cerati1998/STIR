@@ -37,6 +37,7 @@ return new class extends Migration
             $table->string('name', 200);
             $table->string('country_code', 3);
             $table->geometry('location')->nullable(); // Optional, for geographical coordinates
+            $table->softDeletes(); // For soft delete functionality
             $table->timestamps();
         });
 

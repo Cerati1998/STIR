@@ -11,7 +11,7 @@ class DamageController extends Controller
      */
     public function index()
     {
-        //
+        return view('codes.damages.index');
     }
 
     /**

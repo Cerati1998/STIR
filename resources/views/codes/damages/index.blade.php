@@ -9,6 +9,7 @@
 ]">
     <x-slot name="action">
         <x-wire-button label="Nuevo" x-on:click="$openModal('damageCreate')" blue />
-
     </x-slot>
+    @livewire('damage-table',[], key('damage-table'))
+    @livewire('damage-create',[],key('damage-create'))
 </x-dashboard-layout>
