@@ -61,17 +61,18 @@ Route::middleware([
         Route::get('branches/{branch}/series', [BranchController::class, 'series',])->name('branches.series');
 
         Route::resource('users', UserController::class);
-    });
 
-    Route::resource('companies', CompanyController::class)
-        ->only(['index', 'create', 'show']);
-        
-    //maestras para inspecciones
-    Route::resource('damages', DamageController::class)->names('damages')->except('show');
-    Route::resource('components', ComponentController::class)->names('components')->except('show');
-    Route::resource('methods', MethodController::class)->names('methods')->except('show');
-    Route::resource('locations', LocationController::class)->names('locations')->except('show');
+        //maestras para inspecciones
+        Route::resource('damages', DamageController::class)->names('damages')->except('show');
+        Route::resource('components', ComponentController::class)->names('components')->except('show');
+        Route::resource('methods', MethodController::class)->names('methods')->except('show');
+        Route::resource('locations', LocationController::class)->names('locations')->except('show');
+    });
 });
+
+Route::resource('companies', CompanyController::class)
+    ->only(['index', 'create', 'show']);
+
 
 Route::get('documentacion', function () {
     return view('docs');
