@@ -35,7 +35,7 @@ class DamageTable extends DataTableComponent
             Column::make("Codigo", "code")
                 ->searchable()
                 ->sortable(),
-            Column::make("Descripcion", "description")
+            Column::make("Descripción", "description")
                 ->searchable()
                 ->sortable(),
             Column::make("Creado", "created_at")

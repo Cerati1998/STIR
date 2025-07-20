@@ -12,7 +12,7 @@ class MethodController extends Controller
      */
     public function index()
     {
-        //
+        return view('codes.methods.index');
     }
 
     /**

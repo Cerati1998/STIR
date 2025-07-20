@@ -35,12 +35,12 @@ class ComponentTable extends DataTableComponent
                     return view('codes.components.actions', ['componente' => $row]);
                 }),
             Column::make("Code", "code")
+                ->searchable()
                 ->sortable(),
-            Column::make("Description", "description")
+            Column::make("Descripción", "description")
+                ->searchable()
                 ->sortable(),
-            Column::make("Created at", "created_at")
-                ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make("Creado", "created_at")
                 ->sortable(),
         ];
     }
