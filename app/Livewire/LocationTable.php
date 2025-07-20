@@ -8,6 +8,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Location;
 use Exception;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\On;
 
 class LocationTable extends DataTableComponent
 {
@@ -41,6 +42,7 @@ class LocationTable extends DataTableComponent
         ];
     }
 
+    #[On('locationAdded')]
     public function builder(): Builder
     {
         return Location::query();

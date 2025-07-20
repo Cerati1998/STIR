@@ -37,11 +37,7 @@ class ComponentCreate extends Component
 
         try {
             if (!$component = ModelsComponent::create($this->component)) {
-                $this->dispatch('swal', [
-                    'title' => 'Error',
-                    'text' => 'No se pudo crear el componente',
-                    'icon' => 'error',
-                ]);
+                throw new Exception('No se pudo crear el componente');
             }
 
             $this->reset('openModal', 'component');

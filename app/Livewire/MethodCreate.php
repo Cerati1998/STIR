@@ -30,13 +30,8 @@ class MethodCreate extends Component
 
         try {
             Method::create($this->method);
-            $this->dispatch('swal', [
-                'title' => 'Éxito',
-                'text' => 'Método creado correctamente.',
-                'icon' => 'success',
-            ]);
             $this->reset('openModal', 'method');
-            $this->dispatch('methodAdded', $this->method['code']);
+            $this->dispatch('methodAdded');
 
             $this->dispatch('swal', [
                 'title' => 'Éxito',

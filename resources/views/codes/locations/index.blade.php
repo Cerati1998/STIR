@@ -12,4 +12,5 @@
     </x-slot>
 
     @livewire('location-table', [], key('location-table'))
+    @livewire('location-create',[],key('location-create'))
 </x-dashboard-layout>
