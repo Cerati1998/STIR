@@ -39,7 +39,7 @@
                 show = false;
                 setTimeout(() => { $wire.closeModal() }, 300);" />
 
-                <x-wire-button type="submit" primary label="Guardar" />
+                <x-wire-button type="submit" primary label="Actualizar" />
             </x-slot>
 
         </x-wire-modal-card>

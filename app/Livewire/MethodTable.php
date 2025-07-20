@@ -85,11 +85,7 @@ class MethodTable extends DataTableComponent
 
         try {
             if (!Method::find($this->method_id)->update($this->method)) {
-                $this->dispatch('swal', [
-                    'title' => 'Error',
-                    'text' => 'No se pudo actualizar el método. Verifique los datos ingresados.',
-                    'icon' => 'error',
-                ]);
+                throw new Exception("No se ha podido actualizar el Método. Verifique que exista");
             }
 
             $this->reset('openModal', 'method_id', 'method');

@@ -1,11 +1,10 @@
 <x-dashboard-layout title="Métodos de Reparación | {{ session('company')->razonSocial }}" :breadcrumbs="[
     [
         'name' => 'Dashboard',
-        'url' => route('dashboard'),
+        'route' => route('dashboard'),
     ],
     [
         'name' => 'Métodos de Reparación',
-        'url' => route('methods.index'),
     ],
 ]">
     <x-slot name="action">

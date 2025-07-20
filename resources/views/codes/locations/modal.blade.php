@@ -2,7 +2,7 @@
 
     <form wire:submit="save">
 
-        <x-wire-modal-card title="Código de Método" name="methodModal" width="3xl" wire:model="openModal"
+        <x-wire-modal-card title="Código de Ubicación" name="locationModal" width="3xl" wire:model="openModal"
             :hide-close="true">
 
             {{-- Si hay errores, se mostrarán aquí --}}
@@ -23,11 +23,11 @@
                     <x-label class="mb-1">
                         Código
                     </x-label>
-                    <x-input x-model="method.code" placeholder="Ingrese el código" class="w-full" />
+                    <x-input x-model="location.code" placeholder="Ingrese el código" class="w-full" />
                 </div>
 
                 <div class="col-span-2">
-                    <x-wire-input required label="Descripción" x-model="method.description"
+                    <x-wire-input required label="Descripción" x-model="location.description"
                         placeholder="Ingrese la descripción" />
                 </div>
 
@@ -54,21 +54,21 @@
                 errors: [],
 
                 // Enlace bidireccional con Livewire
-                method: @entangle('method'),
+                location: @entangle('location'),
 
                 save() {
-                    axios.post('/methods', this.method)
+                    axios.post('/locations', this.location)
                         .then(response => {
-                            $closeModal('methodModal');
+                            $closeModal('locationModal');
 
-                            Livewire.dispatch('methodAdded', {
-                                methodId: response.data.id,
+                            Livewire.dispatch('locationAdded', {
+                                locationId: response.data.id,
                             });
 
                             this.errors = [];
 
-                            // Reinicia el objeto method (Livewire también lo hace en updated)
-                            this.method = {
+                            // Reinicia el objeto location (Livewire también lo hace en updated)
+                            this.location = {
                                 code: '',
                                 description: ''
                             };
@@ -84,7 +84,7 @@
             }
         }
 
-        function confirmDelete(methodId) {
+        function confirmDelete(locationId) {
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "¡No podrás revertir esto!",
@@ -95,7 +95,7 @@
                 confirmButtonText: '¡Sí, bórralo!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    @this.call('destroy', methodId);
+                    @this.call('destroy', locationId);
                 }
             });
         }
