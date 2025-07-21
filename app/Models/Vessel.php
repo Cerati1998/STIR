@@ -10,4 +10,9 @@ class Vessel extends Model
     use SoftDeletes;
     protected $fillable = ['imo_number', 'name', 'type', 'shipping_line_id'];
 
+    public function shippingLine()
+    {
+        return $this->belongsTo(ShippingLine::class);
+    }
+
 }

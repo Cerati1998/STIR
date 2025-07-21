@@ -15,11 +15,11 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReeferTechnologyController;
 use App\Http\Controllers\ShippingLineController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\VesselController;
 use App\Http\Controllers\VoidedController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Middleware\CheckCompanySelected;
 use App\Models\Invoice;
+use App\Models\Vessel;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -75,7 +75,7 @@ Route::middleware([
 
         //maestras para admisión
         Route::resource('lines', ShippingLineController::class)->names('lines')->except('show');
-        Route::resource('vessels', VesselController::class)->names('vessels')->except('show');
+        Route::get('lines/{line}/vessels', [ShippingLineController::class, 'get_vessels'])->name('line.vessels');
         Route::resource('ports', PortController::class)->names('ports')->except('show');
         Route::resource('container-types', ContainerTypeController::class)->names('container-types')->except('show');
         Route::resource('reefer-technologies', ReeferTechnologyController::class)->names('reefer-technologies')->except('show');

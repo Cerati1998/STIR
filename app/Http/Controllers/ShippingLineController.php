@@ -12,9 +12,15 @@ class ShippingLineController extends Controller
      */
     public function index()
     {
-        //
+        return view('masters.lines.index');
     }
 
+    public function get_vessels($id)
+    {
+        $vessels = ShippingLine::with('vessels')->find($id);
+        return response()->json($vessels);
+        //return view('masters.lines.index', compact('vessels'));
+    }
     /**
      * Show the form for creating a new resource.
      */
