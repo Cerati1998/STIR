@@ -75,7 +75,7 @@
             'active' => request()->routeIs('clients.*'),
         ],
         [
-            'name' => 'Codigos Inspección',
+            'name' => 'Códigos Inspección',
             'icon' => 'fa-solid fa-magnifying-glass',
             'active' => request()->routeIs(['damages.*', 'components.*', 'methods.*', 'locations.*']),
             'submenu' => [
@@ -102,6 +102,49 @@
                     'icon' => 'fa-regular fa-circle',
                     'route' => route('locations.index'),
                     'active' => request()->routeIs('locations.*'),
+                ],
+            ],
+        ],
+        [
+            'name' => 'Admisión',
+            'icon' => 'fa-solid fa-ship',
+            'active' => request()->routeIs([
+                'lines.*',
+                'vessels.*',
+                'ports.*',
+                'container-types.*',
+                'reefer-technologies.*',
+            ]),
+            'submenu' => [
+                [
+                    'name' => 'Líneas',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('lines.index'),
+                    'active' => request()->routeIs('lines.*'),
+                ],
+                [
+                    'name' => 'Naves',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('vessels.index'),
+                    'active' => request()->routeIs('vessels.*'),
+                ],
+                [
+                    'name' => 'Puertos',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('ports.index'),
+                    'active' => request()->routeIs('ports.*'),
+                ],
+                [
+                    'name' => 'Tipos contenedor',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('container-types.index'),
+                    'active' => request()->routeIs('container-types.*'),
+                ],
+                [
+                    'name' => 'Tecnologías',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('reefer-technologies.index'),
+                    'active' => request()->routeIs('reefer-technologies.*'),
                 ],
             ],
         ],

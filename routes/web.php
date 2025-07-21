@@ -4,13 +4,18 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\ContainerTypeController;
 use App\Http\Controllers\DamageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DespatchController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MethodController;
+use App\Http\Controllers\PortController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReeferTechnologyController;
+use App\Http\Controllers\ShippingLineController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VesselController;
 use App\Http\Controllers\VoidedController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Middleware\CheckCompanySelected;
@@ -67,6 +72,13 @@ Route::middleware([
         Route::resource('components', ComponentController::class)->names('components')->except('show');
         Route::resource('methods', MethodController::class)->names('methods')->except('show');
         Route::resource('locations', LocationController::class)->names('locations')->except('show');
+
+        //maestras para admisión
+        Route::resource('lines', ShippingLineController::class)->names('lines')->except('show');
+        Route::resource('vessels', VesselController::class)->names('vessels')->except('show');
+        Route::resource('ports', PortController::class)->names('ports')->except('show');
+        Route::resource('container-types', ContainerTypeController::class)->names('container-types')->except('show');
+        Route::resource('reefer-technologies', ReeferTechnologyController::class)->names('reefer-technologies')->except('show');
     });
 });
 
