@@ -71,5 +71,15 @@ class LineTable extends DataTableComponent
         $this->line = $line->only(['code', 'name']);
         $this->openModal = true;
     }
-    
+
+
+    public function destroy(ShippingLine $line)
+    {
+        $line->delete();
+        $this->dispatch('swal', [
+            'title' => 'Eliminado',
+            'text' => 'La línea de envío ha sido eliminada correctamente.',
+            'icon' => 'success',
+        ]);
+    }
 }

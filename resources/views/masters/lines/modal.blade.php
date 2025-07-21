@@ -27,14 +27,14 @@
                 </div>
 
                 <div class="col-span-2">
-                    <x-wire-input required label="Descripción" x-model="line.name"
-                        placeholder="Ingrese la descripción" />
+                    <x-wire-input required label="Nombre" x-model="line.name"
+                        placeholder="Ingrese el Nombre" />
                 </div>
 
             </div>
 
             <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-wire-button flat label="Cancel"
+                <x-wire-button flat label="Cancelar"
                     @click="
                 show = false;
                 setTimeout(() => { $wire.closeModal() }, 300);" />

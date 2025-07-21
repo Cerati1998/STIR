@@ -34,7 +34,7 @@
             </div>
 
             <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-wire-button flat label="Cancel"
+                <x-wire-button flat label="Cancelar"
                     @click="
                 show = false;
                 setTimeout(() => { $wire.closeModal() }, 300);" />
