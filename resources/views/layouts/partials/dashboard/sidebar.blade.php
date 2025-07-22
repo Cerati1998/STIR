@@ -110,6 +110,7 @@
             'icon' => 'fa-solid fa-ship',
             'active' => request()->routeIs([
                 'lines.*',
+                'line.*',
                 'ports.*',
                 'container-types.*',
                 'reefer-technologies.*',
@@ -119,7 +120,7 @@
                     'name' => 'Líneas',
                     'icon' => 'fa-regular fa-circle',
                     'route' => route('lines.index'),
-                    'active' => request()->routeIs('lines.*'),
+                    'active' => request()->routeIs(['lines.*','line.*']),
                 ],
                 [
                     'name' => 'Puertos',

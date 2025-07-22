@@ -75,7 +75,7 @@ Route::middleware([
 
         //maestras para admisión
         Route::resource('lines', ShippingLineController::class)->names('lines')->except('show');
-        Route::get('line/{line}/vessels', [ShippingLineController::class, 'get_vessels'])->name('line.vessels');
+        Route::get('line/{line}/vessels', [ShippingLineController::class, 'vessels'])->name('line.vessels');
         Route::resource('ports', PortController::class)->names('ports')->except('show');
         Route::resource('container-types', ContainerTypeController::class)->names('container-types')->except('show');
         Route::resource('reefer-technologies', ReeferTechnologyController::class)->names('reefer-technologies')->except('show');
