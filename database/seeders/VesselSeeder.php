@@ -33,7 +33,7 @@ class VesselSeeder extends Seeder
             ['imo_number' => '9015187', 'name' => 'HELLAS STREAM', 'type' => 'container', 'shipping_line_id' => $seatrade_id, 'pallets' => 8610],
             ['imo_number' => '9045924', 'name' => 'PACIFIC MERMAID', 'type' => 'container', 'shipping_line_id' => $seatrade_id, 'pallets' => 5740],
             ['imo_number' => '9030137', 'name' => 'ITALIA STREAM', 'type' => 'container', 'shipping_line_id' => $seatrade_id, 'pallets' => 8610],
-            ['imo_number' => '9438482', 'name' => 'CS SERVICE', 'type' => 'container', 'shipping_line_id' => $seatrade_id, 'pallets' => null],
+            ['imo_number' => '9438482', 'name' => 'CS SERVICE', 'type' => 'container', 'shipping_line_id' => $seatrade_id, 'pallets' => 0],
         ];
 
         foreach ($vessels as $vessel) {

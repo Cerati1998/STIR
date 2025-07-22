@@ -28,7 +28,7 @@ return new class extends Migration
                 ->constrained('shipping_lines')
                 ->references('id')
                 ->onDelete('cascade');
-            $table->Integer('pallets')->nullable();
+            $table->Integer('pallets')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

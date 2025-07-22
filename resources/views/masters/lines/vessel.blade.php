@@ -2,8 +2,7 @@
 
     <form wire:submit="save">
 
-        <x-wire-modal-card title="Datos de Nave" name="vesselModal" width="3xl" wire:model="openModal"
-            :hide-close="true">
+        <x-wire-modal-card title="Datos de Nave" name="vesselModal" width="3xl" wire:model="openModal" :hide-close="true">
 
             {{-- Si hay errores, se mostrarán aquí --}}
             {{-- <div x-show="errors.length"
@@ -17,18 +16,25 @@
             </div> --}}
             <x-validation-errors class="mb-4" />
 
-            <div class="grid grid-cols-1 gap-4">
+            <div class="w-full mb-3">
+                <x-wire-input required label="Nombre" wire:model="vessel.name"
+                    placeholder="Ingrese el Nombre de la nave" />
+            </div>
+            <div class="w-full mb-3">
+                <x-wire-input label="IMO" wire:model="vessel.imo_number" placeholder="Ingrese el IMO"
+                    class="w-full" />
+            </div>
 
-                <div class="col-span-1">
-                    <x-label class="mb-1">
-                        Código
-                    </x-label>
-                    <x-input x-model="vessel.code" placeholder="Ingrese el código" class="w-full" />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <div>
+                    <x-wire-number label="Capacidad" wire:model="vessel.pallets" placeholder="Ingrese la capacidad"
+                        class="w-full" min="0" value="0"/>
                 </div>
 
-                <div class="col-span-2">
-                    <x-wire-input required label="Nombre" x-model="vessel.name"
-                        placeholder="Ingrese el Nombre" />
+                <div>
+                    <x-wire-select label="Categoria" wire:model="vessel.type" :options="['container', 'bulk', 'tanker']"
+                        placeholder="Seleccione..." />
                 </div>
 
             </div>
@@ -69,8 +75,9 @@
 
                             // Reinicia el objeto vessel (Livewire también lo hace en updated)
                             this.vessel = {
-                                code: '',
-                                name: ''
+                                imo_number: '',
+                                name: '',
+                                type: ''
                             };
                         })
                         .catch(error => {

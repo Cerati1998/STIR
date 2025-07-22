@@ -6,6 +6,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Vessel;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
 
 class VesselTable extends DataTableComponent
 {
@@ -65,5 +66,61 @@ class VesselTable extends DataTableComponent
         }
 
         return $query;
+    }
+
+    public $vesselId;
+    public $openModal = false;
+    public $vessel = [
+        'imo_number' => '',
+        'name' => '',
+        'type' => '',
+        'pallets' => 0,
+    ];
+
+    public function edit(Vessel $vessel)
+    {
+        $this->vesselId = $vessel->id;
+        $this->vessel = $vessel->only(['imo_number', 'name', 'type', 'pallets']);
+        $this->openModal = true;
+    }
+
+    public function closeModal()
+    {
+        $this->reset('openModal', 'vessel', 'vesselId');
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'vessel.imo_number' => 'string',
+            'vessel.name' => [
+                'required',
+                'string',
+                'min:3',
+                Rule::unique('vessels', 'name')->ignore($this->vesselId)
+            ],
+            'vessel.type' => 'required|string|in:container,bulk,tanker',
+            'vessel.pallets' => 'integer'
+        ]);
+
+        Vessel::find($this->vesselId)->update($this->vessel);
+
+        $this->reset('openModal', 'vesselId', 'vessel');
+        $this->dispatch('swal', [
+            'title' => 'Exito!',
+            'text' => 'Nave actualizada correctamente',
+            'icon' => 'success'
+        ]);
+    }
+
+    public function destroy(Vessel $vessel){
+        $vessel->delete();
+
+        $this->dispatch('swal',[
+            'title' => 'Exito!',
+            'text' => 'Nave Eliminada correctamente',
+            'icon' => 'success'
+        ]);
+        
     }
 }

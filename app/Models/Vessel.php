@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Vessel extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['imo_number', 'name', 'type', 'shipping_line_id'];
+    protected $fillable = ['imo_number', 'name', 'type', 'pallets', 'shipping_line_id'];
 
     public function shippingLine()
     {
