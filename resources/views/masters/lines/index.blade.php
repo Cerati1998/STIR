@@ -13,4 +13,5 @@
 </x-slot>
 
 @livewire('masters.line-table',[],key('line-table'))
+@livewire('masters.line-create',[],key('mastes.line-create'))
 </x-dashboard-layout>
