@@ -1,4 +1,4 @@
-<x-dashboard-layout title="Lineas | {{ session('company')->razon_social }}" :breadcrumbs="[
+<x-dashboard-layout title="Lineas | {{ session('company')->razonSocial }}" :breadcrumbs="[
     [
         'name' => 'Dashboard',
         'route' => route('dashboard'),
