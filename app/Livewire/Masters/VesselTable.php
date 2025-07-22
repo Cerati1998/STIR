@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Masters;
 
+use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Vessel;
@@ -56,6 +57,7 @@ class VesselTable extends DataTableComponent
         ];
     }
 
+    #[On('vesselAdded')]
     public function builder(): Builder
     {
         $query = Vessel::query()->with(['shippingLine']);
@@ -101,6 +103,11 @@ class VesselTable extends DataTableComponent
             ],
             'vessel.type' => 'required|string|in:container,bulk,tanker',
             'vessel.pallets' => 'integer'
+        ],[],[
+            'vessel.imo_number' => 'IMO de Nave',
+            'vessel.name' => 'Nombre de Nave',
+            'vessel.type' => 'Categoria',
+            'vesse.pallets' => 'Capacidad de Pallets'
         ]);
 
         Vessel::find($this->vesselId)->update($this->vessel);
@@ -113,14 +120,14 @@ class VesselTable extends DataTableComponent
         ]);
     }
 
-    public function destroy(Vessel $vessel){
+    public function destroy(Vessel $vessel)
+    {
         $vessel->delete();
 
-        $this->dispatch('swal',[
+        $this->dispatch('swal', [
             'title' => 'Exito!',
             'text' => 'Nave Eliminada correctamente',
             'icon' => 'success'
         ]);
-        
     }
 }

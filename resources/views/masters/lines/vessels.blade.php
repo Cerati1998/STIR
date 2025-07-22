@@ -16,5 +16,6 @@
         <x-wire-button label="Nueva" x-on:click="$openModal('vesselCreate')" blue />
     </x-slot>
 
-    @livewire('masters.vessel-table', ['shipping_line' => $shipping_line], key('line-table'))
+    @livewire('masters.vessel-table', ['shipping_line' => $shipping_line], key('vessel-table'))
+    @livewire('masters.vessel-create', ['shipping_line' => $shipping_line], key('vessel-create'))
 </x-dashboard-layout>
