@@ -6,6 +6,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\ShippingLine;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 
 class LineTable extends DataTableComponent
@@ -72,6 +73,31 @@ class LineTable extends DataTableComponent
         $this->openModal = true;
     }
 
+    public function save()
+    {
+        $this->validate([
+            'line.code' => [
+                'required',
+                'string',
+                'min:3',
+                Rule::unique('shipping_lines', 'code')->ignore($this->line_id)
+            ],
+            'line.name' => 'required|string|min:3'
+        ], [], [
+            'line.code' => 'Código de Linea',
+            'line.name' => 'Nombre de Linea'
+        ]);
+
+        ShippingLine::find($this->line_id)->update($this->line);
+
+        $this->reset('line_id', 'openModal', 'line');
+
+        $this->dispatch('swal', [
+            'title' => 'Exito!',
+            'text' => 'Linea actualizada correctamente',
+            'icon' => 'success'
+        ]);
+    }
 
     public function destroy(ShippingLine $line)
     {
