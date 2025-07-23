@@ -13,5 +13,5 @@
 </x-slot>
 
 @livewire('masters.port-table',[],key('port-table'))
-{{-- @livewire('masters.port-create',[],key('mastes.port-create'))--}}
+ @livewire('masters.port-create',[],key('port-create'))
 </x-dashboard-layout>

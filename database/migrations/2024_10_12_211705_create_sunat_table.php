@@ -134,7 +134,7 @@ return new class extends Migration
 
         Schema::create('countries', function (Blueprint $table) {
             $table->string('id')->primary();
-
+            $table->string('A3')->unique();
             $table->string('description')->index();
 
             $table->timestamps();

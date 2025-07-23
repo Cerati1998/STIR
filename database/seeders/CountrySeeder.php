@@ -1459,6 +1459,7 @@ class CountrySeeder extends Seeder
         foreach ($countries as $country) {
             Country::create([
                 'id' => $country['A2'],
+                'A3' => $country['A3'],
                 'description' => $country['Country'],
             ]);
         }

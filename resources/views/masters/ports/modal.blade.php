@@ -29,7 +29,7 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <x-wire-select label="Código Pais" placeholder="Seleccione un País" wire:model="port.country_code"
-                        :options="$countryOptions" option-label="name" option-value="code" />
+                        :options="$countryOptions" option-label="description" option-value="A3" />
                 </div>
                 <div>
                     <x-label class="mb-1">
