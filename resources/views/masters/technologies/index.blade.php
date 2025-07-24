@@ -9,8 +9,8 @@
 ]">
     <x-slot name="action">
         <div class="grid grid-cols-2 gap-2">
-            <x-wire-button right-icon="plus" label="Tipo" x-on:click="$openModal('portCreate')" green />
-            <x-wire-button right-icon="plus" label="Tecnologia" x-on:click="$openModal('portCreate')" blue />
+            <x-wire-button right-icon="plus" label="Tipo" x-on:click="$openModal('typeCreate')" green />
+            <x-wire-button right-icon="plus" label="Tecnologia" x-on:click="$openModal('technologyCreate')" blue />
         </div>
 
 
@@ -18,7 +18,6 @@
     <x-wire-card>
         {{-- Tabs --}}
         <x-tabs active="tipos-contenedor">
-
             <x-slot name="header">
                 <x-tab-link tab="tipos-contenedor">
                     <i class="fa-solid fa-table-cells-large me-2"></i>
@@ -31,22 +30,14 @@
             </x-slot>
 
             <x-tab-content tab="tipos-contenedor">
-                <div class="grid lg:grid-cols-2 gap-4">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos aliquid hic facilis adipisci voluptas
-                    repellendus, corrupti reiciendis sapiente odit. Nam dolore commodi dolor, earum voluptate assumenda
-                    aspernatur quisquam recusandae atque.
+                <div class="mt-4">
+                    @livewire('masters.type-container-table', [], key('type-container-table'))
                 </div>
             </x-tab-content>
 
             <x-tab-content tab="tecnologias-contenedor">
-
-                <div class="grid lg:grid-cols-2 gap-4">
-
-
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet unde incidunt accusantium nemo
-                    explicabo ex omnis consequatur vel architecto, a ipsam odio aliquam pariatur eveniet commodi. Nam
-                    voluptas atque aperiam?
-
+                <div class="mt-4">
+                    @livewire('masters.technology-table', [], key('technology-table'))
                 </div>
 
             </x-tab-content>

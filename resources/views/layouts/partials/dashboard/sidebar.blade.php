@@ -129,16 +129,10 @@
                     'active' => request()->routeIs('ports.*'),
                 ],
                 [
-                    'name' => 'Tipos contenedor',
+                    'name' => 'Tipos y Tecnologias',
                     'icon' => 'fa-regular fa-circle',
                     'route' => route('container-types.index'),
                     'active' => request()->routeIs('container-types.*'),
-                ],
-                [
-                    'name' => 'Tecnologías',
-                    'icon' => 'fa-regular fa-circle',
-                    'route' => route('reefer-technologies.index'),
-                    'active' => request()->routeIs('reefer-technologies.*'),
                 ],
             ],
         ],

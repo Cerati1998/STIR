@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Livewire\Masters;
+
+use Livewire\Attributes\On;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use App\Models\ContainerType;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
+
+class TypeContainerTable extends DataTableComponent
+{
+    protected $model = ContainerType::class;
+
+    public function configure(): void
+    {
+        $this->setPrimaryKey('id');
+        $this->setDefaultSort('id', 'desc');
+        $this->setConfigurableAreas([
+            'after-wrapper' => ['masters.technologies.type-container']
+        ]);
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make("Id", "id")
+                ->deselected(),
+            Column::make('actions')
+                ->label(function ($row) {
+                    return view('masters.technologies.container-actions', ['type' => $row]);
+                }),
+            Column::make("Código", "iso_code")
+                ->searchable()
+                ->sortable(),
+            Column::make("Descripción", "description")
+                ->searchable()
+                ->sortable(),
+            Column::make("Largo", "length")
+                ->sortable(),
+            Column::make("Ancho", "width")
+                ->sortable(),
+            Column::make("Alto", "height")
+                ->sortable(),
+            Column::make("Creado", "created_at")
+                ->sortable(),
+        ];
+    }
+
+    #[On('typeContainerAdded')]
+    public function builder(): Builder
+    {
+        return ContainerType::query();
+    }
+
+    public $openModal = false;
+    public $containerTypeId;
+    public $containerType = [
+        'iso_code' => '',
+        'description' => '',
+        'length' => '',
+        'width' => '',
+        'height' => ''
+    ];
+
+    public function edit(ContainerType $containerType)
+    {
+        $this->containerTypeId = $containerType->id;
+        $this->containerType = $containerType->only('iso_code', 'description', 'length', 'width', 'height');
+        $this->openModal = true;
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'containerType.iso_code' => [
+                'required',
+                'string',
+                'min:2',
+                Rule::unique('container_types', 'iso_code')->ignore($this->containerTypeId)
+            ],
+            'containerType.description' => 'required|string|min:4'
+        ], [], [
+            'containerType.iso_code' => 'Código de Tipo de Contenedor',
+            'containerType.description' => 'Descripción de Tipo de Contenedor'
+        ]);
+
+        ContainerType::find($this->containerTypeId)->update($this->containerType);
+
+        $this->reset('openModal', 'containerTypeId', 'containerType');
+        $this->dispatch('swal', [
+            'title' => 'Exito!',
+            'text' => 'Tipo de Contenedor actualizado correctamente',
+            'icon' => 'success'
+        ]);
+    }
+
+    public function destroyType(ContainerType $containerType)
+    {
+        $containerType->delete();
+
+        $this->dispatch('swal', [
+            'title' => 'Exito!',
+            'text' => 'Tipo de Contenedor eliminado correctamente',
+            'icon' => 'success'
+        ]);
+    }
+}
