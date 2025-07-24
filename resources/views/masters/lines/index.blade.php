@@ -8,10 +8,10 @@
     ],
 ]">
 
-<x-slot name="action">
-    <x-wire-button label="Nueva" x-on:click="$openModal('lineCreate')" blue />
-</x-slot>
+    <x-slot name="action">
+        <x-wire-button label="Nueva" right-icon="plus" x-on:click="$openModal('lineCreate')" blue />
+    </x-slot>
 
-@livewire('masters.line-table',[],key('line-table'))
-@livewire('masters.line-create',[],key('mastes.line-create'))
+    @livewire('masters.line-table', [], key('line-table'))
+    @livewire('masters.line-create', [], key('mastes.line-create'))
 </x-dashboard-layout>

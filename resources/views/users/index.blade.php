@@ -10,7 +10,7 @@
 
     <x-slot name="action">
 
-        <x-wire-button label="Nuevo" x-on:click="$openModal('simpleModal')" blue />
+        <x-wire-button label="Nuevo" right-icon="plus" x-on:click="$openModal('simpleModal')" blue />
 
     </x-slot>
 

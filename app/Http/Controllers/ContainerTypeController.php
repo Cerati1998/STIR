@@ -12,7 +12,7 @@ class ContainerTypeController extends Controller
      */
     public function index()
     {
-        //
+        return view('masters.technologies.index');
     }
 
     /**

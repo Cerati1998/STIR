@@ -8,7 +8,7 @@
     ],
 ]">
     <x-slot name="action">
-        <x-wire-button label="Nuevo" x-on:click="$openModal('locationCreate')" blue />
+        <x-wire-button label="Nuevo" right-icon="plus" x-on:click="$openModal('locationCreate')" blue />
     </x-slot>
 
     @livewire('location-table', [], key('location-table'))

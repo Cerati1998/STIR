@@ -4,12 +4,12 @@
         'route' => route('dashboard'),
     ],
     [
-        'name' => 'portas',
+        'name' => 'Puertos',
     ],
 ]">
 
 <x-slot name="action">
-    <x-wire-button label="Nuevo" x-on:click="$openModal('portCreate')" blue />
+    <x-wire-button label="Nuevo" right-icon="plus" x-on:click="$openModal('portCreate')" blue />
 </x-slot>
 
 @livewire('masters.port-table',[],key('port-table'))

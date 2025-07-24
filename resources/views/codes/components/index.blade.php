@@ -8,7 +8,7 @@
     ],
 ]">
     <x-slot name="action">
-        <x-wire-button label="Nuevo" x-on:click="$openModal('componentCreate')" blue />
+        <x-wire-button label="Nuevo" right-icon="plus" x-on:click="$openModal('componentCreate')" blue />
     </x-slot>
     @livewire('component-table', [], key('component-table'))
     @livewire('component-create', [], key('component-create'))
