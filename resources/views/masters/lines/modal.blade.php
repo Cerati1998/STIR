@@ -2,8 +2,7 @@
 
     <form wire:submit="save">
 
-        <x-wire-modal-card title="Linea Naviera" name="lineModal" width="3xl" wire:model="openModal"
-            :hide-close="true">
+        <x-wire-modal-card title="Linea Naviera" name="lineModal" width="3xl" wire:model="openModal" :hide-close="true">
 
             {{-- Si hay errores, se mostrarán aquí --}}
             {{-- <div x-show="errors.length"
@@ -27,17 +26,13 @@
                 </div>
 
                 <div class="col-span-2">
-                    <x-wire-input required label="Nombre" x-model="line.name"
-                        placeholder="Ingrese el Nombre" />
+                    <x-wire-input required label="Nombre" x-model="line.name" placeholder="Ingrese el Nombre" />
                 </div>
 
             </div>
 
             <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-wire-button flat label="Cancelar"
-                    @click="
-                show = false;
-                setTimeout(() => { $wire.closeModal() }, 300);" />
+                <x-wire-button flat label="Cancelar" x-on:click="close" />
 
                 <x-wire-button type="submit" primary label="Actualizar" />
             </x-slot>
