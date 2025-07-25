@@ -27,7 +27,7 @@ class TypeContainerTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->deselected(),
-            Column::make('actions')
+            Column::make('Acciones')
                 ->label(function ($row) {
                     return view('masters.technologies.container-actions', ['type' => $row]);
                 }),

@@ -79,7 +79,7 @@
 
         {{-- @if ($document->sunatResponse['error']['code'] >= '0100' && $document->sunatResponse['error']['code'] <= '1999')
             <div class="flex space-x-2 justify-center">
-                <x-wire-button dark md onclick="prueba({{$document->id}})">
+                <x-wire-button dark md onclick="prueba({{$document->id}})" xs>
                     <img class='h-6' src='/img/icons/get_cdr.svg'/> Volver a enviar
                 </x-wire-button>
             </div>
