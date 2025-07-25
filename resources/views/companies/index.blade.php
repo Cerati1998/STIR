@@ -22,7 +22,7 @@
                         <p class="truncate">
                             {{-- {{$company->razonSocial}} --}}
                             {{
-                                Str::limit($company->razonSocial, 15, '...')
+                                Str::limit($company->razonSocial, 20, '...')
                             }}
                         </p>
                     </a>
