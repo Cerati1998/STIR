@@ -59,9 +59,9 @@ class TypeContainerTable extends DataTableComponent
     public $containerType = [
         'iso_code' => '',
         'description' => '',
-        'length' => '',
-        'width' => '',
-        'height' => ''
+        'length' => 0,
+        'width' => 0,
+        'height' => 0
     ];
 
     public function edit(ContainerType $containerType)
@@ -80,10 +80,16 @@ class TypeContainerTable extends DataTableComponent
                 'min:2',
                 Rule::unique('container_types', 'iso_code')->ignore($this->containerTypeId)
             ],
-            'containerType.description' => 'required|string|min:4'
+            'containerType.description' => 'required|string|min:4',
+            'containerType.length' => 'numeric',
+            'containerType.width' => 'numeric',
+            'containerType.height' => 'numeric'
         ], [], [
             'containerType.iso_code' => 'Código de Tipo de Contenedor',
-            'containerType.description' => 'Descripción de Tipo de Contenedor'
+            'containerType.description' => 'Descripción de Tipo de Contenedor',
+             'containerType.length' => 'Longitud de Contenedor',
+            'containerType.width' => 'Ancho de Contenedor',
+            'containerType.height' => 'Altura de Contenedor'
         ]);
 
         ContainerType::find($this->containerTypeId)->update($this->containerType);

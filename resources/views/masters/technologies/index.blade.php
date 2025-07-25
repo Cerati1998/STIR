@@ -9,7 +9,7 @@
 ]">
     <x-slot name="action">
         <div class="grid grid-cols-2 gap-2">
-            <x-wire-button right-icon="plus" label="Tipo" x-on:click="$openModal('typeCreate')" green />
+            <x-wire-button right-icon="plus" label="Tipo" x-on:click="$openModal('typeContainerCreate')" green />
             <x-wire-button right-icon="plus" label="Tecnologia" x-on:click="$openModal('technologyCreate')" blue />
         </div>
 
@@ -44,7 +44,8 @@
 
         </x-tabs>
     </x-wire-card>
-
+    @livewire('masters.technology-create',[],'masters.technology-create');
+    @livewire('masters.type-container-create',[],'masters.type-container-create');
 
 
 
