@@ -44,8 +44,8 @@
 
         </x-tabs>
     </x-wire-card>
-    @livewire('masters.technology-create',[],'masters.technology-create');
-    @livewire('masters.type-container-create',[],'masters.type-container-create');
+    @livewire('masters.technology-create',[],'masters.technology-create')
+    @livewire('masters.type-container-create',[],'masters.type-container-create')
 
 
 
