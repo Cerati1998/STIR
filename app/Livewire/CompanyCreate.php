@@ -39,14 +39,13 @@ class CompanyCreate extends Component
             if ($district) {
                 $this->ubigeo = $district->id;
             }
-        }else{
+        } else {
             $this->dispatch('swal', [
                 'icon' => 'error',
                 'title' => 'Error',
                 'text' => 'No se encontró la empresa',
             ]);
         }
-
     }
 
     public function save()
@@ -64,6 +63,18 @@ class CompanyCreate extends Component
             'ubigeo' => 'required|exists:districts,id',
             'direccion' => 'required',
         ]);
+
+        //validar que solo exista una empresa
+        $count = Company::all()->count();
+        if ($count > 0) {
+            $this->dispatch('swal', [
+                'title' => 'Error!',
+                'text' => 'Ya existe una empresa registrada en el sistema',
+                'icon' => 'error'
+            ]);
+
+            return;
+        }
 
         $company = Company::create([
             'ruc' => $this->ruc,
