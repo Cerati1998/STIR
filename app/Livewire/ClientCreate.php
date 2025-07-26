@@ -39,6 +39,7 @@ class ClientCreate extends Component
             'client.email' => 'nullable',
         ]);
 
+        $this->client['branch_id'] = session('branch')->id;
         $this->client['company_id'] = session('company')->id;
 
         $client = Client::create($this->client);

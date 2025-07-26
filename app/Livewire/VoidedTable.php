@@ -43,22 +43,22 @@ class VoidedTable extends DataTableComponent
 
             Column::make('PDF', 'pdf_path')
                 ->format(
-                    fn ($value, $row) => view('vouchers.partials.pdf', compact('row'))
+                    fn($value, $row) => view('vouchers.partials.pdf', compact('row'))
                 )->collapseOnTablet(),
 
             Column::make('XML', 'xml_path')
                 ->format(
-                    fn ($value, $row) => view('vouchers.partials.xml', compact('value', 'row'))
+                    fn($value, $row) => view('vouchers.partials.xml', compact('value', 'row'))
                 )->collapseOnTablet(),
 
             Column::make('CDR', 'cdr_path')
                 ->format(
-                    fn ($value, $row) => view('vouchers.partials.cdr', compact('value', 'row'))
+                    fn($value, $row) => view('vouchers.partials.cdr', compact('value', 'row'))
                 )->collapseOnTablet(),
 
             Column::make('Sunat', 'sunatResponse')
                 ->format(
-                    fn ($value, $row) => view('vouchers.partials.response', compact('value', 'row'))
+                    fn($value, $row) => view('vouchers.partials.response', compact('value', 'row'))
                 )->collapseOnTablet(),
         ];
     }
@@ -115,12 +115,12 @@ class VoidedTable extends DataTableComponent
 
             $voided->save();
 
-            if($voided->sunatResponse['success'] && $voided->sunatResponse['cdrResponse']['code'] == '0')
-            {
+            if ($voided->sunatResponse['success'] && $voided->sunatResponse['cdrResponse']['code'] == '0') {
                 foreach ($voided->details as $item) {
                     Invoice::where('tipoDoc', $item['tipoDoc'])
                         ->where('serie', $item['serie'])
                         ->where('correlativo', $item['correlativo'])
+                        ->where('branch_id', session('branch')->id)
                         ->where('company_id', session('company')->id)
                         ->update(['voided' => true]);
                 }
@@ -129,7 +129,6 @@ class VoidedTable extends DataTableComponent
             $this->showResponse($voided);
 
             return;
-
         } catch (\Exception $e) {
             $this->dispatch('swal', [
                 'icon' => 'error',
@@ -157,6 +156,7 @@ class VoidedTable extends DataTableComponent
     public function builder(): Builder
     {
         return Voided::query()
+            ->where('branch_id', session('branch')->id)
             ->where('company_id', session('company')->id)
             ->where('production', session('company')->production);
     }

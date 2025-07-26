@@ -21,6 +21,7 @@ class VoidedForm extends Form
 
     public $sunatResponse;
 
+    public $branch_id;
     public $company_id;
 
     public $production;
@@ -88,6 +89,7 @@ class VoidedForm extends Form
                     Invoice::where('tipoDoc', $item['tipoDoc'])
                         ->where('serie', $item['serie'])
                         ->where('correlativo', $item['correlativo'])
+                        ->where('branch_id', session('branch')->id)
                         ->where('company_id', session('company')->id)
                         ->update(['voided' => true]);
                 }

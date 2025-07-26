@@ -33,7 +33,7 @@ class ClientTable extends DataTableComponent
             Column::make("Num. Doc.", "numDoc")
                 ->searchable()
                 ->sortable()
-                ->format(function($value) {
+                ->format(function ($value) {
                     return $value ? $value : 'S/N';
                 }),
 
@@ -42,10 +42,10 @@ class ClientTable extends DataTableComponent
                 ->sortable(),
 
             Column::make('actions')
-                ->label(function($row) {
+                ->label(function ($row) {
                     return view('clients.actions', ['client' => $row]);
                 }),
-            
+
         ];
     }
 
@@ -53,6 +53,7 @@ class ClientTable extends DataTableComponent
     public function builder(): Builder
     {
         return Client::query()
+            ->where('branch_id', session('branch')->id)
             ->where('company_id', session('company')->id);
     }
 
@@ -77,7 +78,7 @@ class ClientTable extends DataTableComponent
             'client.tipoDoc' => 'required|in:1,6',
             'client.numDoc' => [
                 Rule::when($this->client['tipoDoc'] == 1, 'numeric|digits:8'),
-                Rule::when($this->client['tipoDoc'] == 6, ['numeric','digits:11','regex:/^(10|20)\d{9}$/']),
+                Rule::when($this->client['tipoDoc'] == 6, ['numeric', 'digits:11', 'regex:/^(10|20)\d{9}$/']),
             ],
         ]);
 
@@ -88,8 +89,7 @@ class ClientTable extends DataTableComponent
 
             $this->client['rznSocial'] = $response->result->razon_social;
             $this->client['direccion'] = $response->result->direccion;
-
-        }else{
+        } else {
             $this->dispatch('swal', [
                 'icon' => 'error',
                 'title' => 'Error',
@@ -111,17 +111,17 @@ class ClientTable extends DataTableComponent
             'email' => $client->email,
             'telephone' => $client->telephone,
         ];
-
     }
 
-    public function save(){
+    public function save()
+    {
         $this->validate([
             'client.tipoDoc' => 'required|exists:identities,id',
             'client.numDoc' => [
                 Rule::requiredIf($this->client['tipoDoc'] != '-'),
                 Rule::when($this->client['tipoDoc'] == 1, 'numeric|digits:8'),
-                Rule::when($this->client['tipoDoc'] == 6, ['numeric','digits:11','regex:/^(10|20)\d{9}$/']),
-                Rule::unique('clients', 'numDoc')->where(function($query){
+                Rule::when($this->client['tipoDoc'] == 6, ['numeric', 'digits:11', 'regex:/^(10|20)\d{9}$/']),
+                Rule::unique('clients', 'numDoc')->where(function ($query) {
                     return $query->where('company_id', session('company')->id)
                         ->where('tipoDoc', $this->client['tipoDoc'])
                         ->where('tipoDoc', '!=', '-');

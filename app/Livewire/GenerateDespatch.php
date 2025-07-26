@@ -75,6 +75,7 @@ class GenerateDespatch extends Component
     public function mount()
     {
         $this->despatch->fechaEmision = now()->format('Y-m-d');
+        $this->despatch->branch_id = session('branch')->id;
         $this->despatch->company_id = session('company')->id;
         $this->despatch->production = session('company')->production;
 

@@ -136,6 +136,7 @@ class DespatchTable extends DataTableComponent
     public function builder(): Builder
     {
         return Despatch::query()
+            ->where('branch_id', session('branch')->id)
             ->where('company_id', session('company')->id)
             ->where('production', session('company')->production)
             ->orderBy('id', 'desc');

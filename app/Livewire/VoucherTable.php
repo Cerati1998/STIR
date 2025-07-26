@@ -338,6 +338,7 @@ class VoucherTable extends DataTableComponent
             ]
         ];
 
+        $this->voided->branch_id = session('branch')->id;
         $this->voided->company_id = session('company')->id;
         $this->voided->production = session('company')->production;
     }

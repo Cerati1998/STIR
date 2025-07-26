@@ -72,6 +72,7 @@ class DespatchForm extends Form
 
     public $details = [];
 
+    public $branch_id;
     public $company_id;
     public $production;
 
