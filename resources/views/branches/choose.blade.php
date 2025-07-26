@@ -20,7 +20,7 @@
 
                         <p class="truncate">
                             {{-- {{$branch->razonSocial}} --}}
-                            {{ Str::limit($branch->name, 15, '...') }}
+                            {{ Str::limit($branch->name, 20, '...') }}
                         </p>
                     </a>
                 </div>
