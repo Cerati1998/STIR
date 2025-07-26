@@ -62,7 +62,8 @@ Route::middleware([
         Route::delete('companies', [CompanyController::class, 'destroy',])->name('companies.destroy');
 
         Route::resource('branches', BranchController::class)
-            ->except('show', 'update');
+            ->except( 'update');
+        Route::get('branches-choose', [BranchController::class, 'choose',])->name('branches.choose');
         Route::get('branches/{branch}/series', [BranchController::class, 'series',])->name('branches.series');
 
         Route::resource('users', UserController::class);

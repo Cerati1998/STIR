@@ -17,6 +17,17 @@ class BranchController extends Controller
     }
 
     /**
+     * Resumen de sucursales para usuarios administradores
+     */
+    public function choose()
+    {
+        $branches = Branch::whereHas('users', function ($query) {
+            $query->where('user_id', auth()->id());
+        })->get();
+
+        return view('branches.choose', compact('branches'));
+    }
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -58,13 +69,15 @@ class BranchController extends Controller
             'company_id' => session('company')->id,
         ]);
 
+        session()->put('branch', Branch::find($branch->id));
+
         session('swal', [
             'icon' => 'success',
             'title' => 'Sucursal creada',
             'text' => 'La sucursal se ha creado correctamente.',
         ]);
 
-        return redirect()->route('branches.index');
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -74,10 +87,22 @@ class BranchController extends Controller
     {
         $branch = Branch::where('company_id', session('company')->id)
             ->findOrFail($branchId);
-            
-        return view('branches.edit', compact('branch'));
-    }    
 
+        return view('branches.edit', compact('branch'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($branchId)
+    {
+        $branch = Branch::whereHas('users', function ($query) {
+            $query->where('user_id', auth()->id());
+        })->findOrFail($branchId);
+
+        session()->put('branch', $branch);
+        return redirect()->route('dashboard');
+    }
     /**
      * Remove the specified resource from storage.
      */

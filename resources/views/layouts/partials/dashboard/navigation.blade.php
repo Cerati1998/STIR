@@ -63,8 +63,8 @@
                             </x-dropdown-link>
                         @endif --}}
 
-                        <x-dropdown-link href="{{ route('companies.index') }}">
-                            Cambiar de empresa
+                        <x-dropdown-link href="{{ route('branches.choose') }}">
+                            Cambiar de sucursal
                         </x-dropdown-link>
 
                         <x-dropdown-link href="{{ route('profile.show') }}">

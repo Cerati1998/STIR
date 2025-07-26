@@ -295,7 +295,6 @@ class GenerateInvoice extends Component
 
     public function saveDetail()
     {
-        dd(session('branch'));
         $this->validate([
             'product.codProducto' => 'nullable|string',
             'product.unidad' => 'required|exists:units,id',
