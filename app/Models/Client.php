@@ -17,11 +17,16 @@ class Client extends Model
         'direccion',
         'phone',
         'email',
+        'branch_id',
         'company_id'
     ];
 
     public function identity()
     {
         return $this->belongsTo(Identity::class, 'tipoDoc');
+    }
+
+    public function branch(){
+        return $this->belongsTo(Branch::class);
     }
 }

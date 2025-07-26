@@ -26,6 +26,7 @@ class ProductFactory extends Factory
             'tipAfeIgv' => '10',
             'porcentajeIgv' => 18,
             'descripcion' => $this->faker->sentence,
+            'branch_id' => 1,
             'company_id' => 1,
         ];
     }

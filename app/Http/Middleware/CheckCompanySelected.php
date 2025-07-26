@@ -23,12 +23,33 @@ class CheckCompanySelected
             })->get();
 
             if ($companies->count() === 1) {
-                session()->put('company', $companies->first());
-                return $next($request);                
+                $company = $companies->first();
+                session()->put('company', $company);
+
+                // Añadimos branch_id justo después de guardar la empresa
+                $branches = auth()->user()->branches()
+                    ->wherePivot('company_id', $company->id)
+                    ->get();
+
+                /* if ($branches->count() === 1) {
+                    session()->put('branch', $branches->first());
+                } */
+                if ($branches->count() >= 1) {
+                    session()->put('branch', $branches->first());
+                }
+
+                /* 
+                DESCOMENTAR CUANDO YA SE TENGA LARAVEL PERMISSION
+                elseif ($branches->count() > 1 && auth()->user()->hasRole('admin')) {
+                    session()->put('branch_id', $branches->first()->id); // o mostrar selector más adelante
+                } */
+
+                return $next($request);
             }
 
             return redirect()->route('companies.index');
         }
+
 
         //Verificamos si la empresa seleccionada aun le pertenece
         $companyId = session('company')->id;

@@ -35,15 +35,15 @@ class VoucherTable extends DataTableComponent
             'after-wrapper' => 'vouchers.partials.modals',
         ]);
 
-        $this->setTdAttributes(function(Column $column, $row, $columnIndex, $rowIndex) {
+        $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             if ($row->voided) {
-              return [
-                'class' => 'line-through text-red-500',
-              ];
+                return [
+                    'class' => 'line-through text-red-500',
+                ];
             }
-         
+
             return [];
-          });
+        });
     }
 
     public function columns(): array
@@ -85,7 +85,6 @@ class VoucherTable extends DataTableComponent
                         $query->where('serie', 'like', '%' . $search[0] . '%')
                             ->where('correlativo', 'like', '%' . $search[1] . '%');
                     });
-                                                
                 }),
 
             Column::make("Cliente", "client")
@@ -102,7 +101,6 @@ class VoucherTable extends DataTableComponent
                 ->searchable(function ($query, $search) {
                     $query->orWhere('client->numDoc', 'like', '%' . $search . '%')
                         ->orWhereRaw("LOWER(json_unquote(json_extract(client, '$.rznSocial'))) LIKE ?", ['%' . strtolower($search) . '%']);
-                        
                 })
                 ->html(),
 
@@ -114,27 +112,27 @@ class VoucherTable extends DataTableComponent
 
             Column::make('PDF', 'pdf_path')
                 ->format(
-                    fn ($value, $row) => view('vouchers.partials.pdf', compact('row'))
+                    fn($value, $row) => view('vouchers.partials.pdf', compact('row'))
                 )->collapseOnTablet(),
 
             Column::make('XML', 'xml_path')
                 ->format(
-                    fn ($value, $row) => view('vouchers.partials.xml', compact('value', 'row'))
+                    fn($value, $row) => view('vouchers.partials.xml', compact('value', 'row'))
                 )->collapseOnTablet(),
 
             Column::make('CDR', 'cdr_path')
                 ->format(
-                    fn ($value, $row) => view('vouchers.partials.cdr', compact('value', 'row'))
+                    fn($value, $row) => view('vouchers.partials.cdr', compact('value', 'row'))
                 )->collapseOnTablet(),
 
             Column::make('Sunat', 'sunatResponse')
                 ->format(
-                    fn ($value, $row) => view('vouchers.partials.response', compact('value', 'row'))
+                    fn($value, $row) => view('vouchers.partials.response', compact('value', 'row'))
                 )->collapseOnTablet(),
 
             Column::make('Opciones')
                 ->label(
-                    fn ($row) => view('vouchers.partials.action', compact('row'))
+                    fn($row) => view('vouchers.partials.action', compact('row'))
                 )->collapseOnTablet()
         ];
     }
@@ -150,7 +148,7 @@ class VoucherTable extends DataTableComponent
                     '07' => 'Nota de Crédito',
                     '08' => 'Nota de Débito',
                 ])
-                ->filter(function(Builder $builder, string $value) {
+                ->filter(function (Builder $builder, string $value) {
                     $builder->where('tipoDoc', $value);
                 }),
 
@@ -205,7 +203,6 @@ class VoucherTable extends DataTableComponent
             $invoice->save();
 
             $this->showResponse($invoice);
-
         } catch (\Exception $e) {
             $this->dispatch('swal', [
                 'icon' => 'error',
@@ -213,7 +210,6 @@ class VoucherTable extends DataTableComponent
                 'text' => $e->getMessage()
             ]);
         }
-        
     }
 
     public function downloadCDR(Invoice $invoice)
@@ -262,7 +258,7 @@ class VoucherTable extends DataTableComponent
 
         if ($type == 'web') {
             $url = "https://web.whatsapp.com/send?phone={$phone}&text={$mensaje}";
-        }else{
+        } else {
             $url = "https://api.whatsapp.com/send?phone={$phone}&text={$mensaje}";
         }
 
@@ -356,6 +352,7 @@ class VoucherTable extends DataTableComponent
     public function builder(): Builder
     {
         return Invoice::query()
+            ->where('branch_id', session('branch')->id)
             ->where('company_id', session('company')->id)
             ->where('production', session('company')->production);
     }

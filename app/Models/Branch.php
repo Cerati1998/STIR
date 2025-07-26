@@ -31,4 +31,22 @@ class Branch extends Model
             ->withPivot('company_id')
             ->withTimestamps();
     }
+
+    public function clients()
+    {
+        return $this->hasMany(Client::class);
+    }
+    public function voideds()
+    {
+        return $this->hasMany(Voided::class);
+    }
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function despatches()
+    {
+        return $this->hasMany(Despatch::class);
+    }
 }

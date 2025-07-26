@@ -48,9 +48,9 @@ class DatabaseSeeder extends Seeder
             ReasonTransferSeeder::class,
 
             CompanySeeder::class,
-            ProductSeeder::class,
+            //ProductSeeder::class,
 
-            ClientSeeder::class,
+            //ClientSeeder::class,
 
             CountrySeeder::class,
 

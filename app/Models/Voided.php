@@ -23,6 +23,7 @@ class Voided extends Model
         'hash',
 
         'sunatResponse',
+        'branch_id',
         'company_id',
         'production'
     ];
@@ -48,5 +49,9 @@ class Voided extends Model
         return new Attribute(
             get: fn() => Storage::get($this->cdr_path),
         );
+    }
+
+    public function branch(){
+        return $this->belongsTo(Branch::class);
     }
 }

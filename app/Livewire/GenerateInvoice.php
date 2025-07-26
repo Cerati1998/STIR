@@ -122,6 +122,7 @@ class GenerateInvoice extends Component
         }
 
         $this->invoice->fechaEmision = now()->format('Y-m-d');
+        $this->invoice->branch_id = session('branch')->id;
         $this->invoice->company_id = session('company')->id;
         $this->invoice->production = session('company')->production;
 
@@ -294,6 +295,7 @@ class GenerateInvoice extends Component
 
     public function saveDetail()
     {
+        dd(session('branch'));
         $this->validate([
             'product.codProducto' => 'nullable|string',
             'product.unidad' => 'required|exists:units,id',

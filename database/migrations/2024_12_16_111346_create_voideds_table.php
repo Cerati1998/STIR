@@ -34,6 +34,11 @@ return new class extends Migration
 
             $table->json('sunatResponse')->nullable();
 
+            //Branch
+            $table->foreignId('branch_id')
+                ->constrained()
+                ->onDelete('no action');
+
             $table->foreignId('company_id')
                 ->constrained()
                 ->onDelete('cascade');

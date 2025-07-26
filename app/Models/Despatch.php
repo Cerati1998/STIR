@@ -28,6 +28,7 @@ class Despatch extends Model
         'hash',
 
         'sunatResponse',
+        'branch_id',
 
         'company_id',
         'production',
@@ -56,5 +57,9 @@ class Despatch extends Model
         return new Attribute(
             get: fn() => Storage::get($this->xml_path),
         );
+    }
+
+    public function branch(){
+        return $this->belongsTo(Branch::class);
     }
 }

@@ -86,6 +86,6 @@ Route::resource('companies', CompanyController::class)
     ->only(['index', 'create', 'show']);
 
 
-Route::get('documentacion', function () {
+/* Route::get('documentacion', function () {
     return view('docs');
-});
+}); */

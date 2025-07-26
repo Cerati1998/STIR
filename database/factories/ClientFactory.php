@@ -22,6 +22,7 @@ class ClientFactory extends Factory
             'numDoc' => $this->faker->randomElement([10, 20]) . $this->faker->randomNumber(9),
             'rznSocial' => $this->faker->company,
             'direccion' => $this->faker->address,
+            'branch_id' => 1,
             'company_id' => 1
         ];
     }

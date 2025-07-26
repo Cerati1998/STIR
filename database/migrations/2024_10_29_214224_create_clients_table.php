@@ -34,6 +34,9 @@ return new class extends Migration
 
             $table->string('telephone')->nullable();
 
+            $table->foreignId('branch_id')
+                ->constrained()
+                ->onDelete('no action');
             $table->foreignId('company_id')
                 ->constrained()
                 ->onDelete('cascade');

@@ -53,6 +53,7 @@ class BranchController extends Controller
 
         $branch = Branch::create($data);
 
+        //AQUI RELACIONO AL USUARIO CREADOR (QUE DEBERIA TENER EL PERMISO) A LA SUCURSAL CREADA
         $branch->users()->attach(auth()->id(), [
             'company_id' => session('company')->id,
         ]);

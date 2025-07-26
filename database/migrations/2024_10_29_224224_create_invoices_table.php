@@ -49,7 +49,7 @@ return new class extends Migration
 
             $table->json('company');
             $table->json('client');
-            
+
             //Montos
             $table->float('mtoOperGravadas');
             $table->float('mtoOperExoneradas');
@@ -88,7 +88,7 @@ return new class extends Migration
             $table->json('perception')->nullable();
 
             $table->json('atributos')->nullable();
-            
+
             $table->json('details');
             $table->json('legends');
 
@@ -101,9 +101,14 @@ return new class extends Migration
 
             //Sunat response
             $table->json('sunatResponse')->nullable();
-            
+
             $table->boolean('voided')
                 ->default(false);
+
+            //Branch
+            $table->foreignId('branch_id')
+                ->constrained()
+                ->onDelete('no action');
 
             //Company
             $table->foreignId('company_id')

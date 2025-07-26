@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Client;
 use App\Models\Company;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -67,6 +68,15 @@ class CompanySeeder extends Seeder
         ]);
 
         $branch->users()->attach(1, [
+            'company_id' => $company->id,
+        ]);
+
+        //creo cliente y ya no en el observer
+        // Crear cliente "Cliente Varios" con branch y company
+        Client::create([
+            'tipoDoc' => '-',
+            'rznSocial' => 'Cliente Varios',
+            'branch_id' => $branch->id,
             'company_id' => $company->id,
         ]);
     }

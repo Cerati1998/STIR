@@ -76,6 +76,7 @@ class Invoice extends Model
         'sunatResponse',
 
         'voided',
+        'branch_id',
 
         'company_id',
 
@@ -141,5 +142,9 @@ class Invoice extends Model
     public function currency()
     {
         return $this->belongsTo(Currency::class, 'tipoMoneda');
+    }
+
+    public function branch(){
+        return $this->belongsTo(Branch::class);
     }
 }
