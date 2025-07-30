@@ -3,7 +3,7 @@
         <i class="fas fa-edit"></i>
     </x-wire-button>
 
-    <x-wire-button red onclick="confirmDeleteType({{$condition->id}})" xs>
+    <x-wire-button red onclick="confirmDeleteCondition({{$condition->id}})" xs>
         <i class="fas fa-trash"></i>
     </x-wire-button>
 </div>

@@ -99,7 +99,7 @@
             }
         }
 
-        function confirmDelete(conditionId) {
+        function confirmDeleteCondition(conditionId) {
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "¡No podrás revertir esto!",
@@ -110,7 +110,7 @@
                 confirmButtonText: '¡Sí, bórralo!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    @this.call('destroy', conditionId);
+                    @this.call('destroyCondition', conditionId);
                 }
             });
         }

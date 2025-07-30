@@ -71,16 +71,6 @@ class ConditionTable extends DataTableComponent
         $this->openModal = true;
     }
 
-    public function destroy(ReeferCondition $reeferCondition)
-    {
-        $reeferCondition->delete();
-
-        $this->dispatch('swal', [
-            'title' => 'Exito!',
-            'text' => 'Condición de Contenedor Eliminada correctamente',
-            'icon' => 'success'
-        ]);
-    }
 
     public function save()
     {
@@ -106,6 +96,17 @@ class ConditionTable extends DataTableComponent
         $this->dispatch('swal', [
             'title' => 'Exito!',
             'text' => 'Condición de Contenedor actualizada correctamente',
+            'icon' => 'success'
+        ]);
+    }
+
+    public function destroyCondition(ReeferCondition $reeferCondition)
+    {
+        $reeferCondition->delete();
+
+        $this->dispatch('swal', [
+            'title' => 'Exito!',
+            'text' => 'Condición de Contenedor Eliminada correctamente',
             'icon' => 'success'
         ]);
     }
