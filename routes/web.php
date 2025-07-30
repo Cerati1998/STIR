@@ -19,6 +19,7 @@ use App\Http\Controllers\VoidedController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Middleware\CheckCompanySelected;
 use App\Models\Invoice;
+use App\Models\ReeferCondition;
 use App\Models\Vessel;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -62,7 +63,7 @@ Route::middleware([
         Route::delete('companies', [CompanyController::class, 'destroy',])->name('companies.destroy');
 
         Route::resource('branches', BranchController::class)
-            ->except( 'update');
+            ->except('update');
         Route::get('branches-choose', [BranchController::class, 'choose',])->name('branches.choose');
         Route::get('branches/{branch}/series', [BranchController::class, 'series',])->name('branches.series');
 
@@ -80,6 +81,7 @@ Route::middleware([
         Route::resource('ports', PortController::class)->names('ports')->except('show');
         Route::resource('container-types', ContainerTypeController::class)->names('container-types')->except('show');
         Route::resource('reefer-technologies', ReeferTechnologyController::class)->names('reefer-technologies')->except('show');
+        Route::resource('reefer-conditions', ReeferCondition::class)->names('reefer-conditions')->except('show');
     });
 });
 

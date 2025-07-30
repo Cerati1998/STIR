@@ -65,6 +65,7 @@ class DatabaseSeeder extends Seeder
             ReeferTechnologySeeder::class,
             ShippingLineSeeder::class,
             VesselSeeder::class,
+            ReeferConditionSeeder::class
         ]);
     }
 }
