@@ -24,28 +24,28 @@
                 </div>
 
                 <div>
-                    <x-wire-input required label="Descripción" wire:model="condition.description"
+                    <x-wire-input  label="Descripción" wire:model="condition.description"
                         placeholder="Ej: Atmosfera controlada para Frutas" />
                 </div>
             </div>
             <div class="mb-3">
-                <x-wire-input required label="Temperatura" wire:model="condition.temperature_range"
+                <x-wire-input  label="Temperatura" wire:model="condition.temperature_range"
                     placeholder='Ej: -30°C a +30°C' />
             </div>
             <div class="mb-3">
-                <x-wire-input required label="Ventilación" wire:model="condition.ventilation"
+                <x-wire-input  label="Ventilación" wire:model="condition.ventilation"
                     placeholder='Ej: 25 m³/h o 50 m³/h' />
             </div>
             <div class="mb-3">
-                <x-wire-input required label="Humedad" wire:model="condition.humidity"
+                <x-wire-input  label="Humedad" wire:model="condition.humidity"
                     placeholder='Ej: No controlada' />
             </div>
             <div class="mb-3">
-                <x-wire-input required label="Atmosfera" wire:model="condition.atmosphere"
+                <x-wire-input  label="Atmosfera" wire:model="condition.atmosphere"
                     placeholder='Ej: Aire natural' />
             </div>
             <div class="mb-3">
-                <x-wire-input required label="Uso" wire:model="condition.usage"
+                <x-wire-input  label="Uso" wire:model="condition.usage"
                     placeholder='Ej: Carga general refrigerada...' />
             </div>
 

@@ -11,7 +11,7 @@
         <div class="grid grid-cols-3 gap-1">
             <x-wire-button label="Tipo" x-on:click="$openModal('typeContainerCreate')" green />
             <x-wire-button label="Tecno.." x-on:click="$openModal('technologyCreate')" blue />
-            <x-wire-button label="Condición" x-on:click="$openModal('technologyCreate')" Esmerald />
+            <x-wire-button label="Condición" x-on:click="$openModal('conditionCreate')" teal />
         </div>
 
 
@@ -59,6 +59,7 @@
     </x-wire-card>
     @livewire('masters.technology-create', [], 'masters.technology-create')
     @livewire('masters.type-container-create', [], 'masters.type-container-create')
+    @livewire('masters.condition-create', [], 'condition-create')
 
 
 
