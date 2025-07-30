@@ -50,7 +50,7 @@
             </x-tab-content>
             <x-tab-content tab="condicion-contenedor">
                 <div class="mt-4">
-                    @livewire('masters.technology-table', [], key('technology-table'))
+                    @livewire('masters.condition-table', [], key('condition-table'))
                 </div>
 
             </x-tab-content>

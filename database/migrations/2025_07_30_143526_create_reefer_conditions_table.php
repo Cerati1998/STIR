@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('humidity', 200)->nullable(); // Ej: "No controlada"
             $table->string('atmosphere', 200)->nullable(); // Ej: "Aire natural"
             $table->text('usage'); // Ej: "Carga general refrigerada..."
+            $table->softDeletes();
             $table->timestamps();
         });
     }

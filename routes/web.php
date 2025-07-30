@@ -12,6 +12,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MethodController;
 use App\Http\Controllers\PortController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReeferConditionController;
 use App\Http\Controllers\ReeferTechnologyController;
 use App\Http\Controllers\ShippingLineController;
 use App\Http\Controllers\UserController;
@@ -81,7 +82,7 @@ Route::middleware([
         Route::resource('ports', PortController::class)->names('ports')->except('show');
         Route::resource('container-types', ContainerTypeController::class)->names('container-types')->except('show');
         Route::resource('reefer-technologies', ReeferTechnologyController::class)->names('reefer-technologies')->except('show');
-        Route::resource('reefer-conditions', ReeferCondition::class)->names('reefer-conditions')->except('show');
+        Route::resource('reefer-conditions', ReeferConditionController::class)->names('reefer-conditions')->except('show');
     });
 });
 
