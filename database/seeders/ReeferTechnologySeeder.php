@@ -13,59 +13,19 @@ class ReeferTechnologySeeder extends Seeder
      */
     public function run(): void
     {
-        $reeferTechnologies = [
-            // Main Brands
+        $technologies = [
             [
-                'code' => 'THERMOKING',
-                'name' => 'Thermo King'
+                'name' => 'CONVENCIONAL',
+                'description' => 'Control Básico de Temperatura',
+                'temperature_range' => 'Control estándar según el rango requerido (ej. -30°C a +30°C).',
+                'ventilation' => 'Ajustable (normalmente 25 m³/h o 50 m³/h).',
+                'humidity' => 'No controlada activamente (depende de la carga).',
+                'atmosphere' => 'Aire natural (sin modificación de gases).',
+                'usage' => 'Carga general refrigerada o congelada (ej. frutas, carnes, lácteos).'
             ],
-            [
-                'code' => 'CARRIER',
-                'name' => 'Carrier Transicold'
-            ],
-            [
-                'code' => 'DAIKIN',
-                'name' => 'Daikin Reefer'
-            ],
-            [
-                'code' => 'STARCOOL',
-                'name' => 'Star Cool (Mitsubishi)'
-            ],
-
-            // Other Important Manufacturers
-            [
-                'code' => 'MHI',
-                'name' => 'Mitsubishi Heavy Industries'
-            ],
-            [
-                'code' => 'WEST',
-                'name' => 'West Transport Refrigeration'
-            ],
-            [
-                'code' => 'ZYTRAX',
-                'name' => 'ZyTrax'
-            ],
-            [
-                'code' => 'KOMATSU',
-                'name' => 'Komatsu Reefer'
-            ],
-
-            // Specialized Systems
-            [
-                'code' => 'CRYO',
-                'name' => 'Cryo-Trans'
-            ],
-            [
-                'code' => 'AMER',
-                'name' => 'AmeriCold Logistics'
-            ],
-            [
-                'code' => 'SEA',
-                'name' => 'Seacold'
-            ]
         ];
 
-        foreach ($reeferTechnologies as $technology) {
+        foreach ($technologies as $technology) {
             ReeferTechnology::create($technology);
         }
     }

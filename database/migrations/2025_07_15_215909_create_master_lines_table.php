@@ -37,7 +37,7 @@ return new class extends Migration
             $table->id();
             $table->string('code', 5)->unique();
             $table->string('name', 200);
-            $table->string('country_code', 3);
+            $table->string('country_code', 3)->nullable(); //Optional, for findOrCreate in load discharge;
             $table->geometry('location')->nullable(); // Optional, for geographical coordinates
             $table->softDeletes(); // For soft delete functionality
             $table->timestamps();
@@ -54,7 +54,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('reefer_technologies', function (Blueprint $table) {
+        Schema::create('reefer_machines', function (Blueprint $table) {
             $table->id();
             $table->string('code', 20)->unique();
             $table->string('name', 100);
@@ -72,6 +72,6 @@ return new class extends Migration
         Schema::dropIfExists('vessels');
         Schema::dropIfExists('ports');
         Schema::dropIfExists('container_types');
-        Schema::dropIfExists('reefer_technologies');
+        Schema::dropIfExists('reefer_machines');
     }
 };

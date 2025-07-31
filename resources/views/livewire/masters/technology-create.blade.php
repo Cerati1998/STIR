@@ -19,15 +19,35 @@
 
             <div class="grid grid-cols-2 gap-4 mb-3">
                 <div>
-                    <x-wire-input required label="Código" wire:model="technology.code" placeholder="Ingrese el Código" />
+                    <x-wire-input required label="Nombre" wire:model="technology.name"
+                        placeholder="Ej: CONVENCIONAL, SEACARE, etc." />
                 </div>
 
                 <div>
-                    <x-wire-input required label="Nombre" wire:model="technology.name"
-                        placeholder="Ingrese el Nombre" />
+                    <x-wire-input label="Descripción" wire:model="technology.description"
+                        placeholder="Ej: Atmosfera controlada para Frutas" />
                 </div>
             </div>
-
+            <div class="mb-3">
+                <x-wire-input label="Temperatura" wire:model="technology.temperature_range"
+                    placeholder='Ej: -30°C a +30°C' />
+            </div>
+            <div class="mb-3">
+                <x-wire-input label="Ventilación" wire:model="technology.ventilation"
+                    placeholder='Ej: 25 m³/h o 50 m³/h' />
+            </div>
+            <div class="mb-3">
+                <x-wire-input label="Humedad" wire:model="technology.humidity"
+                    placeholder='Ej: No controlada' />
+            </div>
+            <div class="mb-3">
+                <x-wire-input label="Atmosfera" wire:model="technology.atmosphere"
+                    placeholder='Ej: Aire natural' />
+            </div>
+            <div class="mb-3">
+                <x-wire-input label="Uso" wire:model="technology.usage"
+                    placeholder='Ej: Carga general refrigerada...' />
+            </div>
 
             <x-slot name="footer" class="flex justify-end gap-x-4">
                 <x-wire-button flat label="Cancelar" x-on:click="close" />
@@ -47,6 +67,5 @@
                 technology: @entangle('technology'),
             }
         }
-
     </script>
 @endpush

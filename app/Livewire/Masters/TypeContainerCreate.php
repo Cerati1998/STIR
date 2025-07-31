@@ -25,6 +25,7 @@ class TypeContainerCreate extends Component
                 'required',
                 'string',
                 'min:2',
+                'max:4',
                 'unique:container_types,iso_code'
             ],
             'containerType.description' => 'required|string|min:4',

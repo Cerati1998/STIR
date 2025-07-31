@@ -5,16 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ReeferCondition extends Model
+class ReeferMachine extends Model
 {
     use SoftDeletes;
     protected $fillable = [
+        'code',
         'name',
-        'description',
-        'temperature_range',
-        'ventilation',
-        'humidity',
-        'atmosphere',
-        'usage',
     ];
 }

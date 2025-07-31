@@ -62,10 +62,10 @@ class DatabaseSeeder extends Seeder
             
             PortSeeder::class,
             ContainerTypeSeeder::class,
-            ReeferTechnologySeeder::class,
+            ReeferMachineSeeder::class,
             ShippingLineSeeder::class,
             VesselSeeder::class,
-            ReeferConditionSeeder::class
+            ReeferTechnologySeeder::class
         ]);
     }
 }

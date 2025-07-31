@@ -8,33 +8,35 @@ use Livewire\Component;
 class TechnologyCreate extends Component
 {
     public $openModal = false;
-     public $technology = [
-        'code' => '',
-        'name' => ''
+    public $technology = [
+        'name' => '',
+        'description' => '',
+        'temperature_range' => '',
+        'ventilation' => '',
+        'humidity' => '',
+        'atmosphere' => '',
+        'usage' => '',
     ];
 
-     public function save()
+    public function save()
     {
         $this->validate([
-            'technology.code' => [
-                'required',
-                'string',
-                'min:2',
-                 'unique:reefer_technologies,code'
-            ],
-            'technology.name' => 'required|string|min:4'
+            'technology.name' => 'required|string|min:3|unique:reefer_technologies,name',
+            'technology.description' => 'string|min:3',
+            'technology.usage' => 'string|min:4'
         ], [], [
-            'technology.code' => 'Código de Tecnologia Reefer',
-            'technology.name' => 'Nombre de Tecnologia Reefer'
+            'technology.name' => 'Nombre de tecnología',
+            'technology.description' => 'Descripción de tecnología',
+            'technology.usage' => 'Descripción de Uso o aplicación de tecnología'
         ]);
 
         ReeferTechnology::create($this->technology);
 
-        $this->reset('openModal', 'technology');
+        $this->reset('technology', 'openModal');
         $this->dispatch('technologyAdded');
         $this->dispatch('swal', [
             'title' => 'Exito!',
-            'text' => 'Tecnología Reefer creada correctamente',
+            'text' => 'tecnología de Contenedor creada correctamente',
             'icon' => 'success'
         ]);
     }

@@ -2,7 +2,7 @@
 
     <form wire:submit="save">
 
-        <x-wire-modal-card title="Condición Contenedor" name="conditionModal" width="3xl" wire:model="openModal"
+        <x-wire-modal-card title="Maquina Contenedor" name="machineModal" width="3xl" wire:model="openModal"
             :hide-close="true">
 
             {{-- Si hay errores, se mostrarán aquí --}}
@@ -19,34 +19,13 @@
 
             <div class="grid grid-cols-2 gap-4 mb-3">
                 <div>
-                    <x-wire-input required label="Nombre" wire:model="condition.name"
-                        placeholder="Ej: CONVENCIONAL, SEACARE, etc." />
+                    <x-wire-input required label="Código" wire:model="machine.code" placeholder="Ingrese el Código" />
                 </div>
 
                 <div>
-                    <x-wire-input  label="Descripción" wire:model="condition.description"
-                        placeholder="Ej: Atmosfera controlada para Frutas" />
+                    <x-wire-input required label="Nombre" wire:model="machine.name"
+                        placeholder="Ingrese el Nombre" />
                 </div>
-            </div>
-            <div class="mb-3">
-                <x-wire-input  label="Temperatura" wire:model="condition.temperature_range"
-                    placeholder='Ej: -30°C a +30°C' />
-            </div>
-            <div class="mb-3">
-                <x-wire-input  label="Ventilación" wire:model="condition.ventilation"
-                    placeholder='Ej: 25 m³/h o 50 m³/h' />
-            </div>
-            <div class="mb-3">
-                <x-wire-input  label="Humedad" wire:model="condition.humidity"
-                    placeholder='Ej: No controlada' />
-            </div>
-            <div class="mb-3">
-                <x-wire-input  label="Atmosfera" wire:model="condition.atmosphere"
-                    placeholder='Ej: Aire natural' />
-            </div>
-            <div class="mb-3">
-                <x-wire-input  label="Uso" wire:model="condition.usage"
-                    placeholder='Ej: Carga general refrigerada...' />
             </div>
 
 
@@ -68,21 +47,21 @@
                 errors: [],
 
                 // Enlace bidireccional con Livewire
-                condition: @entangle('condition'),
+                machine: @entangle('machine'),
 
                 save() {
-                    axios.post('/conditions', this.condition)
+                    axios.post('/machines', this.machine)
                         .then(response => {
-                            $closeModal('conditionModal');
+                            $closeModal('machineModal');
 
-                            Livewire.dispatch('conditionAdded', {
-                                conditionId: response.data.id,
+                            Livewire.dispatch('machineAdded', {
+                                machineId: response.data.id,
                             });
 
                             this.errors = [];
 
-                            // Reinicia el objeto condition (Livewire también lo hace en updated)
-                            this.condition = {
+                            // Reinicia el objeto machine (Livewire también lo hace en updated)
+                            this.machine = {
                                 code: '',
                                 name: '',
                                 country_code: ''
@@ -99,7 +78,7 @@
             }
         }
 
-        function confirmDeleteCondition(conditionId) {
+        function confirmDelete(machineId) {
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "¡No podrás revertir esto!",
@@ -110,7 +89,7 @@
                 confirmButtonText: '¡Sí, bórralo!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    @this.call('destroyCondition', conditionId);
+                    @this.call('destroy', machineId);
                 }
             });
         }

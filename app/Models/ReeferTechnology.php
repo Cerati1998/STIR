@@ -9,7 +9,12 @@ class ReeferTechnology extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'code',
         'name',
+        'description',
+        'temperature_range',
+        'ventilation',
+        'humidity',
+        'atmosphere',
+        'usage',
     ];
 }

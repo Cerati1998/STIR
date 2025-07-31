@@ -27,17 +27,21 @@ class TechnologyTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->deselected(),
-            Column::make('Acciones')
+            Column::make('accciones')
                 ->label(function ($row) {
                     return view('masters.technologies.technology-actions', ['technology' => $row]);
                 }),
-            Column::make("Código", "code")
-                ->searchable()
-                ->sortable(),
             Column::make("Nombre", "name")
                 ->searchable()
                 ->sortable(),
-            Column::make("Creado", "created_at")
+            Column::make("Descripción", "description")
+                ->searchable(),
+            Column::make("Temperatura", "temperature_range"),
+            Column::make("Ventilación", "ventilation"),
+            Column::make("Humedad", "humidity"),
+            Column::make("Atmosfera", "atmosphere"),
+            Column::make("Uso", "usage"),
+            Column::make("Actualizado", "updated_at")
                 ->sortable(),
         ];
     }
@@ -45,55 +49,64 @@ class TechnologyTable extends DataTableComponent
     #[On('technologyAdded')]
     public function builder(): Builder
     {
-        return ReeferTechnology::query();
+        return Reefertechnology::query();
     }
 
-    public $openModal = false;
     public $technologyId;
+    public $openModal = false;
     public $technology = [
-        'code' => '',
-        'name' => ''
+        'name' => '',
+        'description' => '',
+        'temperature_range' => '',
+        'ventilation' => '',
+        'humidity' => '',
+        'atmosphere' => '',
+        'usage' => '',
     ];
 
-    public function edit(ReeferTechnology $reeferTechnology)
+    public function edit(Reefertechnology $reefertechnology)
     {
-        $this->technology = $reeferTechnology->only('code', 'name');
-        $this->technologyId = $reeferTechnology->id;
+        $this->technologyId = $reefertechnology->id;
+        $this->technology = $reefertechnology->only(['name', 'description', 'temperature_range', 'ventilation', 'humidity', 'atmosphere', 'usage']);
         $this->openModal = true;
     }
+
 
     public function save()
     {
         $this->validate([
-            'technology.code' => [
+            'technology.name' => [
                 'required',
                 'string',
-                'min:2',
-                Rule::unique('reefer_technologies', 'code')->ignore($this->technologyId)
+                'min:3',
+                Rule::unique('reefer_technologies', 'name')->ignore($this->technologyId)
             ],
-            'technology.name' => 'required|string|min:4'
+            'technology.description' => 'string|min:3',
+            'technology.usage' => 'string|min:4'
         ], [], [
-            'technology.code' => 'Código de Tecnologia Reefer',
-            'technology.name' => 'Nombre de Tecnologia Reefer'
+            'technology.name' => 'Nombre de tecnología',
+            'technology.description' => 'Descripción de tecnología',
+            'technology.usage' => 'Descripción de Uso o aplicación de tecnología'
         ]);
 
-        ReeferTechnology::find($this->technologyId)->update($this->technology);
+        Reefertechnology::find($this->technologyId)->update($this->technology);
 
-        $this->reset('openModal', 'technologyId', 'technology');
+        $this->reset('technologyId', 'technology', 'openModal');
+
         $this->dispatch('swal', [
             'title' => 'Exito!',
-            'text' => 'Tecnología Reefer actualizada correctamente',
+            'text' => 'tecnología de Contenedor actualizada correctamente',
             'icon' => 'success'
         ]);
     }
 
-    public function destroy(ReeferTechnology $reeferTechnology)
+    public function destroyTechnology(Reefertechnology $reefertechnology)
     {
-        $reeferTechnology->delete();
+        $reefertechnology->delete();
 
         $this->dispatch('swal', [
             'title' => 'Exito!',
-            'text' => 'Tecnología Reefer eliminada correctamente',
+            'text' => 'tecnología de Contenedor Eliminada correctamente',
             'icon' => 'success'
         ]);
     }

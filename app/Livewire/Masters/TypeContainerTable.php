@@ -78,6 +78,7 @@ class TypeContainerTable extends DataTableComponent
                 'required',
                 'string',
                 'min:2',
+                'max:4',
                 Rule::unique('container_types', 'iso_code')->ignore($this->containerTypeId)
             ],
             'containerType.description' => 'required|string|min:4',
