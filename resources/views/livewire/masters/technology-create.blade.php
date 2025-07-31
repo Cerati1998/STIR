@@ -17,36 +17,52 @@
             </div> --}}
             <x-validation-errors class="mb-4" />
 
-            <div class="grid grid-cols-2 gap-4 mb-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
                 <div>
                     <x-wire-input required label="Nombre" wire:model="technology.name"
                         placeholder="Ej: CONVENCIONAL, SEACARE, etc." />
                 </div>
 
                 <div>
-                    <x-wire-input label="Descripción" wire:model="technology.description"
-                        placeholder="Ej: Atmosfera controlada para Frutas" />
+                    <x-wire-input label="Uso" wire:model="technology.usage"
+                        placeholder='Ej: Carga general refrigerada...' />
                 </div>
             </div>
-            <div class="mb-3">
-                <x-wire-input label="Temperatura" wire:model="technology.temperature_range"
-                    placeholder='Ej: -30°C a +30°C' />
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
+                <x-wire-number label="T° minima(°C)" wire:model="technology.temperature_min" min="-100"
+                    max="100" step="0.01" placeholder="°C" />
+
+                <x-wire-number label="T° maxima(°C)" wire:model="technology.temperature_max" max="100"
+                    step="0.01" placeholder="°C" />
+
+                <x-wire-number label="Vent. minima(Cbm/h)" wire:model="technology.ventilation_min" min="0"
+                    max="100" step="0.01" placeholder="(Cbm/h)" />
+
+                <x-wire-number label="Vent. maxima(Cbm/h)" wire:model="technology.ventilation_max" max="100"
+                    step="0.01" placeholder="Cbm/h" />
             </div>
-            <div class="mb-3">
-                <x-wire-input label="Ventilación" wire:model="technology.ventilation"
-                    placeholder='Ej: 25 m³/h o 50 m³/h' />
-            </div>
-            <div class="mb-3">
-                <x-wire-input label="Humedad" wire:model="technology.humidity"
-                    placeholder='Ej: No controlada' />
-            </div>
-            <div class="mb-3">
-                <x-wire-input label="Atmosfera" wire:model="technology.atmosphere"
-                    placeholder='Ej: Aire natural' />
-            </div>
-            <div class="mb-3">
-                <x-wire-input label="Uso" wire:model="technology.usage"
-                    placeholder='Ej: Carga general refrigerada...' />
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+                <div class="grid grid-cols-2 gap-2">
+                    <x-wire-number label="Hum. minima(%)" wire:model="technology.humidity_min" min="0"
+                        max="100" step="0.01" placeholder="%" />
+                    <x-wire-number label="Hum. maxima(%)" wire:model="technology.humidity_max" max="100"
+                        step="0.01" placeholder="%" />
+                </div>
+
+                <div class="grid grid-cols-2  gap-2">
+                    <x-wire-number label="o2 minimo(%)" wire:model="technology.atmosphere_o2_min" min="0"
+                        max="100" step="0.01" placeholder="%" />
+                    <x-wire-number label="o2 maximo(%)" wire:model="technology.atmosphere_o2_max" max="100"
+                        step="0.01" placeholder="%" />
+                </div>
+
+                <div class="grid grid-cols-2  gap-2">
+                    <x-wire-number label="co2 minimo(%)" wire:model="technology.atmosphere_co2_min" min="0"
+                        max="100" step="0.01" placeholder="%" />
+                    <x-wire-number label="co2 maximo(%)" wire:model="technology.atmosphere_co2_max" max="100"
+                        step="0.01" placeholder="%" />
+                </div>
             </div>
 
             <x-slot name="footer" class="flex justify-end gap-x-4">

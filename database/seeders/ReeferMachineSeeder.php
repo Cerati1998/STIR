@@ -30,38 +30,6 @@ class ReeferMachineSeeder extends Seeder
             [
                 'code' => 'STARCOOL',
                 'name' => 'Star Cool (Mitsubishi)'
-            ],
-
-            // Other Important Manufacturers
-            [
-                'code' => 'MHI',
-                'name' => 'Mitsubishi Heavy Industries'
-            ],
-            [
-                'code' => 'WEST',
-                'name' => 'West Transport Refrigeration'
-            ],
-            [
-                'code' => 'ZYTRAX',
-                'name' => 'ZyTrax'
-            ],
-            [
-                'code' => 'KOMATSU',
-                'name' => 'Komatsu Reefer'
-            ],
-
-            // Specialized Systems
-            [
-                'code' => 'CRYO',
-                'name' => 'Cryo-Trans'
-            ],
-            [
-                'code' => 'AMER',
-                'name' => 'AmeriCold Logistics'
-            ],
-            [
-                'code' => 'SEA',
-                'name' => 'Seacold'
             ]
         ];
 

@@ -14,12 +14,29 @@ return new class extends Migration
         Schema::create('reefer_technologies', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->unique();
-            $table->string('description', 200)->nullable();
-            $table->string('temperature_range', 200)->nullable(); // Ej: "-30°C a +30°C"
-            $table->string('ventilation', 200)->nullable(); // Ej: "25 m³/h o 50 m³/h"
-            $table->string('humidity', 200)->nullable(); // Ej: "No controlada"
-            $table->string('atmosphere', 200)->nullable(); // Ej: "Aire natural"
-            $table->text('usage'); // Ej: "Carga general refrigerada..."
+            // Temperatura (°C)
+            $table->float('temperature_min')->nullable();
+            $table->float('temperature_max')->nullable();
+
+            // Ventilación (CBM/H)
+            $table->integer('ventilation_min')->nullable();
+            $table->integer('ventilation_max')->nullable();
+
+            // Humedad (%)
+            $table->float('humidity_min')->nullable();
+            $table->float('humidity_max')->nullable();
+
+            // Atmósfera O2 (%)
+            $table->float('atmosphere_o2_min')->nullable();
+            $table->float('atmosphere_o2_max')->nullable();
+
+            // Atmósfera CO2 (%)
+            $table->float('atmosphere_co2_min')->nullable();
+            $table->float('atmosphere_co2_max')->nullable();
+
+            // Información de uso u observaciones
+            $table->text('usage');
+
             $table->softDeletes();
             $table->timestamps();
         });
