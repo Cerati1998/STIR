@@ -30,38 +30,38 @@
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
                 <x-wire-number label="T° minima(°C)" wire:model="technology.temperature_min" min="-100"
-                    max="100" step="0.01" placeholder="°C" />
+                    max="100" step="0.1" placeholder="°C" />
 
                 <x-wire-number label="T° maxima(°C)" wire:model="technology.temperature_max" max="100"
-                    step="0.01" placeholder="°C" />
+                    step="0.1" placeholder="°C" />
 
                 <x-wire-number label="Vent. minima(Cbm/h)" wire:model="technology.ventilation_min" min="0"
-                    max="100" step="0.01" placeholder="(Cbm/h)" />
+                    max="100" step="0.1" placeholder="(Cbm/h)" />
 
                 <x-wire-number label="Vent. maxima(Cbm/h)" wire:model="technology.ventilation_max" max="100"
-                    step="0.01" placeholder="Cbm/h" />
+                    step="0.1" placeholder="Cbm/h" />
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
                 <div class="grid grid-cols-2 gap-2">
                     <x-wire-number label="Hum. minima(%)" wire:model="technology.humidity_min" min="0"
-                        max="100" step="0.01" placeholder="%" />
+                        max="100" step="0.1" placeholder="%" />
                     <x-wire-number label="Hum. maxima(%)" wire:model="technology.humidity_max" max="100"
-                        step="0.01" placeholder="%" />
+                        step="0.1" placeholder="%" />
                 </div>
 
                 <div class="grid grid-cols-2  gap-2">
                     <x-wire-number label="o2 minimo(%)" wire:model="technology.atmosphere_o2_min" min="0"
-                        max="100" step="0.01" placeholder="%" />
+                        max="100" step="0.1" placeholder="%" />
                     <x-wire-number label="o2 maximo(%)" wire:model="technology.atmosphere_o2_max" max="100"
-                        step="0.01" placeholder="%" />
+                        step="0.1" placeholder="%" />
                 </div>
 
                 <div class="grid grid-cols-2  gap-2">
                     <x-wire-number label="co2 minimo(%)" wire:model="technology.atmosphere_co2_min" min="0"
-                        max="100" step="0.01" placeholder="%" />
+                        max="100" step="0.1" placeholder="%" />
                     <x-wire-number label="co2 maximo(%)" wire:model="technology.atmosphere_co2_max" max="100"
-                        step="0.01" placeholder="%" />
+                        step="0.1" placeholder="%" />
                 </div>
             </div>
 
