@@ -46,7 +46,7 @@
                 <x-wire-button flat label="Cancelar"
                     x-on:click="close" />
 
-                <x-wire-button type="submit" primary label="Actualizar" />
+                <x-wire-button type="submit" primary label="Actualizar" spinner />
             </x-slot>
 
         </x-wire-modal-card>

@@ -55,7 +55,8 @@ class UserTable extends DataTableComponent
     #[On('UserAdded')]
     public function builder(): Builder
     {
-        return User::whereHas('companies', function ($query) {
+        return User::query()
+        ->whereHas('companies', function ($query) {
             $query->where('company_id', session('company')->id);
         });
     }

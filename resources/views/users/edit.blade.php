@@ -1,4 +1,4 @@
-<div x-data="dataUpdate">
+<div>
 
     <form wire:submit="update">
 
@@ -53,7 +53,7 @@
             <x-slot name="footer" class="flex justify-end gap-x-4">
                 <x-wire-button flat label="Cancelar" x-on:click="close" />
 
-                <x-wire-button type="submit" primary label="Actualizar" />
+                <x-wire-button type="submit" primary label="Actualizar" spinner />
             </x-slot>
 
         </x-wire-modal-card>
