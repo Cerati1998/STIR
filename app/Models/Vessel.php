@@ -15,4 +15,10 @@ class Vessel extends Model
         return $this->belongsTo(ShippingLine::class);
     }
 
+    public function dischargues(){
+        return $this->hasMany(Dischargue::class);
+    }
+    public function devolutions(){
+        return $this->hasMany(Devolution::class);
+    }
 }

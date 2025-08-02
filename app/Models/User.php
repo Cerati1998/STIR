@@ -32,6 +32,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'profile_photo_path'
     ];
 
     /**
@@ -52,7 +53,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $appends = [
-        'profile_photo_url',
+        'profile_photo_url'
     ];
 
     /**
@@ -88,8 +89,7 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    //Mutadores y accesores
-    protected function branch():Attribute
+    protected function branch(): Attribute
     {
         return new Attribute(
             get: fn() => $this->branches
@@ -102,13 +102,13 @@ class User extends Authenticatable implements JWTSubject
     public function companies()
     {
         return $this->belongsToMany(Company::class)
-                ->withTimestamps();
+            ->withTimestamps();
     }
 
     public function branches()
     {
         return $this->belongsToMany(Branch::class, 'branch_company_user')
-                ->withPivot('company_id')
-                ->withTimestamps();
+            ->withPivot('company_id')
+            ->withTimestamps();
     }
 }

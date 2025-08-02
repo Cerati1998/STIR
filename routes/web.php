@@ -8,6 +8,8 @@ use App\Http\Controllers\ContainerTypeController;
 use App\Http\Controllers\DamageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DespatchController;
+use App\Http\Controllers\DevolutionController;
+use App\Http\Controllers\DischargueController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MethodController;
 use App\Http\Controllers\PortController;
@@ -83,6 +85,11 @@ Route::middleware([
         Route::resource('container-types', ContainerTypeController::class)->names('container-types')->except('show');
         Route::resource('reefer-technologies', ReeferTechnologyController::class)->names('reefer-technologies')->except('show');
         Route::resource('reefer-conditions', ReeferConditionController::class)->names('reefer-conditions')->except('show');
+
+        //rutas de carga de data de contenedores
+        Route::resource('dischargues', DischargueController::class)->names('dischargues')->except('show');
+        Route::resource('devolutions', DevolutionController::class)->names('devolutions')->except('show');
+        Route::resource('containers', DevolutionController::class)->names('devolutions');
     });
 });
 

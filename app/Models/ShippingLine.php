@@ -14,4 +14,13 @@ class ShippingLine extends Model
     {
         return $this->hasMany(Vessel::class);
     }
+
+    public function dischargues()
+    {
+        return $this->hasMany(Dischargue::class);
+    }
+    public function devolutions()
+    {
+        return $this->hasMany(Devolution::class);
+    }
 }

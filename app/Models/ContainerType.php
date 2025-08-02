@@ -8,5 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ContainerType extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['iso_code', 'description', 'length', 'width','height'];
+    protected $fillable = ['iso_code', 'description', 'length', 'width', 'height'];
+
+    public function containers()
+    {
+        return $this->hasMany(Container::class);
+    }
 }

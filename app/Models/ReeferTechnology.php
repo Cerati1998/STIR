@@ -22,4 +22,8 @@ class ReeferTechnology extends Model
         'atmosphere_co2_max',
         'usage',
     ];
+
+    public function containers(){
+        return $this->hasMany(Container::class);
+    }
 }

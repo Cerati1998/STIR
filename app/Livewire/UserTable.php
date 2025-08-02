@@ -6,6 +6,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 
@@ -39,14 +40,19 @@ class UserTable extends DataTableComponent
                 ->sortable(),
             Column::make("Email", "email")
                 ->sortable(),
+            Column::make("Foto")
+                ->label(function ($row) {
+                    return '<img src="' . $row->profile_photo_url   . '" alt="Foto" class="h-12 w-12 rounded-full object-cover">';
+                })
+                ->html(),
 
             Column::make("Sucursal")
-                ->label(function($row) {
+                ->label(function ($row) {
                     return $row->branch->name;
                 }),
 
             Column::make('actions')
-                ->label(function($row) {
+                ->label(function ($row) {
                     return view('users.actions', ['user' => $row]);
                 }),
         ];
@@ -56,9 +62,9 @@ class UserTable extends DataTableComponent
     public function builder(): Builder
     {
         return User::query()
-        ->whereHas('companies', function ($query) {
-            $query->where('company_id', session('company')->id);
-        });
+            ->whereHas('companies', function ($query) {
+                $query->where('company_id', session('company')->id);
+            });
     }
 
     public function edit(User $user)
@@ -76,7 +82,7 @@ class UserTable extends DataTableComponent
     {
         $this->validate([
             'userEdit.branch_id' => 'required|exists:branches,id',
-        ],[],[
+        ], [], [
             'userEdit.branch_id' => 'sucursal',
         ]);
 
