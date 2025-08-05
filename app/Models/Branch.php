@@ -49,4 +49,8 @@ class Branch extends Model
     {
         return $this->hasMany(Despatch::class);
     }
+    public function dischargues()
+    {
+        return $this->hasMany(Dischargue::class);
+    }
 }

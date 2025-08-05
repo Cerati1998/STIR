@@ -4,6 +4,7 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\ContainerController;
 use App\Http\Controllers\ContainerTypeController;
 use App\Http\Controllers\DamageController;
 use App\Http\Controllers\DashboardController;
@@ -89,7 +90,10 @@ Route::middleware([
         //rutas de carga de data de contenedores
         Route::resource('dischargues', DischargueController::class)->names('dischargues')->except('show');
         Route::resource('devolutions', DevolutionController::class)->names('devolutions')->except('show');
-        Route::resource('containers', DevolutionController::class)->names('devolutions');
+        Route::resource('containers', ContainerController::class)->names('containers');
+        Route::get('downloads/dischargue-template',function(){
+            return response()->download(storage_path('app/public/templates/massive_dischargue.xlsx'));
+        })->name('dischargue-template');
     });
 });
 

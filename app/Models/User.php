@@ -111,4 +111,9 @@ class User extends Authenticatable implements JWTSubject
             ->withPivot('company_id')
             ->withTimestamps();
     }
+
+    public function dischargues()
+    {
+        return $this->hasMany(Dischargue::class);
+    }
 }

@@ -12,7 +12,7 @@ class DischargueController extends Controller
      */
     public function index()
     {
-        //
+        return view('dischargues.index');
     }
 
     /**

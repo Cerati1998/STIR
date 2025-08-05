@@ -7,6 +7,47 @@
             'active' => request()->routeIs('dashboard'),
         ],
         [
+            'header' => 'Gestor de Contenedores',
+            'icon' => 'fa-solid fa-rectangle-list',
+        ],
+        [
+            'name' => 'Descargas',
+            'icon' => 'fa-solid fa-arrow-up-from-water-pump',
+            'route' => route('dischargues.index'),
+            'active' => request()->routeIs('dischargues.*'),
+        ],
+        [
+            'name' => 'Devoluciones',
+            'icon' => 'fa-solid fa-arrow-down-short-wide',
+            'route' => route('devolutions.index'),
+            'active' => request()->routeIs('devolutions.*'),
+        ],
+        [
+            'name' => 'Contenedores',
+            'icon' => 'fa-solid fa-boxes-stacked',
+            'active' => request()->routeIs(['damages.*', 'components.*', 'methods.*', 'containers.*']),
+            'submenu' => [
+                [
+                    'name' => 'Lista',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('containers.index'),
+                    'active' => request()->routeIs('containers.*'),
+                ],
+                [
+                    'name' => 'EIR Gate In',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('damages.index'),
+                    'active' => request()->routeIs('damages.*'),
+                ],
+                [
+                    'name' => 'Pre trip Inspection',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('components.index'),
+                    'active' => request()->routeIs('components.*'),
+                ],
+            ],
+        ],
+        [
             'header' => 'Panel de CPE',
             'icon' => 'fa-solid fa-file-invoice',
         ],
@@ -120,7 +161,7 @@
                     'name' => 'Líneas',
                     'icon' => 'fa-regular fa-circle',
                     'route' => route('lines.index'),
-                    'active' => request()->routeIs(['lines.*','line.*']),
+                    'active' => request()->routeIs(['lines.*', 'line.*']),
                 ],
                 [
                     'name' => 'Puertos',
@@ -155,7 +196,7 @@
 
         [
             'name' => 'Productos',
-            'icon' => 'fa-solid fa-boxes',
+            'icon' => 'fa-solid fa-pallet',
             'route' => route('products.index'),
             'active' => request()->routeIs('products.*'),
         ],
