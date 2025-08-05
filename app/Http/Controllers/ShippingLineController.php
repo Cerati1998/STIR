@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\ShippingLine;
+use App\Models\Vessel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ShippingLineController extends Controller
 {
@@ -66,5 +69,43 @@ class ShippingLineController extends Controller
     public function destroy(ShippingLine $shippingLine)
     {
         //
+    }
+
+    public function searchLines(Request $request)
+    {
+        return ShippingLine::query()
+            ->select(columns: DB::raw("id,CONCAT(code,'-',name) as name"))
+            ->when(
+                $request->search,
+                fn(Builder $query) =>
+                $query->where(function ($q) use ($request) {
+                    $q->where('code', 'like', "%{$request->search}%")
+                        ->orWhere('name', 'like', "%{$request->search}%");
+                })
+            )
+            ->when(
+                $request->exists('selected'),
+                fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(20)
+            )
+            ->orderBy('id')
+            ->get();
+    }
+    public function searchVessels(Request $request)
+    {
+        return Vessel::query()
+            ->select(['id', 'name'])
+            ->when(
+                $request->search,
+                fn(Builder $query) =>
+                $query->where('name', 'like', "%{$request->search}%")
+            )
+            ->when(
+                $request->exists('selected'),
+                fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(20)
+            )
+            ->orderBy('id')
+            ->get();
     }
 }

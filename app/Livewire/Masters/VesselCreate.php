@@ -7,6 +7,7 @@ use Livewire\Component;
 
 class VesselCreate extends Component
 {
+    public $isExtern = false;
     public $openModal = false;
     public $shippingLineId = null;
 
@@ -22,6 +23,14 @@ class VesselCreate extends Component
         $this->reset('openModal', 'vessel');
     }
 
+    protected $listeners = ['setShippingLineId'];
+
+    public function setShippingLineId($shippingLineId)
+    {
+        $this->shippingLineId = $shippingLineId;
+        $this->isExtern = true;
+    }
+
     public function mount($shipping_line = null)
     {
 
@@ -32,6 +41,17 @@ class VesselCreate extends Component
 
     public function save()
     {
+        if (!$this->shippingLineId || $this->shippingLineId === '') {
+            $this->dispatch('swal', [
+                'title' => "Error!",
+                'text' => 'No se ha podido encontrar la Linea, asegurese de escoger una',
+                'icon' => 'error'
+            ]);
+            return;
+        }
+
+        $this->vessel['type'] = (!$this->vessel['type'] || $this->vessel['type'] === '') ? 'container' : $this->vessel['type'];
+
         $this->validate([
             'vessel.imo_number' => 'string',
             'vessel.name' => [
@@ -49,24 +69,19 @@ class VesselCreate extends Component
             'vesse.pallets' => 'Capacidad de Pallets'
         ]);
 
-        $data_vessel = $this->vessel;
 
-        if (!$this->shippingLineId) {
-            $this->dispatch('swal', [
-                'title' => "Error!",
-                'text' => 'No se ha podido encontrar la Linea Naviera',
-                'icon' => 'error'
-            ]);
-            return;
-        }
 
-        $data_vessel['shipping_line_id'] = $this->shippingLineId;
-
-        Vessel::create($data_vessel);
-
+        Vessel::create([
+            ...$this->vessel,
+            'shipping_line_id' => $this->shippingLineId
+        ]);
         $this->reset('openModal', 'vessel');
         $this->dispatch('vesselAdded');
-        
+
+        if ($this->isExtern) {
+            $this->dispatch('vesselExternAdded');
+        }
+
         $this->dispatch('swal', [
             'title' => "Exito!",
             'text' => 'Nave agregada correctamente',
