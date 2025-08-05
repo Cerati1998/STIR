@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "doctrine/dbal": "^4.3",
         "greenter/htmltopdf": "^5.1",
         "greenter/lite": "^5.1",
         "greenter/report": "^5.1",

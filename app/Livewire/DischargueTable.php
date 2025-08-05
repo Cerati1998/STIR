@@ -35,8 +35,6 @@ class DischargueTable extends DataTableComponent
                 ->searchable()
                 ->sortable()
                 ->format(fn($value, $row) => $row->shippingLine ? "{$row->shippingLine->name} ({$row->shippingLine->code})" : '-'),
-            Column::make("Viaje", "voyage")
-                ->sortable(),
             Column::make("Bl", "bl_number")
                 ->searchable()
                 ->sortable(),

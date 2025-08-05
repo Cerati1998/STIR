@@ -13,7 +13,6 @@ class Dischargue extends Model
     protected $fillable = [
         'shipping_line_id',
         'vessel_id',
-        'voyage',
         'bl_number',
         'eta_date',
         'week',

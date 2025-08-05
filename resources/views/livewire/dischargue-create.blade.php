@@ -2,7 +2,7 @@
     <div x-data="discharguesCreate">
         <form wire:submit="save">
 
-            <x-wire-modal-card title="Subida masiva de contenedores" name="dischargueCreate" x-model="openModal"
+            <x-wire-modal-card title="Subida masiva de contenedores" name="dischargueCreate" wire:model="openModal"
                 :hide-close="true" width="3xl">
 
                 <x-validation-errors class="mb-4" />
@@ -19,7 +19,7 @@
                             </button>
                         </div>
                         <x-wire-select id="shipping_line_id" :async-data="route('line.search')" option-label="name" option-value="id"
-                            placeholder="Selecciona la Línea" wire:model.live="dischargue.shipping_line" />
+                            placeholder="Selecciona la Línea" wire:model.live="dischargue.shipping_line_id" />
                     </div>
 
                     <!-- Nave -->
@@ -34,13 +34,13 @@
                             </button>
                         </div>
                         <x-wire-select :options="$vessels" option-label="name" option-value="id"
-                            wire:model="dischargue.vessel" placeholder="Selecciona la Nave" />
+                            wire:model="dischargue.vessel_id" placeholder="Selecciona la Nave" />
                     </div>
 
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <!-- ETA -->
-                    <x-wire-input type="date" label="ETA" wire:model="dischargue.eta" class="col-span-1" />
+                    <x-wire-input type="date" label="ETA" wire:model="dischargue.eta_date" class="col-span-1" />
 
                     <!-- Semana -->
                     <x-wire-input label="Semana" wire:model="dischargue.week" class="col-span-1" />

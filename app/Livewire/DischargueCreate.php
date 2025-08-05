@@ -2,19 +2,23 @@
 
 namespace App\Livewire;
 
+use App\Imports\ContainerImport;
+use App\Models\Dischargue;
 use App\Models\Vessel;
+use Illuminate\Support\Facades\DB as FacadesDB;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DischargueCreate extends Component
 {
     use WithFileUploads;
 
     public $dischargue = [
-        'shipping_line' => '',
-        'vessel' => '',
-        'eta' => '',
+        'shipping_line_id' => '',
+        'vessel_id' => '',
+        'eta_date' => '',
         'week' => ''
     ];
 
@@ -30,7 +34,7 @@ class DischargueCreate extends Component
         }
     } */
     #[On('vesselExternAdded')]
-    public function updatedDischargueShippingLine($value)
+    public function updatedDischargueShippingLineId($value)
     {
         // Resetear el vessel seleccionado
         $this->dischargue['vessel'] = '';
@@ -46,8 +50,46 @@ class DischargueCreate extends Component
     }
     public function save()
     {
-        dd($this->attach);
+
+        FacadesDB::beginTransaction();
+        try {
+            $this->validate([
+                'attach' => 'required|max:10240|mimes:xls,xlsx,csv',
+                'dischargue.shipping_line_id' => 'required|numeric|exists:shipping_lines,id',
+                'dischargue.vessel_id' => 'required|numeric|exists:vessels,id',
+                'dischargue.eta_date' => 'required|date'
+            ], [], [
+                'attach' => 'Archivo excel de Descarga',
+                'dischargue.shipping_line_id' => 'Linea Naviera',
+                'dischargue.vessel_id' => 'Nave',
+                'dischargue.eta_date' => 'Fecha ETA'
+            ]);
+
+            $newDischargue = Dischargue::create($this->dischargue);
+
+            //Guardar archivo en disco
+            $filePath = $this->attach->store('imports');
+
+            //importo los contenedores
+            Excel::import(new ContainerImport($newDischargue->id), $filePath);
+            FacadesDB::commit();
+
+            $this->reset('attach', 'dischargue', 'openModal');
+            $this->dispatch('swal', [
+                'title' => 'Exito!',
+                'text' => 'Descarga subida con Exito!',
+                'icon' => 'success'
+            ]);
+        } catch (\Exception $e) {
+            FacadesDB::rollBack();
+            $this->dispatch('swal', [
+                'title' => 'Error!',
+                'text' => 'Error durante la importación: ' . $e->getMessage(),
+                'icon' => 'error'
+            ]);
+        }
     }
+
     public function render()
     {
         return view('livewire.dischargue-create');
