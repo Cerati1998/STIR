@@ -92,7 +92,7 @@ Route::middleware([
         Route::resource('devolutions', DevolutionController::class)->names('devolutions')->except('show');
         Route::resource('containers', ContainerController::class)->names('containers');
         Route::get('downloads/dischargue-template', function () {
-            return response()->download(storage_path('app/public/templates/massive_dischargue.xlsx'));
+            return response()->download(resource_path('templates/massive_dischargue.xlsx'));
         })->name('dischargue-template');
 
         //endpoint para selectores
