@@ -11,6 +11,7 @@ class TypeContainerCreate extends Component
     public $openModal = false;
 
     public  $containerType = [
+        'code' => '',
         'iso_code' => '',
         'description' => '',
         'length' => 0,
@@ -21,6 +22,13 @@ class TypeContainerCreate extends Component
     public function save()
     {
         $this->validate([
+            'containerType.code' => [
+                'required',
+                'string',
+                'min:2',
+                'max:6',
+                'unique:container_types,code'
+            ],
             'containerType.iso_code' => [
                 'required',
                 'string',

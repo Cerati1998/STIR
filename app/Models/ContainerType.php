@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ContainerType extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['iso_code', 'description', 'length', 'width', 'height'];
+    protected $fillable = ['code','iso_code', 'description', 'length', 'width', 'height'];
 
     public function containers()
     {

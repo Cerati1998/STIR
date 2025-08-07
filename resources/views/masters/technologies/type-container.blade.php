@@ -21,14 +21,11 @@
                     placeholder="Ingrese la descripción" />
             </div>
             <div class="grid grid-cols-2 gap-4 mb-3">
-                <div>
-                    <x-wire-input required label="Código" wire:model="containerType.iso_code"
-                        placeholder="Ingrese el Código" />
-                </div>
+                <x-wire-input required label="Código" wire:model="containerType.code" placeholder="Ingrese el Código" />
+                <x-wire-input required label="ISO" wire:model="containerType.iso_code"
+                    placeholder="Ingrese el ISO" />
 
-                <div>
-                    <x-wire-number label="Altura" min="0" step="0.01" wire:model="containerType.height" />
-                </div>
+                <x-wire-number label="Altura" min="0" step="0.01" wire:model="containerType.height" />
             </div>
 
             <div class="grid grid-cols-2 gap-4">

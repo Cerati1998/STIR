@@ -31,7 +31,10 @@ class TypeContainerTable extends DataTableComponent
                 ->label(function ($row) {
                     return view('masters.technologies.container-actions', ['type' => $row]);
                 }),
-            Column::make("Código", "iso_code")
+            Column::make("Código", "code")
+                ->searchable()
+                ->sortable(),
+            Column::make("ISO", "iso_code")
                 ->searchable()
                 ->sortable(),
             Column::make("Descripción", "description")
@@ -57,6 +60,7 @@ class TypeContainerTable extends DataTableComponent
     public $openModal = false;
     public $containerTypeId;
     public $containerType = [
+        'code' => '',
         'iso_code' => '',
         'description' => '',
         'length' => 0,
@@ -67,13 +71,20 @@ class TypeContainerTable extends DataTableComponent
     public function edit(ContainerType $containerType)
     {
         $this->containerTypeId = $containerType->id;
-        $this->containerType = $containerType->only('iso_code', 'description', 'length', 'width', 'height');
+        $this->containerType = $containerType->only('code','iso_code', 'description', 'length', 'width', 'height');
         $this->openModal = true;
     }
 
     public function save()
     {
         $this->validate([
+            'containerType.code' => [
+                'required',
+                'string',
+                'min:2',
+                'max:6',
+                Rule::unique('container_types', 'code')->ignore($this->containerTypeId)
+            ],
             'containerType.iso_code' => [
                 'required',
                 'string',
@@ -86,7 +97,8 @@ class TypeContainerTable extends DataTableComponent
             'containerType.width' => 'numeric',
             'containerType.height' => 'numeric'
         ], [], [
-            'containerType.iso_code' => 'Código de Tipo de Contenedor',
+            'containerType.code' => 'Código de Tipo de Contenedor',
+            'containerType.iso_code' => 'Código ISO de Contenedor',
             'containerType.description' => 'Descripción de Tipo de Contenedor',
              'containerType.length' => 'Longitud de Contenedor',
             'containerType.width' => 'Ancho de Contenedor',

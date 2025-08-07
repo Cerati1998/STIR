@@ -45,6 +45,7 @@ return new class extends Migration
 
         Schema::create('container_types', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 6)->unique();
             $table->string('iso_code', 4)->unique();
             $table->string('description', 100);
             $table->decimal('length', 8, 2)->nullable(); // Length in meters
