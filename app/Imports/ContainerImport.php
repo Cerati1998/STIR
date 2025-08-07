@@ -61,11 +61,6 @@ class ContainerImport implements
                     throw new \Exception("El contenedor '{$row['container']}' no tiene 11 caracteres (tiene " . strlen($row['container']) . ")");
                 }
 
-                // Reefer machine
-                $type = strtoupper(trim($row['type'] ?? 'CONVENCIONAL'));
-
-                $reeferMachine = $this->getCachedTechnology($type);
-
                 // Port
                 $portCode = strtoupper(trim($row['pol'] ?? ''));
                 if (!$portCode) {
@@ -82,7 +77,25 @@ class ContainerImport implements
                     continue;
                 }
 
+
                 $containerType = $this->getCachedContainerType($iso);
+
+                // Reefer machine y tecnología (solo si es reefer)
+                $reeferMachineId = null;
+                $reeferTechnologyId = null;
+
+                if ($containerType->is_reefer) {
+                    $type = strtoupper(trim($row['type'] ?? ''));
+
+                    if (empty($type)) {
+                        $type = 'CONVENCIONAL';
+                        Log::info("Fila $index: Contenedor reefer sin tipo, asignado tipo por defecto: CONVENCIONAL.");
+                    }
+
+                    $reeferTechnology = $this->getCachedTechnology($type);
+                    $reeferTechnologyId = $reeferTechnology->id;
+                }
+
 
                 // Crear el contenedor
                 Container::create([
@@ -92,8 +105,8 @@ class ContainerImport implements
                     'port_id' => $port->id,
                     'condition_status' => strtoupper(trim($row['condition'] ?? '')),
                     'status' => 1,
-                    'reefer_technology_id' => $reeferMachine->id,
-                    'reefer_machine_id' => $reeferMachine->id,
+                    'reefer_machine_id' => null,
+                    'reefer_technology_id' => $reeferTechnologyId,
                     'origin_id' => $this->dischargueId,
                     'origin_type' => \App\Models\Dischargue::class,
                 ]);
@@ -114,11 +127,10 @@ class ContainerImport implements
         }
 
         // Buscar por coincidencia exacta (insensible a mayúsculas)
-        $existing = ReeferTechnology::whereRaw('UPPER(TRIM(code)) = ?', [$normalizedType])->first();
+        $existing = ReeferTechnology::whereRaw('UPPER(TRIM(name)) = ?', [$normalizedType])->first();
 
         if (!$existing) {
             $existing = ReeferTechnology::create([
-                'code' => $type,
                 'name' => $type,
             ]);
         }
