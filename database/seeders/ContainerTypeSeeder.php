@@ -108,6 +108,7 @@ class ContainerTypeSeeder extends Seeder
             [
                 'code'        => "20RF",
                 'description' => "20'-RF Reefer",
+                'is_reefer' => 1,
                 'length'      => 5.45,
                 'width'       => 2.29,
                 'height'      => 2.27,
@@ -117,6 +118,7 @@ class ContainerTypeSeeder extends Seeder
             [
                 'code'        => "40RF",
                 'description' => "40'-RFHC Reefer High Cube",
+                'is_reefer' => 1,
                 'length'      => 11.56,
                 'width'       => 2.29,
                 'height'      => 2.59,

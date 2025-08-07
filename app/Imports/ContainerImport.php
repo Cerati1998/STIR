@@ -6,29 +6,28 @@ use App\Models\Container;
 use App\Models\ContainerType;
 use App\Models\Port;
 use App\Models\ReeferMachine;
+use App\Models\ReeferTechnology;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
-use Maatwebsite\Excel\Concerns\{
-    ToCollection,
-    WithHeadingRow
-};
 use Throwable;
-
 
 class ContainerImport implements
     ToCollection,
     WithHeadingRow,
-    WithChunkReading,     // 👈 Necesaria para chunkSize()
-    WithBatchInserts     // 👈 Necesaria para batchSize()
+    WithChunkReading,
+    WithBatchInserts
 {
-    use SkipsFailures;
-
     protected $dischargueId;
+
+    // Cache en memoria durante el chunk
+    protected array $cachedPorts = [];
+    protected array $cachedContainerTypes = [];
+    protected array $cachedReefers = [];
+
     public function __construct($dischargueId)
     {
         $this->dischargueId = $dischargueId;
@@ -36,7 +35,7 @@ class ContainerImport implements
 
     public function chunkSize(): int
     {
-        return 100; // o el número que prefieras
+        return 100;
     }
 
     public function batchSize(): int
@@ -44,77 +43,110 @@ class ContainerImport implements
         return 100;
     }
 
-    /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
     public function collection(Collection $rows)
     {
         foreach ($rows as $index => $data) {
-            try {
-                $row = $data->toArray();
-                // Validar y preparar cada contenedor
+            $row = $data->toArray();
 
-                $reeferMachine = ReeferMachine::firstOrCreate(['name' => trim($row['type'])], [
-                    'code' => trim($row['type']),
-                    'name' => trim($row['type'])
-                ]);
-                $port = Port::firstOrCreate(['code' => trim($row['pol'])], [
-                    'code' => trim($row['pol']),
-                    'name' => trim($row['pol'])
-                ]);
-                $containerType = ContainerType::firstOrCreate(['iso_code' => trim($row['iso'])], [
-                    'iso_code' => trim($row['iso']),
-                    'description' => trim($row['iso'])
-                ]);
+            if (collect($row)->filter()->isEmpty()) {
+                Log::info("Fila completamente vacía en línea " . ($index + 1));
+                break;
+            }
+
+            try {
+                $containerCode = strtoupper(trim($row['container'] ?? ''));
+
+                if (strlen($containerCode) !== 11) {
+                    Log::error("Fila $index: Contenedor inválido → '{$containerCode}'");
+                    throw new \Exception("El contenedor '{$row['container']}' no tiene 11 caracteres (tiene " . strlen($row['container']) . ")");
+                }
+
+                // Reefer machine
+                $type = strtoupper(trim($row['type'] ?? 'CONVENCIONAL'));
+
+                $reeferMachine = $this->getCachedTechnology($type);
+
+                // Port
+                $portCode = strtoupper(trim($row['pol'] ?? ''));
+                if (!$portCode) {
+                    Log::error("Fila $index: Código de puerto vacío.");
+                    continue;
+                }
+
+                $port = $this->getCachedPort($portCode);
+
+                // Container type
+                $iso = strtoupper(trim($row['iso'] ?? ''));
+                if (!$iso) {
+                    Log::error("Fila $index: Código ISO vacío.");
+                    continue;
+                }
+
+                $containerType = $this->getCachedContainerType($iso);
+
+                // Crear el contenedor
                 Container::create([
-                    'code' => $row['container'],
-                    'iso_code'        => $row['iso'],
-                    'container_type_id'    => $containerType->id,
+                    'code' => $containerCode,
+                    'iso_code' => $iso,
+                    'container_type_id' => $containerType->id,
                     'port_id' => $port->id,
-                    'condition_status'        => $row['condition'],
+                    'condition_status' => strtoupper(trim($row['condition'] ?? '')),
                     'status' => 1,
                     'reefer_technology_id' => $reeferMachine->id,
                     'reefer_machine_id' => $reeferMachine->id,
-                    // RELACIÓN polIMÓRFICA
                     'origin_id' => $this->dischargueId,
                     'origin_type' => \App\Models\Dischargue::class,
-
                 ]);
             } catch (Throwable $e) {
-                // Log o manejo personalizado (no detiene la importación completa)
                 Log::error("Fila $index falló: " . $e->getMessage());
-                continue;
+                throw new \Exception("Error en la fila $index: " . $e->getMessage(), 0, $e);
+                // No lanzar excepción para evitar rollback completo
+                //continue;
             }
         }
     }
-    /* public function model(array $row)
+    protected function getCachedTechnology(string $type): ReeferTechnology
     {
-        $reeferMachine = ReeferMachine::firstOrCreate(['name' => trim($row['type'])], [
-            'name' => trim($row['type'])
-        ]);
-        $port = Port::firstOrCreate(['code' => trim($row['pol'])], [
-            'code' => trim($row['pol']),
-            'name' => trim($row['pol'])
-        ]);
-        $containerType = ContainerType::firstOrCreate(['iso_code' => trim($row['iso'])], [
-            'iso_code' => trim($row['iso']),
-            'description' => trim($row['iso'])
-        ]);
-        return new Container([
-            'code' => $row['container'],
-            'iso_code'        => $row['iso'],
-            'container_type_id'    => $containerType->id,
-            'port_id' => $port->id,
-            'condition_status'        => $row['condition'],
-            'status' => 1,
-            'reefer_technology_id' => $reeferMachine->id,
-            'reefer_machine_id' => $reeferMachine->id,
-            // RELACIÓN polIMÓRFICA
-            'origin_id' => $this->dischargueId,
-            'origin_type' => \App\Models\Dischargue::class,
+        $normalizedType = strtoupper(trim($type));
 
+        if (isset($this->cachedReefers[$normalizedType])) {
+            return $this->cachedReefers[$normalizedType];
+        }
+
+        // Buscar por coincidencia exacta (insensible a mayúsculas)
+        $existing = ReeferTechnology::whereRaw('UPPER(TRIM(code)) = ?', [$normalizedType])->first();
+
+        if (!$existing) {
+            $existing = ReeferTechnology::create([
+                'code' => $type,
+                'name' => $type,
+            ]);
+        }
+
+        return $this->cachedReefers[$normalizedType] = $existing;
+    }
+
+
+
+    protected function getCachedPort(string $code): Port
+    {
+        if (isset($this->cachedPorts[$code])) {
+            return $this->cachedPorts[$code];
+        }
+
+        return $this->cachedPorts[$code] = Port::firstOrCreate(['code' => $code], [
+            'name' => $code,
         ]);
-    } */
+    }
+
+    protected function getCachedContainerType(string $iso): ContainerType
+    {
+        if (isset($this->cachedContainerTypes[$iso])) {
+            return $this->cachedContainerTypes[$iso];
+        }
+
+        return $this->cachedContainerTypes[$iso] = ContainerType::firstOrCreate(['iso_code' => $iso], [
+            'description' => $iso,
+        ]);
+    }
 }

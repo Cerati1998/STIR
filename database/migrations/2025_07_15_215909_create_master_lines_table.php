@@ -48,6 +48,7 @@ return new class extends Migration
             $table->string('code', 6)->unique();
             $table->string('iso_code', 4)->unique();
             $table->string('description', 100);
+            $table->boolean('is_reefer')->default(false);
             $table->decimal('length', 8, 2)->nullable(); // Length in meters
             $table->decimal('width', 8, 2)->nullable(); // Width in meters
             $table->decimal('height', 8, 2)->nullable(); // Height in meters

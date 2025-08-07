@@ -14,6 +14,7 @@ class TypeContainerCreate extends Component
         'code' => '',
         'iso_code' => '',
         'description' => '',
+        'is_reefer' => false,
         'length' => 0,
         'width' => 0,
         'height' => 0

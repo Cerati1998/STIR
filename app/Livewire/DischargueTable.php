@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Dischargue;
@@ -17,6 +18,7 @@ class DischargueTable extends DataTableComponent
         $this->setDefaultSort('id', 'desc');
     }
 
+    #[On('dischargueAdded')]
     public function builder(): Builder
     {
         return Dischargue::with(['vessel', 'shippingLine', 'containers', 'user', 'branch'])
@@ -34,7 +36,7 @@ class DischargueTable extends DataTableComponent
             Column::make("Linea", "shippingLine.name")
                 ->searchable()
                 ->sortable(),
-                //->format(fn($value, $row) => $row->shippingLine ? "{$row->shippingLine->name} ({$row->shippingLine->code})" : '-'),
+            //->format(fn($value, $row) => $row->shippingLine ? "{$row->shippingLine->name} ({$row->shippingLine->code})" : '-'),
             Column::make("Bl", "bl_number")
                 ->searchable()
                 ->sortable(),

@@ -21,14 +21,17 @@
                     placeholder="Ingrese la descripción" />
             </div>
             <div class="grid grid-cols-2 gap-4 mb-3">
+                <x-wire-input required label="ISO" wire:model="containerType.iso_code" placeholder="Ingrese el ISO"
+                    xl />
                 <x-wire-input required label="Código" wire:model="containerType.code" placeholder="Ingrese el Código" />
-                <x-wire-input required label="ISO" wire:model="containerType.iso_code"
-                    placeholder="Ingrese el ISO" />
 
+            </div>
+            <div class="grid grid-cols-2 gap-4 mb-3 place-items-center">
                 <x-wire-number label="Altura" min="0" step="0.01" wire:model="containerType.height" />
+                <x-wire-toggle label="Tiene tecnología de Frio" wire:model="containerType.is_reefer" />
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-4 mb-3">
                 <div>
                     <x-wire-number label="Largo" min="0" step="0.01" wire:model="containerType.length" />
                 </div>

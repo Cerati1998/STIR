@@ -75,6 +75,7 @@ class DischargueCreate extends Component
             FacadesDB::commit();
 
             $this->reset('attach', 'dischargue', 'openModal');
+            $this->dispatch('dischargueAdded');
             $this->dispatch('swal', [
                 'title' => 'Exito!',
                 'text' => 'Descarga subida con Exito!',

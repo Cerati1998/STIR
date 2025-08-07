@@ -63,6 +63,7 @@ class TypeContainerTable extends DataTableComponent
         'code' => '',
         'iso_code' => '',
         'description' => '',
+        'is_reefer' => false,
         'length' => 0,
         'width' => 0,
         'height' => 0
@@ -71,7 +72,7 @@ class TypeContainerTable extends DataTableComponent
     public function edit(ContainerType $containerType)
     {
         $this->containerTypeId = $containerType->id;
-        $this->containerType = $containerType->only('code','iso_code', 'description', 'length', 'width', 'height');
+        $this->containerType = $containerType->only('code','iso_code', 'description', 'is_reefer','length', 'width', 'height');
         $this->openModal = true;
     }
 
