@@ -38,7 +38,10 @@
                     </div>
 
                 </div>
-                <div class="grid grid-cols-2 gap-4 mb-3">
+                <div class="grid grid-cols-3 gap-4 mb-3">
+                    <!-- bl -->
+                    <x-wire-input label="BL" wire:model="dischargue.bl_number" class="col-span-1" />
+
                     <!-- ETA -->
                     <x-wire-input type="date" label="ETA" wire:model="dischargue.eta_date" class="col-span-1" />
 

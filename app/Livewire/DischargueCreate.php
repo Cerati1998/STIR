@@ -18,6 +18,7 @@ class DischargueCreate extends Component
     public $dischargue = [
         'shipping_line_id' => '',
         'vessel_id' => '',
+        'bl_number' => '',
         'eta_date' => '',
         'week' => ''
     ];
@@ -57,12 +58,14 @@ class DischargueCreate extends Component
                 'attach' => 'required|max:10240|mimes:xls,xlsx,csv',
                 'dischargue.shipping_line_id' => 'required|numeric|exists:shipping_lines,id',
                 'dischargue.vessel_id' => 'required|numeric|exists:vessels,id',
-                'dischargue.eta_date' => 'required|date'
+                'dischargue.eta_date' => 'required|date',
+                'dischargue.bl_number' => 'nullable|string|min:5'
             ], [], [
                 'attach' => 'Archivo excel de Descarga',
                 'dischargue.shipping_line_id' => 'Linea Naviera',
                 'dischargue.vessel_id' => 'Nave',
-                'dischargue.eta_date' => 'Fecha ETA'
+                'dischargue.eta_date' => 'Fecha ETA',
+                'dischargue.bl_number' => 'Número de BL'
             ]);
 
             $newDischargue = Dischargue::create($this->dischargue);

@@ -32,7 +32,8 @@ class Container extends Model
         'manufacture_year' => 'integer',
         'tare' => 'decimal:2',
         'payload' => 'decimal:2',
-        'last_machine_inspection_at' => 'datetime'
+        'last_machine_inspection_at' => 'datetime',
+        'is_operative' => 'boolean'
     ];
 
     public function origin(): MorphTo
@@ -45,12 +46,12 @@ class Container extends Model
         return $this->belongsTo(ContainerType::class);
     }
 
-    public function portOrigin()
+    public function port()
     {
         return $this->belongsTo(Port::class);
     }
 
-    public function technology()
+    public function reefer_technology()
     {
         return $this->belongsTo(ReeferTechnology::class);
     }

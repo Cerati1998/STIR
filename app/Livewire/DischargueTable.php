@@ -30,6 +30,10 @@ class DischargueTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->deselected(),
+            Column::make('Acciones')
+                ->label(function ($row) {
+                    return view('dischargues.actions', ['dischargue' => $row]);
+                }),
             Column::make("Nave", "vessel.name")
                 ->searchable()
                 ->sortable(),

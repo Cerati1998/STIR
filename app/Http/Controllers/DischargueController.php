@@ -23,6 +23,13 @@ class DischargueController extends Controller
         //
     }
 
+    public function dischargue_containers($id) {
+
+        $dischargue = Dischargue::findOrFail($id);
+        return view('dischargues.containers',compact('dischargue'));
+        
+
+    }
     /**
      * Store a newly created resource in storage.
      */
