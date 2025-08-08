@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Observers\DischargueObserver;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
@@ -23,7 +25,6 @@ class Dischargue extends Model
     ];
 
     protected $casts = [
-        'eta_date' => 'date',
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
     ];
@@ -50,5 +51,13 @@ class Dischargue extends Model
     public function branch()
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    // Accessor para formatear la fecha
+    protected function etaDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $value ? Carbon::parse($value)->format('d/m/Y') : null,
+        );
     }
 }
