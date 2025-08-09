@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -59,5 +60,42 @@ class Container extends Model
     public function machine()
     {
         return $this->belongsTo(ReeferMachine::class);
+    }
+
+    public function currentStatus(): Attribute
+    {
+        $status = [
+            [
+                'description' => 'Anulado',
+                'code' => 'AN'
+            ],
+            [
+                'description' => 'Anunciado',
+                'code' => 'AC'
+            ],
+            [
+                'description' => 'Recepcionado',
+                'code' => 'RC'
+            ],
+            [
+                'description' => 'Dañado',
+                'code' => 'DM'
+            ],
+            [
+                'description' => 'Operativo',
+                'code' => 'AV'
+            ],
+            [
+                'description' => 'Despachado',
+                'code' => 'DP'
+            ],
+            [
+                'description' => 'Devolución Interna',
+                'code' => 'DI'
+            ],
+        ];
+        return Attribute::make(
+            get: fn() => $status[$this->status]['description'] ?? 'Desconocido'
+        );
     }
 }

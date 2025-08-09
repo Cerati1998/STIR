@@ -25,7 +25,7 @@ class VesselCreate extends Component
 
     protected $listeners = ['setShippingLineId'];
 
-    public function setShippingLineId($shippingLineId)
+    public function setShippingLineId($shippingLineId = null)
     {
         $this->shippingLineId = $shippingLineId;
         $this->isExtern = true;

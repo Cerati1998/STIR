@@ -41,6 +41,9 @@ class DContainerTable extends DataTableComponent
             Column::make("Condition", "condition_status")
                 ->sortable(),
             Column::make("Estado", "status")
+                ->format(function ($value, $row) {
+                    return $row->currentStatus;
+                })
                 ->sortable(),
             Column::make("Created at", "created_at")
                 ->sortable(),
