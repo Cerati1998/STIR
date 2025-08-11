@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Devolution;
+use Illuminate\Support\Facades\Auth;
 
 class DevolutionObserver
 {
@@ -27,7 +28,8 @@ class DevolutionObserver
      */
     public function deleted(Devolution $devolution): void
     {
-        //
+                $devolution->anulated_by = Auth::id();
+
     }
 
     /**

@@ -39,7 +39,8 @@ class DischargueObserver
      */
     public function deleted(Dischargue $dischargue): void
     {
-        //
+        $dischargue->anulated_by = Auth::id();
+        $dischargue->saveQuietly();
     }
 
     /**

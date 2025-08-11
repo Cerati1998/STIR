@@ -123,7 +123,7 @@ class DespatchTable extends DataTableComponent
                     'ariaDateFormat' => 'F j, Y', // An aria-friendly date format
                     'dateFormat' => 'Y-m-d', // Date format that will be received by the filter
                     'placeholder' => 'Introduzca el rango de fechas', // A placeholder value
-                    'locale' => 'es',
+                    'locale' => 'en',
                 ])
                 ->filter(function (Builder $builder, array $dateRange) { // Expects an array.
                     $builder

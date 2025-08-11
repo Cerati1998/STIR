@@ -6,10 +6,12 @@ use App\Observers\DevolutionObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[ObservedBy(DevolutionObserver::class)]
 class Devolution extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'shipping_line_id',
         'vessel_id',
@@ -22,6 +24,7 @@ class Devolution extends Model
         'completed_at',
         'user_id',
         'branch_id',
+        'anulated_by'
     ];
 
     protected $casts = [

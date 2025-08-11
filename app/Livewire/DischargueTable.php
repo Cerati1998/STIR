@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Container;
 use App\Models\Vessel;
 use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -79,7 +80,7 @@ class DischargueTable extends DataTableComponent
                     'ariaDateFormat' => 'F j, Y', // An aria-friendly date format
                     'dateFormat' => 'Y-m-d', // Date format that will be received by the filter
                     'placeholder' => 'Introduzca el rango de fechas', // A placeholder value
-                    'locale' => 'es',
+                    'locale' => 'en',
                 ])
                 ->filter(function (Builder $builder, array $dateRange) {
                     $builder
@@ -114,7 +115,7 @@ class DischargueTable extends DataTableComponent
             'week',
         ]);
 
-        $this->dischargue['eta_date'] = Carbon::parse($this->dischargue['eta_date'])->format('Y-m-d');
+        $this->dischargue['eta_date'] = Carbon::createFromFormat('d/m/Y', $this->dischargue['eta_date'])->format('Y-m-d');
         $this->vessels = Vessel::where('shipping_line_id', $this->dischargue['shipping_line_id'])
             ->get()
             ->toArray();
@@ -161,6 +162,24 @@ class DischargueTable extends DataTableComponent
         $this->dispatch('swal', [
             'title' => 'Exito!',
             'text' => 'Descarga actualizada con Exito!',
+            'icon' => 'success'
+        ]);
+    }
+
+    public function destroy(Dischargue $dischargue)
+    {
+         //actualizo a estado 0 todos los contenedores
+        $containers = Container::where('origin_id', $dischargue->id)
+        ->where('origin_type',"App\Models\Dischargue");
+        $containers->update([
+            'status' => 0
+        ]);
+
+        $dischargue->delete();
+
+        $this->dispatch('swal', [
+            'title' => 'Exito!',
+            'text' => 'Anuncio de Descarga anulado',
             'icon' => 'success'
         ]);
     }

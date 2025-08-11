@@ -61,7 +61,8 @@ class DContainerTable extends DataTableComponent
                 function (Builder $q) {
                     $q->where('id', $this->originId);
                 }
-            );
+            )
+                ->where('status', '>', 0);;
         }
 
         return $query;

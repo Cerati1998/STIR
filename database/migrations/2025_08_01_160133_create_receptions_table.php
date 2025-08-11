@@ -40,6 +40,12 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('no action');
 
+            $table->foreignId('anulated_by')
+                ->nullable()
+                ->constrained('users')
+                ->onUpdate('cascade')
+                ->onDelete('set null');
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -77,7 +83,12 @@ return new class extends Migration
                 ->constrained('branches')
                 ->onUpdate('cascade')
                 ->onDelete('no action');
-
+            $table->foreignId('anulated_by')
+                ->nullable()
+                ->constrained('users')
+                ->onUpdate('cascade')
+                ->onDelete('set null');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
