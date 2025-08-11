@@ -168,9 +168,9 @@ class DischargueTable extends DataTableComponent
 
     public function destroy(Dischargue $dischargue)
     {
-         //actualizo a estado 0 todos los contenedores
+        //actualizo a estado 0 todos los contenedores
         $containers = Container::where('origin_id', $dischargue->id)
-        ->where('origin_type',"App\Models\Dischargue");
+            ->where('origin_type', "App\Models\Dischargue");
         $containers->update([
             'status' => 0
         ]);

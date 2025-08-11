@@ -12,11 +12,17 @@ class DContainerTable extends DataTableComponent
     protected $model = Container::class;
     public $originType; // Ej: App\Models\Dischargue o App\Models\Devolution
     public $originId;
+    public array $bulkActions = [
+        'bulkAnulate' => 'Anular Seleccionados'
+    ];
 
     public function configure(): void
     {
         $this->setPrimaryKey('id');
         $this->setDefaultSort('id', 'desc');
+        // Activar checkboxes de selección múltiple
+        $this->setBulkActionsEnabled();
+        $this->setBulkActions($this->bulkActions);
     }
 
     public function columns(): array
@@ -25,13 +31,16 @@ class DContainerTable extends DataTableComponent
             Column::make("Id", "id")
                 ->deselected(),
             Column::make("Contenedor", "code")
+                ->searchable()
                 ->sortable(),
             Column::make("ISO", "iso_code")
+                ->searchable()
                 ->sortable(),
             Column::make("Tecnologia", "reefer_technology.name")
                 ->format(function ($row) {
                     return $row ?? '-';
                 })
+                ->searchable()
                 ->sortable(),
             Column::make("Tipo", "container_type.code"),
             Column::make("T. Descripcion", "container_type.description")
@@ -66,5 +75,47 @@ class DContainerTable extends DataTableComponent
         }
 
         return $query;
+    }
+
+    public function bulkAnulate()
+    {
+        $selected = $this->getSelected();
+
+        if (empty($selected)) {
+            $this->dispatch('swal', [
+                'title' => 'Error!',
+                'text' => 'Debe seleccionar mínimo un contenedor para anular.',
+                'icon' => 'error'
+            ]);
+            return;
+        }
+
+        // Solo obtener los que tengan status = 1
+        $validContainers = Container::whereIn('id', $selected)
+            ->where('status', 1)
+            ->pluck('id')
+            ->toArray();
+
+        if (empty($validContainers)) {
+            $this->dispatch('swal', [
+                'title' => 'Atención!',
+                'text' => 'Ninguno de los contenedores seleccionados puede ser anulado (solo se permite anunciados).',
+                'icon' => 'error'
+            ]);
+            return;
+        }
+
+        // Actualizar solo los válidos
+        Container::whereIn('id', $validContainers)->update([
+            'status' => 0
+        ]);
+
+        $this->clearSelected();
+
+        $this->dispatch('swal', [
+            'title' => 'Éxito!',
+            'text' => 'Contenedores anulados con éxito.',
+            'icon' => 'success'
+        ]);
     }
 }
