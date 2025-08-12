@@ -21,18 +21,20 @@
                     <x-label class="mb-1">
                         Número de Documento
                     </x-label>
-                    <x-input x-model="client.numDoc" placeholder="Ingrese el número de documento" class="w-full" x-bind:disabled="client.tipoDoc == '-'" />
+                    <x-input x-model="client.numDoc" placeholder="Ingrese el número de documento" class="w-full"
+                        x-bind:disabled="client.tipoDoc == '-'" />
                 </div>
 
                 <div class="shrink-0 mt-6.5">
-                    <x-wire-mini-button type="button" wire:click="searchDocument" spinner="searchDocument" icon="magnifying-glass" x-bind:disabled="!(client.tipoDoc == '1' || client.tipoDoc == '6')" />
+                    <x-wire-mini-button type="button" wire:click="searchDocument" spinner="searchDocument"
+                        icon="magnifying-glass" x-bind:disabled="!(client.tipoDoc == '1' || client.tipoDoc == '6')" />
                 </div>
             </div>
 
 
             <div class="grid grid-cols-2 gap-4">
 
-                
+
 
                 <div class="col-span-2">
                     <x-label class="mb-1">
@@ -47,17 +49,20 @@
                     </x-label>
                     <x-input x-model="client.direccion" placeholder="Ingrese la dirección" class="w-full" />
                 </div>
-                
-                <x-wire-input label="Correo Electrónico" x-model="client.email" placeholder="Ingrese el correo electrónico (Opcional)" />
 
-                <x-wire-input label="Teléfono" x-model="client.telephone" placeholder="Ingrese el teléfono (Opcional)" />
+                <x-wire-input label="Correo Electrónico" x-model="client.email"
+                    placeholder="Ingrese el correo electrónico (Opcional)" />
+
+                <x-wire-input label="Teléfono" x-model="client.telephone"
+                    placeholder="Ingrese el teléfono (Opcional)" />
 
             </div>
 
             <x-slot name="footer" class="flex justify-end gap-x-4">
                 <x-wire-button flat label="Cancelar" x-on:click="close" />
 
-                <x-wire-button type="submit" primary label="Guardar" spinner icon="arrow-down-tray" />
+                <x-wire-button type="submit" primary label="Guardar" spinner wire:loading.attr="disabled"
+                    wire:target="searchDocument,save" icon="arrow-down-tray" />
             </x-slot>
 
         </x-wire-modal-card>

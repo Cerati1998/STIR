@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Client;
+use App\Services\sunatService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
@@ -20,14 +22,15 @@ class ClientCreate extends Component
         'telephone' => null,
     ];
 
-    public function save(){
+    public function save()
+    {
         $this->validate([
             'client.tipoDoc' => 'required|exists:identities,id',
             'client.numDoc' => [
                 Rule::requiredIf($this->client['tipoDoc'] != '-'),
                 Rule::when($this->client['tipoDoc'] == 1, 'numeric|digits:8'),
-                Rule::when($this->client['tipoDoc'] == 6, ['numeric','digits:11','regex:/^(10|20)\d{9}$/']),
-                Rule::unique('clients', 'numDoc')->where(function($query){
+                Rule::when($this->client['tipoDoc'] == 6, ['numeric', 'digits:11', 'regex:/^(10|20)\d{9}$/']),
+                Rule::unique('clients', 'numDoc')->where(function ($query) {
                     return $query->where('company_id', session('company')->id)
                         ->where('tipoDoc', $this->client['tipoDoc'])
                         ->where('tipoDoc', '!=', '-');
@@ -55,33 +58,41 @@ class ClientCreate extends Component
             'client.tipoDoc' => 'required|in:1,6',
             'client.numDoc' => [
                 Rule::when($this->client['tipoDoc'] == 1, 'numeric|digits:8'),
-                Rule::when($this->client['tipoDoc'] == 6, ['numeric','digits:11','regex:/^(10|20)\d{9}$/']),
+                Rule::when($this->client['tipoDoc'] == 6, ['numeric', 'digits:11', 'regex:/^(10|20)\d{9}$/']),
             ],
         ]);
 
-        $config = [
-            'representantes_legales' 	=> false,
-            'cantidad_trabajadores' 	=> false,
-            'establecimientos' 			=> false,
-            'deuda' 					=> false,
-        ];
+        $sunat = app(sunatService::class);
+        $docType = (string) $this->client['tipoDoc'];
+        $numero  = (string) $this->client['numDoc'];
 
-        $sunat = new \jossmp\sunat\ruc($config);
-        $response = $sunat->consulta($this->client['numDoc']);
+        try {
+            $response = match ($docType) {
+                '6' => $sunat->consultarRUC($numero),
+                '1' => $sunat->consultarDNI($numero),
+                default => ['success' => false, 'message' => 'Tipo de documento no válido']
+            };
 
-        if ($response->success) {
+            if (!($response['success'] ?? false)) {
+                throw new \Exception($response['message'] ?? 'No se encontró información');
+            }
 
-            $this->client['rznSocial'] = $response->result->razon_social;
-            $this->client['direccion'] = $response->result->direccion;
-
-        }else{
+            if ($docType === '6') {
+                $this->client['rznSocial'] = $response['data']['razon_social'] ?? null;
+                $this->client['direccion'] = $response['data']['direccion'] ?? null;
+            } elseif ($docType === '1') {
+                $this->client['rznSocial'] = $response['data']['full_name'] ?? null;
+                $this->client['direccion'] = '-';
+            }
+        } catch (\Throwable $e) {
             $this->dispatch('swal', [
                 'icon' => 'error',
                 'title' => 'Error',
-                'text' => 'No se encontró la empresa',
+                'text'  => $e->getMessage(),
             ]);
         }
     }
+
 
     public function render()
     {

@@ -5,7 +5,9 @@ namespace App\Livewire;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Client;
+use App\Services\sunatService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 
@@ -82,18 +84,33 @@ class ClientTable extends DataTableComponent
             ],
         ]);
 
-        $sunat = new \jossmp\sunat\ruc();
-        $response = $sunat->consulta($this->client['numDoc']);
+        $sunat = app(sunatService::class);
+        $docType = (string) $this->client['tipoDoc'];
+        $numero  = (string) $this->client['numDoc'];
 
-        if ($response->success) {
+        try {
+            $response = match ($docType) {
+                '6' => $sunat->consultarRUC($numero),
+                '1' => $sunat->consultarDNI($numero),
+                default => ['success' => false, 'message' => 'Tipo de documento no válido']
+            };
 
-            $this->client['rznSocial'] = $response->result->razon_social;
-            $this->client['direccion'] = $response->result->direccion;
-        } else {
+            if (!($response['success'] ?? false)) {
+                throw new \Exception($response['message'] ?? 'No se encontró información');
+            }
+
+            if ($docType === '6') {
+                $this->client['rznSocial'] = $response['data']['razon_social'] ?? null;
+                $this->client['direccion'] = $response['data']['direccion'] ?? null;
+            } elseif ($docType === '1') {
+                $this->client['rznSocial'] = $response['data']['full_name'] ?? null;
+                $this->client['direccion'] = '-';
+            }
+        } catch (\Throwable $e) {
             $this->dispatch('swal', [
                 'icon' => 'error',
                 'title' => 'Error',
-                'text' => 'No se encontró la empresa',
+                'text'  => $e->getMessage(),
             ]);
         }
     }
