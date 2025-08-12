@@ -36,6 +36,10 @@ class Branch extends Model
     {
         return $this->hasMany(Client::class);
     }
+    public function transports()
+    {
+        return $this->hasMany(Transport::class);
+    }
     public function voideds()
     {
         return $this->hasMany(Voided::class);

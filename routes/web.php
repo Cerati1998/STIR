@@ -18,6 +18,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReeferConditionController;
 use App\Http\Controllers\ReeferTechnologyController;
 use App\Http\Controllers\ShippingLineController;
+use App\Http\Controllers\TransportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoidedController;
 use App\Http\Controllers\VoucherController;
@@ -57,6 +58,9 @@ Route::middleware([
         Route::get('despatchs/create', [DespatchController::class, 'create',])->name('despatchs.create');
 
         Route::resource('clients', ClientController::class);
+        Route::resource('transports', TransportController::class)->names('transports');
+        Route::get('transports/{transport}/drivers', [TransportController::class, 'drivers'])->name('transport.drivers');
+        Route::get('transports/{transport}/vehicles', [TransportController::class, 'vehicles'])->name('transport.drivers');
 
         //Inventario
         Route::get('products', [ProductController::class, 'index',])->name('products.index');
@@ -89,7 +93,7 @@ Route::middleware([
 
         //rutas de carga de data de contenedores
         Route::resource('dischargues', DischargueController::class)->names('dischargues')->except('show');
-        Route::get('dischargues/{dischargue}/containers',[DischargueController::class,'dischargue_containers'])->name('dischargue.containers');
+        Route::get('dischargues/{dischargue}/containers', [DischargueController::class, 'dischargue_containers'])->name('dischargue.containers');
         Route::resource('devolutions', DevolutionController::class)->names('devolutions')->except('show');
         Route::resource('containers', ContainerController::class)->names('containers');
         Route::get('downloads/dischargue-template', function () {
