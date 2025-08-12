@@ -6,12 +6,14 @@ use App\Models\Invoice;
 use App\Services\Sunat\DocumentService;
 use App\Services\Sunat\InvoiceService;
 use App\Services\Sunat\UtilService;
+use App\Services\sunatService;
 use App\Traits\Sunat\DataTrait;
 use Closure;
 use Greenter\Report\XmlUtils;
 use Greenter\Xml\Builder\InvoiceBuilder;
 use Greenter\XMLSecLibs\Sunat\SignedXml;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -38,6 +40,7 @@ class InvoiceForm extends Form
     public $cuotas = [];
     public $tipoMoneda = 'PEN';
 
+    public $tipoCambio = 0;
     public $guias = [];
 
     public $client = [
@@ -108,7 +111,7 @@ class InvoiceForm extends Form
         'tipoDoc' => '',
         'numDoc' => '',
     ];
-    
+
     public function rules()
     {
         return [
@@ -121,8 +124,8 @@ class InvoiceForm extends Form
             ],
             'tipoDoc' => ['required', 'in:01,03'],
             'serie' => [
-                'required', 
-                'string', 
+                'required',
+                'string',
                 'size:4',
                 Rule::when($this->tipoDoc == '01', 'regex:/^F/', 'regex:/^B/'),
             ],
@@ -130,7 +133,7 @@ class InvoiceForm extends Form
             'correlativo' => ['required', 'numeric'],
 
             'fechaEmision' => [
-                'required', 
+                'required',
                 'date',
                 //Fechas permitidas entre 3 dias antes y hoy
                 'after_or_equal:' . now()->subDays(3)->format('Y-m-d'),
@@ -149,12 +152,13 @@ class InvoiceForm extends Form
             ],
             'cuotas.*.monto' => ['required', 'numeric'],
             'cuotas.*.fechaPago' => [
-                'required', 
+                'required',
                 'date',
                 'after:fechaEmision',
             ],
 
             'tipoMoneda' => ['required', 'in:USD,PEN'],
+            'tipoCambio' => ['required', 'min:0'],
 
             'client.tipoDoc' => [
                 'required',
@@ -167,7 +171,6 @@ class InvoiceForm extends Form
                     if ($this->tipoDoc == '01' && $this->tipoOperacion != '0401') {
                         return $this->client['tipoDoc'] != '6';
                     }
-
                 }),
             ],
 
@@ -247,7 +250,7 @@ class InvoiceForm extends Form
         ];
     }
 
-    public function validationAttributes() 
+    public function validationAttributes()
     {
         return [
             'tipoOperacion' => 'tipo de operación',
@@ -260,11 +263,12 @@ class InvoiceForm extends Form
             'cuotas.*.monto' => 'monto',
             'cuotas.*.fechaPago' => 'fecha de pago',
             'tipoMoneda' => 'tipo de moneda',
+            'tipoCambio' => 'tipo de cambio',
 
             'detraccion.codBienDetraccion' => 'código de bienes sujeto a detracción',
             'detraccion.codMedioPago' => 'código de medio de pago',
             'detraccion.ctaBanco' => 'cuenta bancaria',
-            
+
             'perception.codReg' => 'tipo de percepción',
 
             'huesped.paisDoc' => 'país de emisión del documento del huesped',
@@ -286,7 +290,7 @@ class InvoiceForm extends Form
         $this->getData();
 
         $invoice = Invoice::create($this->all());
-        
+
         $util = new UtilService(session('company'));
         $document = new DocumentService();
 
@@ -327,15 +331,14 @@ class InvoiceForm extends Form
                 $invoice->cdr_path = $directory . 'cdr/R-' . Str::uuid() . '.zip';
                 Storage::put($invoice->cdr_path, $result->getCdrZip());
             }
-            
+
             $invoice->save();
 
             $this->showResponse($invoice);
 
             return redirect()->route('vouchers.index');
-            
         } catch (\Exception $e) {
-            
+
             session()->flash('swal', [
                 'icon' => 'error',
                 'title' => 'Error al enviar el comprobante',
@@ -344,7 +347,6 @@ class InvoiceForm extends Form
 
             return redirect()->route('vouchers.index');
         }
-
     }
 
     public function showResponse(Invoice $invoice)
@@ -372,6 +374,7 @@ class InvoiceForm extends Form
     {
         $this->setTotales();
         $this->setLegends();
+        $this->setTipoCambio();
         $this->setDetraccion();
         $this->setPerception();
         $this->setAtributos();
@@ -386,7 +389,7 @@ class InvoiceForm extends Form
         if ($this->formaPago['tipo'] == 'Contado') {
             $this->cuotas = [];
             unset($this->formaPago['monto']);
-        }else{
+        } else {
             $this->formaPago['monto'] = collect($this->cuotas)->sum('monto');
         }
 
@@ -430,7 +433,7 @@ class InvoiceForm extends Form
         $legends = [];
 
         if ($details->whereIn('tipAfeIgv', ['10', '17', '20', '30', '40'])->count()) {
-         
+
             $currency = match ($this->tipoMoneda) {
                 'PEN' => 'SOLES',
                 'USD' => 'DÓLARES AMERICANOS',
@@ -441,7 +444,6 @@ class InvoiceForm extends Form
                 'code' => '1000',
                 'value' => $formatter->toInvoice($this->mtoImpVenta, 2, $currency)
             ];
-
         }
 
         if ($details->whereNotIn('tipAfeIgv', ['10', '17', '20', '30', '40'])->count()) {
@@ -458,8 +460,8 @@ class InvoiceForm extends Form
             ];
         }
 
-        if (in_array($this->tipoDoc, ['01','03'])) {   
-        
+        if (in_array($this->tipoDoc, ['01', '03'])) {
+
             if ($this->tipoOperacion == '1001') {
                 $legends[] = [
                     'code' => '2006',
@@ -473,12 +475,25 @@ class InvoiceForm extends Form
                     'value' => 'COMPROBANTE DE PERCEPCIÓN'
                 ];
             }
-
         }
 
         $this->legends = $legends;
     }
 
+    public function setTipoCambio()
+    {
+        try {
+            $sunat = app(sunatService::class);
+            $response = $sunat->consultarTC($this->fechaEmision);
+            if (!($response['success'] ?? false)) {
+                throw new \Exception($response['message'] ?? 'No se encontró información');
+            }
+            $this->tipoCambio = $response['data']['venta'];
+        } catch (\Exception $e) {
+            Log::info("Error al intentar asignar el tipo de Cambio: {$e->getMessage()}");
+            $this->tipoCambio = 0;
+        }
+    }
     public function setDetraccion()
     {
         $this->detraccion['mount'] = $this->detraccion['percent'] ? $this->mtoImpVenta * $this->detraccion['percent'] / 100 : '';
@@ -560,4 +575,4 @@ class InvoiceForm extends Form
             }
         }
     }
-} 
+}

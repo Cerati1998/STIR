@@ -17,7 +17,7 @@ use Livewire\Component;
 class GenerateInvoice extends Component
 {
     public InvoiceForm $invoice;
-    
+
     public $identities;
     public $units, $affectations, $detractions, $payment_methods, $perceptions;
 
@@ -26,7 +26,7 @@ class GenerateInvoice extends Component
     public $series;
 
     public $client_id;
-    public $product_id;    
+    public $product_id;
 
     public $openModal = false;
 
@@ -63,9 +63,8 @@ class GenerateInvoice extends Component
                             'Las operaciones de exportacion solo deben incluir ítems con tipo de afectación exportación.'
                         );
                     }
-                    
-                }else{
-                        
+                } else {
+
                     if ($details->where('tipAfeIgv', '40')->count() > 0) {
                         $validator->errors()->add(
                             "details.tipAfeIgv",
@@ -74,8 +73,28 @@ class GenerateInvoice extends Component
                     }
                 }
 
-                if ($this->invoice->tipoOperacion == '1001' && $this->invoice->mtoImpVenta < 700) {
-                    $validator->errors()->add('invoice.mtoImpVenta', 'Las operaciones sujeta a detracción deben tener un monto mayor o igual a S/. 700.00.');
+                if ($this->invoice->tipoOperacion == '1001') {
+                    $montoMinimo = 700; // Monto mínimo en soles
+                    $montoComprobante = $this->invoice->mtoImpVenta;
+                    $mensaje = '';
+                    // Si la moneda es USD, convertir a PEN usando el tipo de cambio
+                    if ($this->invoice->tipoMoneda === 'USD') {
+                        if ($this->invoice->tipoCambio <= 0) {
+                            $validator->errors()->add('invoice.tipoCambio', 'El tipo de cambio debe ser mayor que cero cuando la moneda es USD');
+                        }
+                        $montoComprobante = $this->invoice->mtoImpVenta * $this->invoice->tipoCambio;
+                        $mensaje .= sprintf(
+                            ' (Monto actual: $%s USD = S/. %s)',
+                            number_format($this->invoice->mtoImpVenta, 2),
+                            number_format($montoComprobante, 2)
+                        );
+                    } else {
+                        $mensaje .= sprintf(' (Monto actual: S/. %s)', number_format($montoComprobante, 2));
+                    }
+
+                    if ($montoComprobante < $montoMinimo) {
+                        $validator->errors()->add('invoice.mtoImpVenta', "Las operaciones sujeta a detracción deben tener un monto mayor o igual a S/. 700.00. {$mensaje}");
+                    }
                 }
 
                 //Cuotas
@@ -94,9 +113,8 @@ class GenerateInvoice extends Component
                         );
                     }
                 }
-
             });
-            
+
             if ($validator->fails()) {
                 $errors = $validator->errors()->toArray();
 
@@ -112,9 +130,9 @@ class GenerateInvoice extends Component
                     'icon' => 'error',
                 ]);
             }
-        });   
+        });
     }
-    
+
     public function mount()
     {
         if (!in_array($this->invoice->tipoDoc, ['01', '03'])) {
@@ -127,7 +145,7 @@ class GenerateInvoice extends Component
         $this->invoice->production = session('company')->production;
 
         $this->invoice->huesped['fecIngresoEst'] = now()->format('Y-m-d');
-
+        $this->invoice->setTipoCambio();
         $this->getOperations();
         $this->getSeries();
     }
@@ -135,9 +153,12 @@ class GenerateInvoice extends Component
     //Ciclo de vida
     public function updated($property, $value)
     {
-        if($property === 'invoice.tipoDoc') {
+        if ($property === 'invoice.tipoDoc') {
             $this->getOperations();
             $this->getSeries();
+        }
+        if ($property === 'invoice.fechaEmision') {
+            $this->invoice->setTipoCambio();
         }
 
         if ($property === 'invoice.detraccion.codBienDetraccion') {
@@ -145,7 +166,7 @@ class GenerateInvoice extends Component
                 ->where('id', $this->invoice->detraccion['codBienDetraccion'])->first();
 
             $this->invoice->detraccion['percent'] = $detraction ? $detraction->percent : '';
-            
+
             $this->invoice->setDetraccion();
         }
 
@@ -154,7 +175,7 @@ class GenerateInvoice extends Component
                 ->where('id', $this->invoice->perception['codReg'])->first();
 
             $this->invoice->perception['porcentaje'] = $perception ? $perception->porcentaje : 0;
-            
+
             $this->invoice->setPerception();
         }
 
@@ -177,7 +198,7 @@ class GenerateInvoice extends Component
                     'descripcion',
                 ]);
 
-            $product['cantidad'] = 1;            
+            $product['cantidad'] = 1;
 
             $this->reset('product_id');
 
@@ -190,7 +211,7 @@ class GenerateInvoice extends Component
                 $this->reset(['product', 'product_key']);
             }
         }
-    } 
+    }
 
     //Listeners
     #[On('clientAdded')]
@@ -213,8 +234,7 @@ class GenerateInvoice extends Component
             $this->invoice->huesped['nombre'] = $client->rznSocial;
             $this->invoice->huesped['tipoDoc'] = $client->tipoDoc == '-' ? '0' : $client->tipoDoc;
             $this->invoice->huesped['numDoc'] = $client->numDoc;
-
-        }else{
+        } else {
 
             $this->invoice->client = [
                 'tipoDoc' => '',
@@ -224,7 +244,6 @@ class GenerateInvoice extends Component
                     'direccion' => '',
                 ]
             ];
-            
         }
     }
 
@@ -247,9 +266,9 @@ class GenerateInvoice extends Component
         }
 
         $correlativo = Invoice::where('company_id', session('company')->id)
-                ->where('serie', $this->invoice->serie)
-                ->where('production', session('company')->production)
-                ->max('correlativo');
+            ->where('serie', $this->invoice->serie)
+            ->where('production', session('company')->production)
+            ->max('correlativo');
 
         if ($correlativo) {
             $this->invoice->correlativo = $correlativo + 1;
@@ -261,7 +280,7 @@ class GenerateInvoice extends Component
         $this->operations = Operation::whereHas('documents', function ($query) {
             $query->where('document_id', $this->invoice->tipoDoc);
         })->where('active', true)
-        ->get();
+            ->get();
 
         $this->invoice->tipoOperacion = '0101';
     }
@@ -310,7 +329,7 @@ class GenerateInvoice extends Component
             'product.porcentajeIsc' => 'nullable|numeric|min:0',
             'product.icbper' => 'required|boolean',
             'product.factorIcbper' => 'required_if:icbper,1|numeric|min:0',
-        ],[],[
+        ], [], [
             'product.codProducto' => 'Código del producto',
             'product.unidad' => 'Unidad',
             'product.descripcion' => 'Descripción',
@@ -339,7 +358,7 @@ class GenerateInvoice extends Component
         if (in_array($product['tipAfeIgv'], ['10', '17', '20', '30', '40'])) {
             $item['mtoValorUnitario'] = $product['mtoValor'];
             $item['mtoValorGratuito'] = 0;
-        }else{
+        } else {
             $item['mtoValorUnitario'] = 0;
             $item['mtoValorGratuito'] = $product['mtoValor'];
         }
@@ -361,7 +380,7 @@ class GenerateInvoice extends Component
 
         $item['factorIcbper'] = $product['icbper'] ? $product['factorIcbper'] : 0;
         $item['icbper'] = $item['factorIcbper'] * $item['cantidad'];
-        
+
         $item['tipAfeIgv'] = $product['tipAfeIgv'];
 
         $item['totalImpuestos'] = $item['igv'] + $item['isc'] + $item['icbper'];
@@ -376,7 +395,7 @@ class GenerateInvoice extends Component
 
         $this->reset(['product', 'product_key', 'openModal']);
         $this->invoice->getData();
-    }    
+    }
 
     public function removeDetail($key)
     {
@@ -400,7 +419,7 @@ class GenerateInvoice extends Component
 
         if (in_array($item['tipAfeIgv'], ['10', '20', '30', '40'])) {
             $item['mtoValorVenta'] = $item['mtoValorUnitario'] * $item['cantidad'];
-        }else{
+        } else {
             $item['mtoValorVenta'] = $item['mtoValorGratuito'] * $item['cantidad'];
         }
 
@@ -416,16 +435,15 @@ class GenerateInvoice extends Component
         $item['icbper'] = $item['factorIcbper'] * $item['cantidad'];
         $item['totalImpuestos'] = $item['igv'] + $item['isc'];
 
-        if(in_array($item['tipAfeIgv'], ['10', '20', '30', '40'])){
+        if (in_array($item['tipAfeIgv'], ['10', '20', '30', '40'])) {
             $item['mtoPrecioUnitario'] = ($item['mtoValorVenta'] + $item['igv'] + $item['isc']) / $item['cantidad'];
-        }else{
+        } else {
             $item['mtoPrecioUnitario'] = 0;
         }
 
         $this->invoice->details[$key] = $item;
 
         $this->invoice->getData();
-
     }
 
     //Agregar cuota

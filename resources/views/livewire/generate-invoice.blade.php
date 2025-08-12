@@ -79,14 +79,22 @@
                 </x-select>
             </div>
 
+            {{-- Tipo de Cambio --}}
+            <div class="col-span-1">
+                <x-label>
+                    Tipo Cambio
+                </x-label>
+
+                <x-wire-input wire:model="invoice.tipoCambio" type="number" disabled readonly/>
+            </div>
             {{-- Fecha emision --}}
             <div class="col-span-1">
                 <x-label>
-                    Fecha
+                    Fecha Emisión
                 </x-label>
 
                 <x-wire-input wire:model.live="invoice.fechaEmision" type="date"
-                    min="{{ date('Y-m-d', strtotime('-3 days')) }}" max="{{ date('Y-m-d') }}" />
+                    min="{{ date('Y-m-d', strtotime('-7 days')) }}" max="{{ date('Y-m-d') }}" />
             </div>
 
             {{-- Fecha Vencimiento --}}

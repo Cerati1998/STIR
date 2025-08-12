@@ -21,6 +21,7 @@ class Invoice extends Model
         'fecVencimiento',
         'formaPago',
         'cuotas',
+        'tipoCambio',
         'tipoMoneda',
         
         'tipDocAfectado',

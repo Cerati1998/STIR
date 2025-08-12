@@ -38,6 +38,7 @@ return new class extends Migration
             $table->json('cuotas')->nullable();
 
             $table->string('tipoMoneda');
+            $table->decimal('tipoCambio',5,3)->default(0);
 
             //Nota de credito / debito
             $table->string('tipDocAfectado')->nullable();
