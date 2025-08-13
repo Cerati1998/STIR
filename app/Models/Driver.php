@@ -21,4 +21,9 @@ class Driver extends Model
     {
         return $this->belongsTo(Transport::class);
     }
+
+      public function identity()
+    {
+        return $this->belongsTo(Identity::class, 'tipoDoc');
+    }
 }

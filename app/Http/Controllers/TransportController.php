@@ -14,7 +14,18 @@ class TransportController extends Controller
     public function index()
     {
         $identities = Identity::all();
-        return view('transports.index',compact('identities'));
+        return view('transports.index', compact('identities'));
+    }
+    public function drivers($id)
+    {
+        $transport = Transport::find($id);
+        $identities = Identity::all()->except(['id'=>6]);
+        return view('transports.drivers', compact('transport', 'identities'));
+    }
+    public function vehicles($id)
+    {
+        $transport = Transport::find($id);
+        return view('transports.vehicles', compact('transport'));
     }
 
     /**
