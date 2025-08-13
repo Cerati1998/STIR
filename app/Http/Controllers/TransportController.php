@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Identity;
 use App\Models\Transport;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,8 @@ class TransportController extends Controller
      */
     public function index()
     {
-        return view('transports.index');
+        $identities = Identity::all();
+        return view('transports.index',compact('identities'));
     }
 
     /**

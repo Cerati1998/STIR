@@ -59,8 +59,8 @@ Route::middleware([
 
         Route::resource('clients', ClientController::class);
         Route::resource('transports', TransportController::class)->names('transports');
-        Route::get('transports/{transport}/drivers', [TransportController::class, 'drivers'])->name('transport.drivers');
-        Route::get('transports/{transport}/vehicles', [TransportController::class, 'vehicles'])->name('transport.drivers');
+        Route::get('transport/{transport}/drivers', [TransportController::class, 'drivers'])->name('transport.drivers');
+        Route::get('transport/{transport}/vehicles', [TransportController::class, 'vehicles'])->name('transport.vehicles');
 
         //Inventario
         Route::get('products', [ProductController::class, 'index',])->name('products.index');

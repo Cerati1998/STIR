@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transport extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'razonSocial',
         'numDoc',
@@ -28,5 +30,10 @@ class Transport extends Model
 
     public function branch(){
         return $this->belongsTo(Branch::class);
+    }
+
+    public function identity()
+    {
+        return $this->belongsTo(Identity::class, 'tipoDoc');
     }
 }

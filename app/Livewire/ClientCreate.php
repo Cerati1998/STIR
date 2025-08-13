@@ -31,7 +31,7 @@ class ClientCreate extends Component
                 Rule::when($this->client['tipoDoc'] == 1, 'numeric|digits:8'),
                 Rule::when($this->client['tipoDoc'] == 6, ['numeric', 'digits:11', 'regex:/^(10|20)\d{9}$/']),
                 Rule::unique('clients', 'numDoc')->where(function ($query) {
-                    return $query->where('company_id', session('company')->id)
+                    return $query->where('branch_id', session('branch')->id)
                         ->where('tipoDoc', $this->client['tipoDoc'])
                         ->where('tipoDoc', '!=', '-');
                 }),
