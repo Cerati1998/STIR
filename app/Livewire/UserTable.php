@@ -14,6 +14,7 @@ class UserTable extends DataTableComponent
 {
 
     public $branches;
+    public $identities;
     public $userEdit = [
         'open' => false,
         'id' => '',
@@ -37,9 +38,19 @@ class UserTable extends DataTableComponent
             Column::make("Id", "id")
                 ->sortable(),
             Column::make("Name", "name")
+                ->searchable()
                 ->sortable(),
             Column::make("Email", "email")
                 ->sortable(),
+            Column::make("Tipo Documento", "identity.description")
+                ->sortable()
+                ->format(fn($value) => '<div class="text-center">' . $value . '</div>')
+                ->html(),
+            Column::make("Numero Documento", "numDoc")
+                ->searchable()
+                ->sortable()
+                ->format(fn($value) => '<div class="text-center">' . $value . '</div>')
+                ->html(),
             Column::make("Foto")
                 ->label(function ($row) {
                     return '<img src="' . $row->profile_photo_url   . '" alt="Foto" class="h-12 w-12 rounded-full object-cover">';

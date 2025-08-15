@@ -27,6 +27,10 @@ class IdentitySeeder extends Seeder
                 'description' => 'DNI'
             ],
             [
+                'id' => 2,
+                'description' => 'Código ICL'
+            ],
+            [
                 'id' => 4,
                 'description' => 'Carnet de extranjería'
             ],

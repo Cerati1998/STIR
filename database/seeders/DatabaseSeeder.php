@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
 
         // User::factory(10)->create();
         $this->call([
+            IdentitySeeder::class,
             UserSeeder::class,
             DepartmentSeeder::class,
             ProvinceSeeder::class,
@@ -28,7 +29,6 @@ class DatabaseSeeder extends Seeder
 
             DocumentSeeder::class,
             OperationSeeder::class,
-            IdentitySeeder::class,
 
             CurrencySeeder::class,
 
@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
             DamageSeeder::class,
             ComponentSeeder::class,
             MethodSeeder::class,
-            
+
             PortSeeder::class,
             ContainerTypeSeeder::class,
             ReeferMachineSeeder::class,

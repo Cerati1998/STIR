@@ -31,6 +31,8 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
+        'tipoDoc',
+        'numDoc',
         'password',
         'profile_photo_path'
     ];
@@ -115,5 +117,10 @@ class User extends Authenticatable implements JWTSubject
     public function dischargues()
     {
         return $this->hasMany(Dischargue::class);
+    }
+    
+    public function identity()
+    {
+        return $this->belongsTo(Identity::class, 'tipoDoc');
     }
 }

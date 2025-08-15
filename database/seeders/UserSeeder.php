@@ -16,6 +16,8 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'Eddy Barranzuela',
             'email' => 'demo@inspectec.cloud',
+            'tipoDoc' => 1,
+            'numDoc' => '71431466',
             'password' => bcrypt('12345678')
         ]);
     }

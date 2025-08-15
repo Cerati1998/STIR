@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use App\Models\Identity;
 use App\Models\User;
+use App\Services\sunatService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -16,7 +21,9 @@ class UserController extends Controller
     public function index()
     {
         $branches = Branch::where('company_id', session('company')->id)->get();
-        return view('users.index', compact('branches'));
+        //$identities = Identity::whereIn('id', [1, 2])->get();
+        $identities = Identity::find([1, 2]);
+        return view('users.index', compact('branches', 'identities'));
     }
 
     /**
@@ -35,6 +42,13 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
+            'tipoDoc' => ['required', 'exists:identities,id'],
+            'numDoc' => [
+                'required',
+                Rule::when($request->tipoDoc == 1, 'numeric|digits:8'),
+                Rule::when($request->tipoDoc == 2, 'numeric|digits:7'),
+                Rule::unique('users','numDoc')
+            ],
             'password' => ['required', 'string', 'confirmed', 'min:8', 'regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@*\/\-_])[a-zA-Z0-9@*\/\-_]{8,}$/'],
             'branch_id' => ['required', 'exists:branches,id'],
         ], [
@@ -52,6 +66,8 @@ class UserController extends Controller
             'email' => $data['email'],
         ], [
             'name' => $data['name'],
+            'tipoDoc' => $data['tipoDoc'],
+            'numDoc' => $data['numDoc'],
             'password' => bcrypt($data['password']),
         ]);
 
@@ -95,6 +111,42 @@ class UserController extends Controller
         return view('users.edit');
     }
 
+    public function searchDocument(Request $request)
+    {
+        $request->validate([
+            'tipoDoc' => 'required|in:1', // 1: DNI
+            'numDoc' => 'required|numeric|digits:8'
+        ], [
+            'tipoDoc.in' => 'Solo se permite consulta de DNI',
+            'numDoc.digits' => 'El DNI debe tener 8 dígitos'
+        ], [
+            'tipoDoc' => 'Tipo de Documento',
+            'numDoc' => 'Número de Documento'
+        ]);
+
+        $tipoDoc = (int) $request->tipoDoc;
+        $numDoc = $request->numDoc;
+
+        try {
+            if ($tipoDoc !== 1) {
+                throw new Exception("Solo se permite busqueda de persona natural por DNI");
+            }
+
+            $sunatService = app(sunatService::class);
+            $response = $sunatService->consultarDNI($numDoc);
+
+            if (!$response['success']) {
+                throw new Exception($response['message'] ?? 'Error al hacer la consulta');
+            }
+
+            return response()->json([
+                'nombres' => $response['data']['nombres'] . ' ' . $response['data']['apellidoPaterno'] . ' ' . $response['data']['apellidoMaterno'],
+                'message' => 'Usuario encontrado'
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
     /**
      * Update the specified resource in storage.
      */
