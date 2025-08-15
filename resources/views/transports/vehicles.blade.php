@@ -14,18 +14,18 @@
 
     <x-slot name="action">
 
-        <x-wire-button label="Nuevo" right-icon="plus" x-on:click="$openModal('transportCreate')" blue />
+        <x-wire-button label="Nuevo" right-icon="plus" x-on:click="$openModal('vehicleCreate')" blue />
 
     </x-slot>
 
     @livewire(
-        'transport-table',
+        'vehicle-table',
         [
-            'identities' => $identities,
+            'transport' => $transport,
         ],
-        key('transport-table')
+        key('vehicle-table')
     )
 
-    @livewire('transport-create', ['identities' => $identities], key('transport-create'))
+    @livewire('vehicle-create', ['transport' => $transport,], key('vehicle-create'))
 
 </x-dashboard-layout>

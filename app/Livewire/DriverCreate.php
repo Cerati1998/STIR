@@ -44,6 +44,7 @@ class DriverCreate extends Component
                 Rule::when($this->driver['tipoDoc'] == 1, 'numeric|digits:8'),
                 Rule::unique('drivers', 'numDoc')->where(function ($query) {
                     return $query->where('tipoDoc', $this->driver['tipoDoc'])
+                    ->where('transport_id',$this->transportId)
                         ->where('tipoDoc', '!=', '-');
                 }),
             ],
