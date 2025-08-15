@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 
 class UserTable extends DataTableComponent
@@ -19,6 +20,8 @@ class UserTable extends DataTableComponent
         'open' => false,
         'id' => '',
         'name' => '',
+        'tipoDoc' => '',
+        'numDoc' => '',
         'email' => '',
         'branch_id' => '',
     ];
@@ -84,6 +87,8 @@ class UserTable extends DataTableComponent
             'open' => true,
             'id' => $user->id,
             'name' => $user->name,
+            'tipoDoc' => $user->tipoDoc,
+            'numDoc' => $user->numDoc,
             'email' => $user->email,
             'branch_id' => $user->branch->id,
         ];
@@ -92,8 +97,17 @@ class UserTable extends DataTableComponent
     public function update()
     {
         $this->validate([
+            'userEdit.tipoDoc' => 'required|exists:identities,id',
+            'userEdit.numDoc' => [
+                'required',
+                Rule::when($this->userEdit['tipoDoc'] === '1', 'numeric|digits:8'),
+                Rule::when($this->userEdit['tipoDoc'] === '2', 'numeric|digits:7'),
+                Rule::unique('users', 'numDoc')->ignore($this->userEdit['id'])
+            ],
             'userEdit.branch_id' => 'required|exists:branches,id',
         ], [], [
+            'userEdit.tipoDoc' => 'Tipo de Documento',
+            'userEdit.numDoc' => 'Número de Documento',
             'userEdit.branch_id' => 'sucursal',
         ]);
 
@@ -103,6 +117,11 @@ class UserTable extends DataTableComponent
             ->update(['branch_id' => $this->userEdit['branch_id']]);
 
         $this->reset('userEdit');
+        $this->dispatch('swal', [
+            'title' => 'Exito!',
+            'text' => 'Usuario actualizado Correctamente',
+            'icon' => 'success'
+        ]);
     }
 
     public function destroy($userId)

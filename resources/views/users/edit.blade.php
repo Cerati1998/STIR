@@ -2,10 +2,7 @@
 
     <form wire:submit="update">
 
-        <x-wire-modal-card 
-            title="USUARIO"
-            wire:model="userEdit.open"
-            width="xl">
+        <x-wire-modal-card title="USUARIO" wire:model="userEdit.open" width="xl">
 
             <x-validation-errors class="mb-6" />
 
@@ -13,31 +10,38 @@
 
                 <div>
                     <x-label value="{{ __('Name') }}" />
-                    <x-input 
-                        class="block mt-1 w-full disabled:opacity-50 disabled:bg-gray-100" 
-                        type="text"
-                        placeholder="Nombre del usuario"
-                        wire:model="userEdit.name"
-                        disabled />
+                    <x-input class="block mt-1 w-full disabled:opacity-50 disabled:bg-gray-100" type="text"
+                        placeholder="Nombre del usuario" wire:model="userEdit.name" disabled />
                 </div>
-    
+
+                <div class="mt-4">
+                    <x-label class="mb-1">
+                        Tipo de Documento
+                    </x-label>
+                    <x-select required wire:model="userEdit.tipoDoc" class="w-full">
+                        <option value="" hidden>Seleccione...</option>
+                        @foreach ($identities as $identity)
+                            <option value="{{ $identity->id }}">{{ $identity->description }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+                <div class="mt-4">
+                    <x-label class="mb-1">
+                        Número de Documento
+                    </x-label>
+                    <x-input wire:model="userEdit.numDoc" placeholder="Ingrese el número de documento" class="w-full"/>
+                </div>
+
                 <div class="mt-4">
                     <x-label value="{{ __('Email') }}" />
-                    <x-input 
-                        class="block mt-1 w-full disabled:opacity-50 disabled:bg-gray-100"
-                        type="email" 
-                        placeholder="Correo electrónico"
-                        wire:model="userEdit.email"
-                        disabled
-                        autocomplete="username" />
+                    <x-input class="block mt-1 w-full disabled:opacity-50 disabled:bg-gray-100" type="email"
+                        placeholder="Correo electrónico" wire:model="userEdit.email" disabled autocomplete="username" />
                 </div>
-    
+
                 <div class="mt-4">
                     <x-label value="Sucursal" />
 
-                    <x-select 
-                        class="block mt-1 w-full" 
-                        wire:model="userEdit.branch_id">
+                    <x-select class="block mt-1 w-full" wire:model="userEdit.branch_id">
                         <option value="">Selecciona una sucursal</option>
                         @foreach ($branches as $branch)
                             <option value="{{ $branch->id }}">
@@ -63,7 +67,6 @@
 
 @push('js')
     <script>
-
         function confirmDelete(userId) {
             Swal.fire({
                 title: '¿Estás seguro?',
