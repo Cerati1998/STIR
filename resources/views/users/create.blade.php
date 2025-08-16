@@ -31,7 +31,7 @@
 
                     <div class="flex-1">
                         <x-label class="mb-1">
-                            Número de Documento
+                            Nº de Documento
                         </x-label>
                         <x-input x-model="user.numDoc" placeholder="Ingrese el número de documento" class="w-full"
                             x-bind:disabled="user.tipoDoc == '-'" />

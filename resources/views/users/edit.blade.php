@@ -27,7 +27,7 @@
                 </div>
                 <div class="mt-4">
                     <x-label class="mb-1">
-                        Número de Documento
+                        Nº de Documento
                     </x-label>
                     <x-input wire:model="userEdit.numDoc" placeholder="Ingrese el número de documento" class="w-full"/>
                 </div>
