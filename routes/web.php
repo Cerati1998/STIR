@@ -92,8 +92,8 @@ Route::middleware([
         Route::resource('reefer-conditions', ReeferConditionController::class)->names('reefer-conditions')->except('show');
 
         //rutas de carga de data de contenedores
-        Route::resource('dischargues', DischargueController::class)->names('dischargues')->except('show');
-        Route::get('dischargues/{dischargue}/containers', [DischargueController::class, 'dischargue_containers'])->name('dischargue.containers');
+        Route::resource('discharges', DischargueController::class)->names('discharges')->except('show');
+        Route::get('discharges/{dischargue}/containers', [DischargueController::class, 'dischargue_containers'])->name('dischargue.containers');
         Route::resource('devolutions', DevolutionController::class)->names('devolutions')->except('show');
         Route::resource('containers', ContainerController::class)->names('containers');
         Route::get('downloads/dischargue-template', function () {
