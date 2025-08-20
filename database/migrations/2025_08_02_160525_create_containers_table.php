@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('containers', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique(); // Código del contenedor, tipo: PEXX1234567
+            $table->string('code'); // Código del contenedor, tipo: PEXX1234567
             $table->string('iso_code')->nullable(); // Código ISO como 22G1, 45R1, etc.
 
             $table->foreignId('container_type_id')->nullable()->constrained()->nullOnDelete(); // Tipo (Dry, Reefer, etc.)
