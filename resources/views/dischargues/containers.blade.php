@@ -5,7 +5,7 @@
     ],
     [
         'name' => 'Descargas',
-        'route' => route('dischargues.index'),
+        'route' => route('discharges.index'),
     ],
     [
         'name' => 'Contenedores',

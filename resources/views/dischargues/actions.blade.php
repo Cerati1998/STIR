@@ -12,7 +12,7 @@
             </x-wire-dropdown.item>
 
 
-            <x-wire-dropdown.item href="{{ route('dischargue.containers', $dischargue->id) }}" target="_blank" class="group">
+            <x-wire-dropdown.item href="{{ route('discharge.containers', $dischargue->id) }}" target="_blank" class="group">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-box mr-2 group-hover:text-blue-500"></i>
                     <span class="group-hover:text-blue-500">Contenedores</span>
