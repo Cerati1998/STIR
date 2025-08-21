@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Container;
@@ -13,7 +14,7 @@ class DContainerTable extends DataTableComponent
     public $originType; // Ej: App\Models\Dischargue o App\Models\Devolution
     public $originId;
     public array $bulkActions = [
-        'bulkAnulate' => 'Anular Seleccionados'
+        'bulkAnulateConsult' => 'Anular Seleccionados'
     ];
 
     public function configure(): void
@@ -76,7 +77,15 @@ class DContainerTable extends DataTableComponent
 
         return $query;
     }
-
+    public function bulkAnulateConsult()
+    {
+        $this->dispatch('bulkAnulateConsult',[
+            'title' => '¿Estas seguro de anular?',
+            'msg' => 'No podrás trabajar los contenedores anulados'
+        ]);
+    }
+    
+    #[On('bulkAnulate')]
     public function bulkAnulate()
     {
         $selected = $this->getSelected();

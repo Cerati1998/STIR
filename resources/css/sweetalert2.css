@@ -6,7 +6,8 @@
 
 .swal2-popup .swal2-title {
   font-weight: 600;
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
+  /* 24px */
   color: #212529;
 }
 
@@ -15,7 +16,8 @@
   font-weight: 400;
   font-size: 1.1rem;
   margin-top: 1.5rem;
-  color: #323a46; /* un gris más suave que el título */
+  color: #323a46;
+  /* un gris más suave que el título */
 }
 
 .swal2-popup .swal2-footer {
@@ -60,13 +62,13 @@
 }
 
 .swal2-modal .swal2-confirm {
-  background-color: #0d6efd !important;
-  font-size: 1rem !important;
+  background-color: #3463e0 !important;
+  font-size: 0.675rem !important;
 }
 
 .swal2-modal .swal2-cancel.btn-cancel {
   background-color: #dc3545 !important;
-  font-size: 1rem;
+  font-size: 0.675rem;
 }
 
 .swal2-modal .swal2-confirm,
