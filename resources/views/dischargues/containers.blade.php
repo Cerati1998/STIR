@@ -22,8 +22,7 @@
             'originType' => \App\Models\Dischargue::class,
             'originId' => $dischargue->id,
         ],
-        key('dcontainers-table'),
-        ['wire:key' => 'dcontainers-table']
+        key('dcontainers-table')
     )
     @push('js')
         <script>
