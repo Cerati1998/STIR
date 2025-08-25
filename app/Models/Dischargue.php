@@ -17,14 +17,16 @@ class Dischargue extends Model
     protected $fillable = [
         'shipping_line_id',
         'vessel_id',
+        'voyage',
         'bl_number',
         'eta_date',
         'week',
         'started_at',
         'completed_at',
-        'user_id',
+        'created_by',
         'branch_id',
-        'anulated_by'
+        'anulated_by',
+        'anulated_reason'
     ];
 
     protected $casts = [
@@ -32,10 +34,6 @@ class Dischargue extends Model
         'completed_at' => 'datetime',
     ];
 
-    public function containers(): MorphMany
-    {
-        return $this->morphMany(Container::class, 'origin');
-    }
 
     public function shippingLine()
     {
@@ -46,14 +44,22 @@ class Dischargue extends Model
         return $this->belongsTo(Vessel::class);
     }
 
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function anulator()
+    {
+        return $this->belongsTo(User::class, 'anulated_by');
     }
 
     public function branch()
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    public function gateInDetails(){
+        return $this->morphMany(GateInDetail::class,'originable');
     }
 
     // Accessor para formatear la fecha

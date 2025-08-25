@@ -114,13 +114,31 @@ class User extends Authenticatable implements JWTSubject
             ->withTimestamps();
     }
 
-    public function dischargues()
+    public function dischargesCreated()
     {
-        return $this->hasMany(Dischargue::class);
+        return $this->hasMany(Dischargue::class, 'created_by');
     }
-    
+
+    public function dischargesAnulated()
+    {
+        return $this->hasMany(Dischargue::class, 'anulated_by');
+    }
+
     public function identity()
     {
         return $this->belongsTo(Identity::class, 'tipoDoc');
+    }
+    public function devolutionsCreated()
+    {
+        return $this->hasMany(Devolution::class, 'created_by');
+    }
+    public function devolutionsAnulated()
+    {
+        return $this->hasMany(Devolution::class, 'anulated_by');
+    }
+
+    public function containerOperationalTraces()
+    {
+        return $this->hasMany(ContainerOperationalTrace::class, 'final_status_user');
     }
 }

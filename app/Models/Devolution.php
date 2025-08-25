@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Observers\DevolutionObserver;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,37 +15,68 @@ class Devolution extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'shipping_line_id',
-        'vessel_id',
-        'voyage',
+        'returned_date',
         'client_id',
         'bl_number',
-        'eta_date',
+        'memo_number',
+        'shipping_line_id',
+        'vessel_id',
         'week',
-        'started_at',
-        'completed_at',
-        'user_id',
+        'voyage',
+        'created_by',
         'branch_id',
-        'anulated_by'
+        'anulated_by',
+        'anulated_reason'
     ];
 
     protected $casts = [
-        'eta_date' => 'date',
-        'started_at' => 'datetime',
-        'completed_at' => 'datetime',
+        'returned_date' => 'date',
     ];
 
-    public function containers(): MorphMany
+    /*  public function containers(): MorphMany
     {
         return $this->morphMany(Container::class, 'origin');
     }
+ */
 
-     public function shippingLine()
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+    public function shippingLine()
     {
         return $this->belongsTo(ShippingLine::class);
     }
 
-    public function vessel(){
+    public function vessel()
+    {
         return $this->belongsTo(Vessel::class);
+    }
+
+    public function gateInDetails()
+    {
+        return $this->morphMany(GateInDetail::class, 'originable');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function anulator()
+    {
+        return $this->belongsTo(User::class, 'anulated_by');
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+     // Accessor para formatear la fecha
+    protected function returnedDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $value ? Carbon::parse($value)->format('d/m/Y H:i') : null,
+        );
     }
 }

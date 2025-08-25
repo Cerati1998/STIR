@@ -29,4 +29,8 @@ class Client extends Model
     public function branch(){
         return $this->belongsTo(Branch::class);
     }
+
+    public function devolutions(){
+        return $this->hasMany(Devolution::class);
+    }
 }

@@ -23,4 +23,8 @@ class ShippingLine extends Model
     {
         return $this->hasMany(Devolution::class);
     }
+    public function containers()
+    {
+        return $this->hasMany(Container::class);
+    }
 }

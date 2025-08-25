@@ -10,7 +10,8 @@ class Port extends Model
     use SoftDeletes;
     protected $fillable = ['code', 'name', 'country_code', 'location'];
 
-    public function containers(){
-        return $this->hasMany(Container::class);
+    public function gateInDetails()
+    {
+        return $this->hasMany(GateInDetail::class);
     }
 }

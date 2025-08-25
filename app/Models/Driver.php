@@ -26,4 +26,8 @@ class Driver extends Model
     {
         return $this->belongsTo(Identity::class, 'tipoDoc');
     }
+
+    public function gateInDetails(){
+        return $this->hasMany(GateInDetail::class);
+    }
 }

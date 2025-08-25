@@ -19,4 +19,8 @@ class Vehicle extends Model
     public function transport(){
         return $this->belongsTo(Transport::class);
     }
+
+    public function gateInDetails(){
+        return $this->hasMany(GateInDetail::class);
+    }
 }

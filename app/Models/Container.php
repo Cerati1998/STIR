@@ -12,44 +12,31 @@ class Container extends Model
         'code',
         'iso_code',
         'container_type_id',
-        'port_id',
-        'condition_status',
-        'status',
         'reefer_technology_id',
         'reefer_machine_id',
-        'manufacture_year',
         'tare',
         'payload',
-        'origin_id',
-        'origin_type',
-        'gate_in_at',
-        'gate_in_at',
-        'gate_out_at',
-        'last_machine_inspection_at',
-        'is_operative',
+        'max_gross',
+        'build_year',
+        'build_month',
+        'own_line_id'
     ];
 
     protected $casts = [
-        'manufacture_year' => 'integer',
-        'tare' => 'decimal:2',
-        'payload' => 'decimal:2',
-        'last_machine_inspection_at' => 'datetime',
-        'is_operative' => 'boolean'
+        'build_month' => 'integer',
+        'build_year' => 'integer',
+        'tare' => 'integer',
+        'payload' => 'integer',
     ];
 
-    public function origin(): MorphTo
+    /* public function origin(): MorphTo
     {
         return $this->morphTo();
-    }
+    } */
 
     public function container_type()
     {
         return $this->belongsTo(ContainerType::class);
-    }
-
-    public function port()
-    {
-        return $this->belongsTo(Port::class);
     }
 
     public function reefer_technology()
@@ -62,7 +49,20 @@ class Container extends Model
         return $this->belongsTo(ReeferMachine::class);
     }
 
-    public function currentStatus(): Attribute
+    public function line()
+    {
+        return $this->belongsTo(ShippingLine::class, 'own_line_id');
+    }
+
+    public function gateInDetails(){
+        return $this->hasMany(GateInDetail::class);
+    }
+
+    public function containerOperationalTraces(){
+        return $this->hasMany(ContainerOperationalTrace::class);
+    }
+
+    /* public function currentStatus(): Attribute
     {
         $status = [
             [
@@ -97,5 +97,5 @@ class Container extends Model
         return Attribute::make(
             get: fn() => $status[$this->status]['description'] ?? 'Desconocido'
         );
-    }
+    } */
 }
