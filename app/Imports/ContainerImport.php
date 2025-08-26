@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\Container;
 use App\Models\ContainerOperationalTrace;
 use App\Models\ContainerType;
+use App\Models\Dischargue;
 use App\Models\GateInDetail;
 use App\Models\Port;
 use App\Models\ReeferMachine;
@@ -101,25 +102,40 @@ class ContainerImport implements
                 }
 
 
-                // Crear el contenedor
-                $container = Container::create([
-                    'code' => $containerCode,
-                    'iso_code' => $iso,
-                    'container_type_id' => $containerType->id,
-                    'reefer_machine_id' => null,
-                    'reefer_technology_id' => $reeferTechnologyId,
-                    'own_line_id' => $this->lineId,
-                    //'origin_id' => $this->dischargueId,
-                    //'origin_type' => \App\Models\Dischargue::class,
-                ]);
+                // Crear el contenedor, si lo encuentra solo trae
+                $container = Container::firstOrCreate(
+                    ['code' => $containerCode],
+                    [
+                        'iso_code' => $iso,
+                        'container_type_id' => $containerType->id,
+                        'reefer_machine_id' => null,
+                        'reefer_technology_id' => $reeferTechnologyId,
+                        'own_line_id' => $this->lineId,
+                        //'origin_id' => $this->dischargueId,
+                        //'origin_type' => \App\Models\Dischargue::class,
+                    ]
+                );
+
+                //agrego validador, si el contenedor ya se encuentra anunciado aborto la subida
+                $containerIn = ContainerOperationalTrace::where('container_id', $container->id)
+                    ->where('status', '<', 5)
+                    ->whereHas('gateInDetail.originable', function ($query) {
+                        $query->where('branch_id', session('branch')->id)
+                            ->where('originable_type', Dischargue::class);
+                    })
+                    ->exists();
+
+                if ($containerIn) {
+                    throw new \Exception("El contenedor '{$row['container']}' se encuentra en el patio, no se puede anunciar nuevamente.");
+                }
 
                 //creo el detalle del Gate In
                 $gateInDetail = GateInDetail::create([
                     'container_id' => $container->id,
                     'port_id' => $port->id,
                     'originable_id' => $this->dischargueId,
-                    'originable_type' => \App\Models\Dischargue::class,
-                    'container_condition' => strtoupper(trim($row['condition'] ?? 'MTY')),
+                    'originable_type' => Dischargue::class,
+                    'container_condition' => strtoupper(trim($row['condition'])) ?? 'MTY',
                 ]);
 
                 //creo el registro para la trazabilidad operativa del Contenedor

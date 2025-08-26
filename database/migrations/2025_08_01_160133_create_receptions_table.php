@@ -128,7 +128,7 @@ return new class extends Migration
                 ->onDelete('no action');
 
             $table->string('ticket_in', 50)->nullable();
-            $table->enum('container_condition', ['mty', 'fc']);
+            $table->enum('container_condition', ['MTY', 'FC']);
             $table->string('observation', 100)->nullable();
             $table->timestamps();
         });

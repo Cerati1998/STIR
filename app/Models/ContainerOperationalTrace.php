@@ -61,4 +61,55 @@ class ContainerOperationalTrace extends Model
             get: fn($value) => $value ? Carbon::parse($value)->format('d/m/Y H:i') : null,
         );
     }
+
+    public function currentStatus(): Attribute
+    {
+        $status = [
+            [
+                'description' => 'Anulado',
+                'code' => 'AN',
+                'icon' => 'fas fa-ban',
+                'styleBg' => 'bg-red-500'
+            ],
+            [
+                'description' => 'Anunciado',
+                'code' => 'AC',
+                'icon' => 'fas fa-bullhorn',
+                'styleBg' => 'bg-yellow-500'
+            ],
+            [
+                'description' => 'Recepcionado',
+                'code' => 'RC',
+                'icon' => 'fas fa-receipt',
+                'styleBg' => 'bg-blue-200'
+            ],
+            [
+                'description' => 'Dañado',
+                'code' => 'DM',
+                'icon' => 'fas fa-exclamation-triangle',
+                'styleBg' => 'bg-orange-500'
+            ],
+            [
+                'description' => 'Operativo',
+                'code' => 'AV',
+                'icon' => 'fas fa-check-circle',
+                'styleBg' => 'bg-green-500'
+            ],
+            [
+                'description' => 'Despachado',
+                'code' => 'DP',
+                'icon' => 'fas fa-paper-plane',
+                'styleBg' => 'bg-blue-500'
+            ],
+            [
+                'description' => 'Devolución Interna',
+                'code' => 'DI',
+                'icon' => 'fas fa-undo',
+                'styleBg' => 'bg-purple-500'
+            ],
+        ];
+        return Attribute::make(
+            get: fn() => $status[$this->status] ?? 'Desconocido'
+        );
+    }
 }

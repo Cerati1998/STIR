@@ -6,11 +6,12 @@ use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Container;
+use App\Models\GateInDetail;
 use Illuminate\Database\Eloquent\Builder;
 
 class DContainerTable extends DataTableComponent
 {
-    protected $model = Container::class;
+    protected $model = GateInDetail::class;
     public $originType; // Ej: App\Models\Dischargue o App\Models\Devolution
     public $originId;
     public array $bulkActions = [
@@ -31,42 +32,44 @@ class DContainerTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->deselected(),
-            Column::make("Contenedor", "code")
+            Column::make("Contenedor", "container.code")
                 ->searchable()
                 ->sortable(),
-            Column::make("ISO", "iso_code")
+            Column::make("ISO", "container.iso_code")
                 ->searchable()
                 ->sortable(),
-            Column::make("Tecnologia", "reefer_technology.name")
+            Column::make("Tecnologia", "container.reefer_technology.name")
                 ->format(function ($row) {
                     return $row ?? '-';
                 })
                 ->searchable()
                 ->sortable(),
-            Column::make("Tipo", "container_type.code"),
-            Column::make("T. Descripcion", "container_type.description")
+            Column::make("Tipo", "container.container_type.code"),
+            Column::make("T. Descripcion", "container.container_type.description")
                 ->sortable(),
             Column::make("Puerto Origen", "port.code")
                 ->sortable(),
-            Column::make("Condition", "condition_status")
+            Column::make("Condition", "container_condition")
                 ->sortable(),
-            Column::make("Estado", "status")
+            Column::make("Estado", "containerOperationalTrace.status")
                 ->format(function ($value, $row) {
-                    return $row->currentStatus;
+                    //dd($row->containerOperationalTrace->currentStatus);
+                    return view('components.badge', [
+                        'icon' => $row->containerOperationalTrace->currentStatus['icon'] ?? '',
+                        'styleBg' => $row->containerOperationalTrace->currentStatus['styleBg'] ?? '',
+                        'slot' => $row->containerOperationalTrace->currentStatus['description'] ?? '',
+                    ]);
                 })
-                ->sortable(),
-            Column::make("Created at", "created_at")
-                ->sortable(),
         ];
     }
 
     public function builder(): Builder
     {
-        $query = Container::query()->with(['origin', 'container_type', 'port', 'reefer_technology', 'machine']);
+        $query = GateInDetail::query()->with(['originable', 'container', 'port', 'containerOperationalTrace']);
 
         if ($this->originType && $this->originId) {
             $query->whereHasMorph(
-                'origin',
+                'originable',
                 $this->originType,
                 function (Builder $q) {
                     $q->where('id', $this->originId);
@@ -79,12 +82,12 @@ class DContainerTable extends DataTableComponent
     }
     public function bulkAnulateConsult()
     {
-        $this->dispatch('bulkAnulateConsult',[
+        $this->dispatch('bulkAnulateConsult', [
             'title' => '¿Estas seguro de anular?',
             'msg' => 'No podrás trabajar los contenedores anulados'
         ]);
     }
-    
+
     #[On('bulkAnulate')]
     public function bulkAnulate()
     {
