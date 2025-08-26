@@ -21,6 +21,7 @@ class Dischargue extends Model
         'bl_number',
         'eta_date',
         'week',
+        'manifiest_number',
         'started_at',
         'completed_at',
         'created_by',

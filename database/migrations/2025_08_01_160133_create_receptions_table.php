@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('discharges', function (Blueprint $table) {
+        Schema::create('dischargues', function (Blueprint $table) {
             $table->id();
             $table->foreignId('shipping_line_id')
                 ->constrained('shipping_lines')
@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('bl_number', 50)->nullable();
             $table->date('eta_date');
             $table->string('week', 50)->nullable();
+            $table->string('manifiest_number', 50)->nullable();
             $table->dateTime('started_at')->nullable();
             $table->dateTime('completed_at')->nullable();
 
@@ -106,11 +107,13 @@ return new class extends Migration
                 ->onDelete('no action');
 
             $table->foreignId('vehicle_id')
+                ->nullable()
                 ->constrained('vehicles', 'id')
                 ->onUpdate('cascade')
                 ->onDelete('no action');
 
             $table->foreignId('driver_id')
+                ->nullable()
                 ->constrained('drivers', 'id')
                 ->onUpdate('cascade')
                 ->onDelete('no action');
@@ -123,7 +126,7 @@ return new class extends Migration
                 ->constrained('ports', 'id')
                 ->onUpdate('cascade')
                 ->onDelete('no action');
-                
+
             $table->string('ticket_in', 50)->nullable();
             $table->enum('container_condition', ['mty', 'fc']);
             $table->string('observation', 100)->nullable();

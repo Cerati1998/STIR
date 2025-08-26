@@ -2,7 +2,7 @@
 
     <form wire:submit="save">
 
-        <x-wire-modal-card title="Subida masiva de contenedores" name="dischargueCreate" wire:model="openModal"
+        <x-wire-modal-card title="Subida masiva de contenedores" name="dischargueEdit" wire:model="openModal"
             :hide-close="true" width="3xl">
 
             <x-validation-errors class="mb-4" />
@@ -11,7 +11,7 @@
                 <div>
                     <div class="flex justify-between items-center mb-1">
                         <label for="shipping_line_id" class="text-sm text-gray-700">
-                            Línea <span class="text-red-500 font-semibold">*</span>
+                            Línea <x-required-tag />
                         </label>
                         <button type="button" x-on:click="$openModal('lineCreate')"
                             class="text-xs text-blue-500 hover:underline">
@@ -24,9 +24,9 @@
 
                 <!-- Nave -->
                 <div>
-                    <div class="flex justify-between items-center mb-1">
+                    <div class="flex justify-between items-center">
                         <label for="vessel_id" class="text-sm text-gray-700">
-                            Nave <span class="text-red-500 font-semibold">*</span>
+                            Nave <x-required-tag />
                         </label>
                         <button type="button" x-on:click="openVesselModal"
                             class="text-xs text-blue-500 hover:underline">
@@ -48,6 +48,11 @@
                 <!-- Semana -->
                 <x-wire-input label="Semana" wire:model="dischargue.week" class="col-span-1" />
             </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-3">
+                    <x-wire-input label="Viaje" wire:model="dischargue.voyage" />
+                    <x-wire-input label="Manifiesto" wire:model="dischargue.manifiest_number" />
+                </div>
 
 
             <x-slot name="footer" class="flex justify-between gap-x-4">

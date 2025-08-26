@@ -29,7 +29,7 @@ class DischargueTable extends DataTableComponent
     #[On('dischargueAdded')]
     public function builder(): Builder
     {
-        return Dischargue::with(['vessel', 'shippingLine', 'containers', 'user', 'branch'])
+        return Dischargue::with(['vessel', 'shippingLine', 'creator', 'branch'])
             ->where('branch_id', session('branch')->id);
     }
 
@@ -61,7 +61,7 @@ class DischargueTable extends DataTableComponent
                 ->sortable(),
             Column::make("Termino", "completed_at")
                 ->sortable(),
-            Column::make("Usuario", "user.name")
+            Column::make("Usuario", "creator.name")
                 ->sortable(),
             Column::make("Sucursal", "branch.name")
                 ->searchable()
@@ -101,7 +101,9 @@ class DischargueTable extends DataTableComponent
         'vessel_id' => '',
         'bl_number' => '',
         'eta_date' => '',
-        'week' => ''
+        'week' => '',
+        'voyage' => '',
+        'manifiest_number' => ''
     ];
 
     public function edit(Dischargue $dischargue)
@@ -113,6 +115,8 @@ class DischargueTable extends DataTableComponent
             'bl_number',
             'eta_date',
             'week',
+            'voyage',
+            'manifiest_number',
         ]);
 
         $this->dischargue['eta_date'] = Carbon::createFromFormat('d/m/Y', $this->dischargue['eta_date'])->format('Y-m-d');
@@ -146,12 +150,15 @@ class DischargueTable extends DataTableComponent
             'dischargue.shipping_line_id' => 'required|numeric|exists:shipping_lines,id',
             'dischargue.vessel_id' => 'required|numeric|exists:vessels,id',
             'dischargue.eta_date' => 'required|date',
-            'dischargue.bl_number' => 'nullable|string|min:5'
+            'dischargue.bl_number' => 'nullable|string|min:5',
+            'dischargue.manifiest_number' => 'nullable|numeric|min:2',
         ], [], [
             'dischargue.shipping_line_id' => 'Linea Naviera',
             'dischargue.vessel_id' => 'Nave',
             'dischargue.eta_date' => 'Fecha ETA',
-            'dischargue.bl_number' => 'Número de BL'
+            'dischargue.bl_number' => 'Número de BL',
+            'dischargue.manifiest_number' => 'Número de Manifiesto',
+
         ]);
 
         $dischargue = Dischargue::find($this->dischargueId);

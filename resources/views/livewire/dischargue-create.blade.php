@@ -2,7 +2,7 @@
     <div x-data="discharguesCreate">
         <form wire:submit="save">
 
-            <x-wire-modal-card title="Subida masiva de contenedores" name="dischargueCreate" wire:model="openModal"
+            <x-wire-modal-card title="Subida masiva de contenedore" name="dischargueCreate" wire:model="openModal"
                 :hide-close="true" width="3xl">
 
                 <x-validation-errors class="mb-4" />
@@ -11,10 +11,10 @@
                     <div>
                         <div class="flex justify-between items-center mb-1">
                             <label for="shipping_line_id" class="text-sm text-gray-700">
-                                Línea <span class="text-red-500 font-semibold">*</span>
+                                Línea <x-required-tag />
                             </label>
                             <button type="button" x-on:click="$openModal('lineCreate')"
-                                class="text-xs text-blue-500 hover:underline">
+                                class="text-xs text-blue-600 font-semibold hover:underline">
                                 + Nueva línea
                             </button>
                         </div>
@@ -26,10 +26,10 @@
                     <div>
                         <div class="flex justify-between items-center mb-1">
                             <label for="vessel_id" class="text-sm text-gray-700">
-                                Nave <span class="text-red-500 font-semibold">*</span>
+                                Nave <x-required-tag />
                             </label>
                             <button type="button" x-on:click="openVesselModal"
-                                class="text-xs text-blue-500 hover:underline">
+                                class="text-xs text-blue-600 font-semibold hover:underline">
                                 + Nueva Nave
                             </button>
                         </div>
@@ -40,13 +40,24 @@
                 </div>
                 <div class="grid grid-cols-3 gap-4 mb-3">
                     <!-- bl -->
-                    <x-wire-input label="BL" wire:model="dischargue.bl_number" class="col-span-1" />
+                    <div>
+                        <label class="text-sm text-gray-700">BL <x-required-tag /></label>
+                        <x-wire-input wire:model="dischargue.bl_number" class="col-span-1" />
+                    </div>
 
                     <!-- ETA -->
-                    <x-wire-input type="date" label="ETA" wire:model="dischargue.eta_date" class="col-span-1" />
+                    <div>
+                        <label class="text-sm text-gray-700">ETA <x-required-tag /></label>
+                        <x-wire-input type="date" wire:model="dischargue.eta_date" class="col-span-1" />
+                    </div>
 
                     <!-- Semana -->
                     <x-wire-input label="Semana" wire:model="dischargue.week" class="col-span-1" />
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-3">
+                    <x-wire-input label="Viaje" wire:model="dischargue.voyage" />
+                    <x-wire-input label="Manifiesto" wire:model="dischargue.manifiest_number" />
                 </div>
 
                 <div

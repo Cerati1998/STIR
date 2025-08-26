@@ -3,7 +3,9 @@
 namespace App\Imports;
 
 use App\Models\Container;
+use App\Models\ContainerOperationalTrace;
 use App\Models\ContainerType;
+use App\Models\GateInDetail;
 use App\Models\Port;
 use App\Models\ReeferMachine;
 use App\Models\ReeferTechnology;
@@ -22,15 +24,17 @@ class ContainerImport implements
     WithBatchInserts
 {
     protected $dischargueId;
+    protected $lineId;
 
     // Cache en memoria durante el chunk
     protected array $cachedPorts = [];
     protected array $cachedContainerTypes = [];
     protected array $cachedReefers = [];
 
-    public function __construct($dischargueId)
+    public function __construct($dischargueId, $lineId)
     {
         $this->dischargueId = $dischargueId;
+        $this->lineId = $lineId;
     }
 
     public function chunkSize(): int
@@ -54,6 +58,7 @@ class ContainerImport implements
             }
 
             try {
+                //proceso de validacion de datos de cada contenedor y campo de proveniencia
                 $containerCode = strtoupper(trim($row['container'] ?? ''));
 
                 if (strlen($containerCode) !== 11) {
@@ -81,7 +86,6 @@ class ContainerImport implements
                 $containerType = $this->getCachedContainerType($iso);
 
                 // Reefer machine y tecnología (solo si es reefer)
-                $reeferMachineId = null;
                 $reeferTechnologyId = null;
 
                 if ($containerType->is_reefer) {
@@ -89,26 +93,39 @@ class ContainerImport implements
 
                     if (empty($type)) {
                         $type = 'CONVENCIONAL';
-                        Log::info("Fila $index: Contenedor reefer sin tipo, asignado tipo por defecto: CONVENCIONAL.");
+                        //Log::info("Fila $index: Contenedor reefer sin tipo, asignado tipo por defecto: CONVENCIONAL.");
                     }
 
                     $reeferTechnology = $this->getCachedTechnology($type);
-                    $reeferTechnologyId = $reeferTechnology->id;
+                    $reeferTechnologyId = $reeferTechnology->id ?? NULL;
                 }
 
 
                 // Crear el contenedor
-                Container::create([
+                $container = Container::create([
                     'code' => $containerCode,
                     'iso_code' => $iso,
                     'container_type_id' => $containerType->id,
-                    'port_id' => $port->id,
-                    'condition_status' => strtoupper(trim($row['condition'] ?? '')),
-                    'status' => 1,
                     'reefer_machine_id' => null,
                     'reefer_technology_id' => $reeferTechnologyId,
-                    'origin_id' => $this->dischargueId,
-                    'origin_type' => \App\Models\Dischargue::class,
+                    'own_line_id' => $this->lineId,
+                    //'origin_id' => $this->dischargueId,
+                    //'origin_type' => \App\Models\Dischargue::class,
+                ]);
+
+                //creo el detalle del Gate In
+                $gateInDetail = GateInDetail::create([
+                    'container_id' => $container->id,
+                    'port_id' => $port->id,
+                    'originable_id' => $this->dischargueId,
+                    'originable_type' => \App\Models\Dischargue::class,
+                    'container_condition' => strtoupper(trim($row['condition'] ?? 'MTY')),
+                ]);
+
+                //creo el registro para la trazabilidad operativa del Contenedor
+                ContainerOperationalTrace::create([
+                    'gate_in_detail_id' => $gateInDetail->id,
+                    'container_id' => $container->id,
                 ]);
             } catch (Throwable $e) {
                 Log::error("Fila $index falló: " . $e->getMessage());
@@ -118,8 +135,12 @@ class ContainerImport implements
             }
         }
     }
-    protected function getCachedTechnology(string $type): ReeferTechnology
+    protected function getCachedTechnology(string $type)
     {
+
+        if ($type == '') {
+            return null;
+        }
         $normalizedType = strtoupper(trim($type));
 
         if (isset($this->cachedReefers[$normalizedType])) {

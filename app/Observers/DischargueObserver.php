@@ -13,7 +13,7 @@ class DischargueObserver
 
         // Solo si está autenticado el usuario y hay una sucursal
         if (Auth::check() && session()->has('branch')) {
-            $dischargue->user_id = Auth::id();
+            $dischargue->created_by = Auth::id();
             $dischargue->branch_id = session('branch')->id;
         }
     }

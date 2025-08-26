@@ -20,7 +20,9 @@ class DischargueCreate extends Component
         'vessel_id' => '',
         'bl_number' => '',
         'eta_date' => '',
-        'week' => ''
+        'week' => '',
+        'voyage' => '',
+        'manifiest_number' => ''
     ];
 
     public $vessels = [];
@@ -59,13 +61,15 @@ class DischargueCreate extends Component
                 'dischargue.shipping_line_id' => 'required|numeric|exists:shipping_lines,id',
                 'dischargue.vessel_id' => 'required|numeric|exists:vessels,id',
                 'dischargue.eta_date' => 'required|date',
-                'dischargue.bl_number' => 'nullable|string|min:5'
+                'dischargue.bl_number' => 'nullable|string|min:5',
+                'dischargue.manifiest_number' => 'nullable|numeric|min:2',
             ], [], [
                 'attach' => 'Archivo excel de Descarga',
                 'dischargue.shipping_line_id' => 'Linea Naviera',
                 'dischargue.vessel_id' => 'Nave',
                 'dischargue.eta_date' => 'Fecha ETA',
-                'dischargue.bl_number' => 'Número de BL'
+                'dischargue.bl_number' => 'Número de BL',
+                'dischargue.manifiest_number' => 'Número de Manifiesto',
             ]);
 
             $newDischargue = Dischargue::create($this->dischargue);
@@ -74,7 +78,7 @@ class DischargueCreate extends Component
             $filePath = $this->attach->store('imports');
 
             //importo los contenedores
-            Excel::import(new ContainerImport($newDischargue->id), $filePath);
+            Excel::import(new ContainerImport($newDischargue->id, $this->dischargue['shipping_line_id']), $filePath);
             FacadesDB::commit();
 
             $this->reset('attach', 'dischargue', 'openModal');
