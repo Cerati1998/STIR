@@ -38,21 +38,23 @@
                     </div>
 
                 </div>
-                <div class="grid grid-cols-3 gap-4 mb-3">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-3">
                     <!-- bl -->
                     <div>
                         <label class="text-sm text-gray-700">BL <x-required-tag /></label>
-                        <x-wire-input wire:model="dischargue.bl_number" class="col-span-1" />
+                        <x-wire-input wire:model="dischargue.bl_number" />
                     </div>
 
                     <!-- ETA -->
                     <div>
                         <label class="text-sm text-gray-700">ETA <x-required-tag /></label>
-                        <x-wire-input type="date" wire:model="dischargue.eta_date" class="col-span-1" />
+                        {{-- <x-wire-input type="date" wire:model="dischargue.eta_date" class="col-span-1" /> --}}
+                        <x-wire-datetime-picker wire:model="dischargue.eta_date" display-format="DD-MM-YYYY"
+                            parse-format="YYYY-MM-DD" :min="now()->format('Y-m-d')" />
                     </div>
 
                     <!-- Semana -->
-                    <x-wire-input label="Semana" wire:model="dischargue.week" class="col-span-1" />
+                    <x-wire-input label="Semana" wire:model="dischargue.week" />
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-3">

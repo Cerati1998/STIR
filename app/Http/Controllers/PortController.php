@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Port;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PortController extends Controller
 {
@@ -83,6 +85,23 @@ class PortController extends Controller
 
             return response()->json(array_values($countries));
         }
+    }
+
+    public function searchPorts(Request $request){
+        return Port::query()
+        ->select(DB::raw('id,CONCAT(code,"-",name) as full_name'))
+        ->when(
+            $request->search,
+            fn(Builder $query) =>
+            $query->where('name', 'like', "%{$request->search}%")
+        )
+        ->when(
+            $request->exists('selected'),
+            fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+            fn(Builder $query) => $query->limit(20)
+        )
+        ->orderBy('id')
+        ->get();
     }
     /**
      * Show the form for creating a new resource.

@@ -103,6 +103,7 @@ Route::middleware([
         //endpoint para selectores
         Route::get('searchLine', [ShippingLineController::class, 'searchLines'])->name('line.search');
         Route::get('searchVessel', [ShippingLineController::class, 'searchVessels'])->name('vessel.search');
+        Route::get('searchPort', [PortController::class, 'searchPorts'])->name('port.search');
         Route::post('searchDocument', [UserController::class, 'searchDocument'])->name('user.searchDocument');
     });
 });

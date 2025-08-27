@@ -9,7 +9,7 @@
 ]">
     <x-slot name="action">
 
-        <x-wire-button label="Nuevo" right-icon="plus" href="{{route('branches.create')}}" blue />
+        <x-wire-button label="Nuevo" icon="plus" href="{{route('branches.create')}}" blue />
 
     </x-slot>
 

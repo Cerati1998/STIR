@@ -9,7 +9,7 @@
 ]">
 
 <x-slot name="action">
-    <x-wire-button label="Nuevo" right-icon="plus" x-on:click="$openModal('portCreate')" blue />
+    <x-wire-button label="Nuevo" icon="plus" x-on:click="$openModal('portCreate')" blue />
 </x-slot>
 
 @livewire('masters.port-table',[],key('port-table'))

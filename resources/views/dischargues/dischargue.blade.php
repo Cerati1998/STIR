@@ -38,21 +38,23 @@
                 </div>
 
             </div>
-            <div class="grid grid-cols-3 gap-4 mb-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3">
                 <!-- bl -->
-                <x-wire-input label="BL" wire:model="dischargue.bl_number" class="col-span-1" />
+                <x-wire-input label="BL" wire:model="dischargue.bl_number" />
 
                 <!-- ETA -->
-                <x-wire-input type="date" label="ETA" wire:model="dischargue.eta_date" class="col-span-1" />
+                {{-- <x-wire-input type="date" label="ETA" wire:model="dischargue.eta_date" class="col-span-1" /> --}}
+                <x-wire-datetime-picker label="ETA" wire:model="dischargue.eta_date"
+                    display-format="DD-MM-YYYY" parse-format="YYYY-MM-DD" :min="now()->format('Y-m-d')" />
 
                 <!-- Semana -->
-                <x-wire-input label="Semana" wire:model="dischargue.week" class="col-span-1" />
+                <x-wire-input label="Semana" wire:model="dischargue.week" />
             </div>
 
             <div class="grid grid-cols-2 gap-4 mb-3">
-                    <x-wire-input label="Viaje" wire:model="dischargue.voyage" />
-                    <x-wire-input label="Manifiesto" wire:model="dischargue.manifiest_number" />
-                </div>
+                <x-wire-input label="Viaje" wire:model="dischargue.voyage" />
+                <x-wire-input label="Manifiesto" wire:model="dischargue.manifiest_number" />
+            </div>
 
 
             <x-slot name="footer" class="flex justify-between gap-x-4">

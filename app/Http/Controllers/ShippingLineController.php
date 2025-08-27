@@ -74,7 +74,7 @@ class ShippingLineController extends Controller
     public function searchLines(Request $request)
     {
         return ShippingLine::query()
-            ->select(columns: DB::raw("id,CONCAT(code,'-',name) as name"))
+            ->select( DB::raw("id,CONCAT(code,'-',name) as name"))
             ->when(
                 $request->search,
                 fn(Builder $query) =>

@@ -9,7 +9,7 @@
 ]">
 
     <x-slot name="action">
-        <x-wire-button label="Nueva" right-icon="plus" x-on:click="$openModal('lineCreate')" blue />
+        <x-wire-button label="Nueva" icon="plus" x-on:click="$openModal('lineCreate')" blue />
     </x-slot>
 
     @livewire('masters.line-table', [], key('line-table'))

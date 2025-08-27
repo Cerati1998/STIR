@@ -13,7 +13,7 @@
 ]">
 
     <x-slot name="action">
-        <x-wire-button label="Nueva" x-on:click="$openModal('containerCreate')" blue />
+        <x-wire-button label="Agregar" icon="plus" x-on:click="$openModal('containerAdd')" blue />
     </x-slot>
 
     @livewire(
@@ -24,6 +24,7 @@
         ],
         key('dcontainers-table')
     )
+    @livewire('masters.port-create', [], key('port-create'))
     @push('js')
         <script>
             Livewire.on('bulkAnulateConsult', data => {

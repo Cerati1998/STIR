@@ -27,7 +27,7 @@ class PortCreate extends Component
     public function save()
     {
         $this->validate([
-            'port.code' => 'required|string|min:5|max:6',
+            'port.code' => 'required|string|min:5|max:6|unique:ports,code',
             'port.name' => 'required|string|min:4',
             'port.country_code' => 'required|string|min:2|max:4'
         ], [], [
