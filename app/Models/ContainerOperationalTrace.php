@@ -69,7 +69,7 @@ class ContainerOperationalTrace extends Model
                 'description' => 'Anulado',
                 'code' => 'AN',
                 'icon' => 'fas fa-ban',
-                'styleBg' => 'bg-red-500'
+                'styleBg' => 'bg-stone-500'
             ],
             [
                 'description' => 'Anunciado',
@@ -78,16 +78,16 @@ class ContainerOperationalTrace extends Model
                 'styleBg' => 'bg-yellow-500'
             ],
             [
-                'description' => 'Recepcionado',
+                'description' => 'Recibido',
                 'code' => 'RC',
-                'icon' => 'fas fa-receipt',
-                'styleBg' => 'bg-blue-200'
+                'icon' => 'fas fa-door-open',
+                'styleBg' => 'bg-sky-500'
             ],
             [
-                'description' => 'Dañado',
+                'description' => 'Damage',
                 'code' => 'DM',
-                'icon' => 'fas fa-exclamation-triangle',
-                'styleBg' => 'bg-orange-500'
+                'icon' => 'fas fa-screwdriver-wrench',
+                'styleBg' => 'bg-red-500'
             ],
             [
                 'description' => 'Operativo',

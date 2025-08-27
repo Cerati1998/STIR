@@ -5,7 +5,7 @@ namespace App\Livewire;
 use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use App\Models\Container;
+use App\Models\ContainerOperationalTrace;
 use App\Models\GateInDetail;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -75,7 +75,7 @@ class DContainerTable extends DataTableComponent
                     $q->where('id', $this->originId);
                 }
             )
-                ->where('status', '>', 0);;
+                ->where('status', '>=', 0);;
         }
 
         return $query;
@@ -103,8 +103,9 @@ class DContainerTable extends DataTableComponent
         }
 
         // Solo obtener los que tengan status = 1
-        $validContainers = Container::whereIn('id', $selected)
+        $validContainers = ContainerOperationalTrace::whereIn('id', $selected)
             ->where('status', 1)
+            ->where('gate_in_detail_id', $this->originId)
             ->pluck('id')
             ->toArray();
 
@@ -118,7 +119,7 @@ class DContainerTable extends DataTableComponent
         }
 
         // Actualizar solo los válidos
-        Container::whereIn('id', $validContainers)->update([
+        ContainerOperationalTrace::whereIn('id', $validContainers)->update([
             'status' => 0
         ]);
 

@@ -14,7 +14,7 @@
             'name' => 'Descargas',
             'icon' => 'fa-solid fa-arrow-up-from-water-pump',
             'route' => route('discharges.index'),
-            'active' => request()->routeIs(['discharges.*','dischargue.*']),
+            'active' => request()->routeIs(['discharges.*','discharge.*']),
         ],
         [
             'name' => 'Devoluciones',

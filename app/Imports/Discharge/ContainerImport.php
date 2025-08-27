@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Imports;
+namespace App\Imports\Discharge;
 
 use App\Models\Container;
 use App\Models\ContainerOperationalTrace;
