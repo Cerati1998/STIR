@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Container;
+use App\Models\ContainerOperationalTrace;
 use App\Models\Vessel;
 use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -175,6 +176,26 @@ class DischargueTable extends DataTableComponent
 
     public function destroy(Dischargue $dischargue)
     {
+        //primero verifico que ningun contenedor ingresado se encuentre con status != ANUNCIADO
+        $containersIn = ContainerOperationalTrace::query()
+            ->whereHas(
+                'gateInDetail.originable',
+                fn($query) =>
+                $query->where('originable_type', Dischargue::class)
+                    ->where('originable_id', $dischargue->id)
+            )
+            ->where('status', '>', 1)
+            ->count();
+
+        if ($containersIn > 0) {
+            $this->dispatch('swal', [
+                'title' => 'Error!',
+                'text' => 'No se puede anular la Descarga, hay contenedores de esta que ya estan en patio',
+                'icon' => 'error'
+            ]);
+            return;
+        }
+
         //actualizo a estado 0 todos los contenedores
         $containers = Container::where('origin_id', $dischargue->id)
             ->where('origin_type', "App\Models\Dischargue");
