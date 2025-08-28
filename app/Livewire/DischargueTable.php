@@ -12,7 +12,6 @@ use App\Models\Dischargue;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
-use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class DischargueTable extends DataTableComponent
 {
@@ -97,6 +96,9 @@ class DischargueTable extends DataTableComponent
 
 
     public $openModal = false;
+    public $selectedDischargeId = null;
+    public $openModalAnulate = false;
+    public $anulateReason = '';
     public $dischargue = [
         'shipping_line_id' => '',
         'vessel_id' => '',
@@ -106,6 +108,12 @@ class DischargueTable extends DataTableComponent
         'voyage' => '',
         'manifiest_number' => ''
     ];
+
+    public function setSelectedDischargeId($id)
+    {
+        $this->selectedDischargeId = $id;
+        $this->openModalAnulate = true;
+    }
 
     public function edit(Dischargue $dischargue)
     {
@@ -174,8 +182,29 @@ class DischargueTable extends DataTableComponent
         ]);
     }
 
-    public function destroy(Dischargue $dischargue)
+    public function destroy()
     {
+        //valido que tengo el id
+        if (!$this->selectedDischargeId) {
+            $this->dispatch('swal', [
+                'title' => 'Error!',
+                'text' => 'No se ha seleccionado ninguna descarga.',
+                'icon' => 'error'
+            ]);
+            return;
+        }
+
+        if ($this->anulateReason === '' || strlen($this->anulateReason) < 5) {
+            $this->dispatch('swal', [
+                'title' => 'Error!',
+                'text' => 'El motivo de anulación es requerido y debe tener al menos 5 caracteres',
+                'icon' => 'error'
+            ]);
+            return;
+        }
+
+        $dischargue = Dischargue::find($this->selectedDischargeId);
+
         //primero verifico que ningun contenedor ingresado se encuentre con status != ANUNCIADO
         $containersIn = ContainerOperationalTrace::query()
             ->whereHas(
@@ -193,17 +222,25 @@ class DischargueTable extends DataTableComponent
                 'text' => 'No se puede anular la Descarga, hay contenedores de esta que ya estan en patio',
                 'icon' => 'error'
             ]);
+            $this->reset('selectedDischargeId', 'openModalAnulate', 'anulateReason');
             return;
         }
 
         //actualizo a estado 0 todos los contenedores
-        $containers = Container::where('origin_id', $dischargue->id)
-            ->where('origin_type', "App\Models\Dischargue");
-        $containers->update([
-            'status' => 0
-        ]);
+        ContainerOperationalTrace::query()
+            ->whereHas('gateInDetail.originable', fn($query) =>
+            $query->where('originable_id', $dischargue->id)
+                ->where('originable_type', "App\Models\Dischargue"))->update([
+                'status' => 0
+            ]);
 
+        //actualizo la descarga añadiendo razon de anulacion y anulated by
+        $dischargue->anulated_reason = $this->anulateReason;
+        $dischargue->anulated_by = auth()->user()->id;
+        $dischargue->save();
         $dischargue->delete();
+
+        $this->reset('selectedDischargeId', 'openModalAnulate', 'anulateReason');
 
         $this->dispatch('swal', [
             'title' => 'Exito!',

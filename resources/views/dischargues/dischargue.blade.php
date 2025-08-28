@@ -44,8 +44,8 @@
 
                 <!-- ETA -->
                 {{-- <x-wire-input type="date" label="ETA" wire:model="dischargue.eta_date" class="col-span-1" /> --}}
-                <x-wire-datetime-picker label="ETA" wire:model="dischargue.eta_date"
-                    display-format="DD-MM-YYYY" parse-format="YYYY-MM-DD" :min="now()->format('Y-m-d')" />
+                <x-wire-datetime-picker label="ETA" wire:model="dischargue.eta_date" display-format="DD-MM-YYYY"
+                    parse-format="YYYY-MM-DD" :min="now()->format('Y-m-d')" />
 
                 <!-- Semana -->
                 <x-wire-input label="Semana" wire:model="dischargue.week" />
@@ -67,6 +67,30 @@
             </x-slot>
         </x-wire-modal-card>
     </form>
+
+</div>
+
+<div>
+
+    <x-wire-modal-card title="Ingrese Motivo de Anulación" name="dischargueAnulate" wire:model="openModalAnulate"
+        :hide-close="true" width="3xl">
+
+        <x-validation-errors class="mb-4" />
+        <div class="mb-3">
+            <x-text-area name="motive" label="Motivo" placeholder="Detalla el motivo de la Anulación..."
+            wire:model="anulateReason" />
+        </div>
+
+
+        <x-slot name="footer" class="flex justify-between gap-x-4">
+            <div class="flex gap-x-4">
+                <x-wire-button flat label="Cancel" x-on:click="close" />
+
+                <x-wire-button primary label="Guardar" type="submit" spinner icon="arrow-down-tray"
+                    onclick="confirmDelete({{ $this->selectedDischargeId }})" />
+            </div>
+        </x-slot>
+    </x-wire-modal-card>
 
 </div>
 
