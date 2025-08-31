@@ -207,7 +207,7 @@ class DContainerTable extends DataTableComponent
             'gate_in_detail_id' => $gateInDetail->id,
             'container_id' => $container->id,
         ]);
-        $this->reset('openModal','container');
+        $this->reset('openModal', 'container');
         $this->dispatch('swal', [
             'title' => 'Éxito!',
             'text' => 'Contenedor agregado Correctamente a Gate In',
@@ -241,7 +241,10 @@ class DContainerTable extends DataTableComponent
         // Solo obtener los que tengan status = 1
         $validContainers = ContainerOperationalTrace::whereIn('id', $selected)
             ->where('status', 1)
-            ->where('gate_in_detail_id', $this->originId)
+            ->whereHas('gateInDetail.originable', function ($query) {
+                $query->where('originable_id', $this->originId)
+                    ->where('originable_type', $this->originType);
+            })
             ->pluck('id')
             ->toArray();
 

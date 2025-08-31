@@ -21,7 +21,7 @@ return new class extends Migration
 
         Schema::create('vessels', function (Blueprint $table) {
             $table->id();
-            $table->string('imo_number', 15)->unique();
+            $table->string('imo_number', 15)->nullable();
             $table->string('name', 200);
             $table->enum('type', ['container', 'bulk', 'tanker', 'other'])->default('container');
             $table->foreignId('shipping_line_id')

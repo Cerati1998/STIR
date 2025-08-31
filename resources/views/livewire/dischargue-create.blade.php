@@ -2,7 +2,7 @@
     <div x-data="discharguesCreate">
         <form wire:submit="save">
 
-            <x-wire-modal-card title="Subida masiva de contenedore" name="dischargueCreate" wire:model="openModal"
+            <x-wire-modal-card title="Subida masiva de contenedores" name="dischargueCreate" wire:model="openModal"
                 :hide-close="true" width="3xl">
 
                 <x-validation-errors class="mb-4" />
@@ -50,7 +50,7 @@
                         <label class="text-sm text-gray-700">ETA <x-required-tag /></label>
                         {{-- <x-wire-input type="date" wire:model="dischargue.eta_date" class="col-span-1" /> --}}
                         <x-wire-datetime-picker wire:model="dischargue.eta_date" display-format="DD-MM-YYYY"
-                            parse-format="YYYY-MM-DD" :min="now()->format('Y-m-d')" />
+                            parse-format="YYYY-MM-DD" :min="now()->setTimezone('America/Lima')->format('Y-m-d')" />
                     </div>
 
                     <!-- Semana -->
@@ -101,7 +101,7 @@
                             return;
                         } */
                         this.$wire.dispatch('setShippingLineId', {
-                            shippingLineId: this.dischargue.shipping_line,
+                            shippingLineId: this.dischargue.shipping_line_id,
                             isExtern: true
                         });
                         $openModal('vesselCreate');

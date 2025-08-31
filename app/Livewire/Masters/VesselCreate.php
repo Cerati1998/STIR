@@ -79,7 +79,7 @@ class VesselCreate extends Component
         $this->dispatch('vesselAdded');
 
         if ($this->isExtern) {
-            $this->dispatch('vesselExternAdded');
+            $this->dispatch('vesselExternAdded',$this->shippingLineId);
         }
 
         $this->dispatch('swal', [

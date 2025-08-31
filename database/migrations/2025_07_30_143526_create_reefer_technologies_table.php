@@ -35,7 +35,7 @@ return new class extends Migration
             $table->float('atmosphere_co2_max')->nullable();
 
             // Información de uso u observaciones
-            $table->text('usage');
+            $table->text('usage')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
