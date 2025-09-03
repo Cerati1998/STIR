@@ -46,7 +46,7 @@ class PortSeeder extends Seeder
             ['code' => 'PEPAI', 'name' => 'Paita', 'country_code' => 'PER'],
             ['code' => 'PECLL', 'name' => 'Callao', 'country_code' => 'PER'],
 
-            ['code' => 'ECGYE', 'name' => 'Pointe a Pitre', 'country_code' => 'GLP'],
+            ['code' => 'GPPTP', 'name' => 'Pointe a Pitre', 'country_code' => 'GLP'],
             ['code' => 'ECGYE', 'name' => 'Guayaquil', 'country_code' => 'ECU'],
             ['code' => 'ECPBO', 'name' => 'Puerto Bolivar', 'country_code' => 'ECU'],
             ['code' => 'COSMR', 'name' => 'Santa Marta', 'country_code' => 'COL'],

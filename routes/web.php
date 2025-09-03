@@ -99,6 +99,9 @@ Route::middleware([
         Route::get('downloads/dischargue-template', function () {
             return response()->download(resource_path('templates/massive_dischargue.xlsx'));
         })->name('dischargue-template');
+        Route::get('downloads/devolution-template', function () {
+            return response()->download(resource_path('templates/massive_devolution.xlsx'));
+        })->name('devolution-template');
 
         //endpoint para selectores
         Route::get('searchLine', [ShippingLineController::class, 'searchLines'])->name('line.search');

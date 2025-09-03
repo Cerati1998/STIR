@@ -9,9 +9,11 @@ use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Dischargue;
+use App\Models\ShippingLine;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class DischargueTable extends DataTableComponent
 {
@@ -86,6 +88,22 @@ class DischargueTable extends DataTableComponent
                     $builder
                         ->whereDate('eta_date', '>=', $dateRange['minDate'])
                         ->whereDate('eta_date', '<=', $dateRange['maxDate']);
+                }),
+                SelectFilter::make('Linea')
+                ->options(
+                    [''=>'Todas'] + ShippingLine::query()
+                    ->whereHas('dischargues',function($query){
+                        $query->where('dischargues.branch_id', session('branch')->id);
+                    })
+                    ->pluck('name','id')
+                    ->toArray()
+                )
+                ->filter(function($query,$value){
+                    if($value){
+                        $query->whereHas('shippingLine', function($q) use ($value){
+                            $q->where('id',$value);
+                        });
+                    }
                 })
         ];
     }

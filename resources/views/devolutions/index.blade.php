@@ -1,10 +1,10 @@
-<x-dashboard-layout title="Descargas | {{ session('company')->razonSocial }}" :breadcrumbs="[
+<x-dashboard-layout title="Devoluciones | {{ session('company')->razonSocial }}" :breadcrumbs="[
     [
         'name' => 'Dashboard',
         'route' => route('dashboard'),
     ],
     [
-        'name' => 'Descargas',
+        'name' => 'Devoluciones',
     ],
 ]">
     <x-wire-alert class="mb-4"
@@ -16,13 +16,14 @@
             <h1 class="text-xl">Anuncios de ingreso</h1>
         </div>
         <div class="gap-4">
-            <x-wire-button href="{{ route('dischargue-template') }}" label="Descargar Plantilla"
+            <x-wire-button href="{{ route('devolution-template') }}" label="Descargar Plantilla"
                 icon="arrow-down-on-square" green />
-            <x-wire-button label="Subida Masiva" icon="arrow-up-on-square" x-on:click="$openModal('dischargueCreate')" />
+            <x-wire-button label="Subida Masiva" icon="arrow-up-on-square" x-on:click="$openModal('devolutionCreate')" />
         </div>
     </div>
-    @livewire('dischargue-table', [], 'dischargue-table')
-    @livewire('dischargue-create', [], 'dischargue-create')
+    @livewire('devolution-table', [], 'devolution-table')
+    @livewire('devolution-create', [], 'devolution-create')
+    @livewire('client-create', ['identities' => $identities], 'client-create')
     @livewire('masters.vessel-create', [], 'vessel-create')
     @livewire('masters.line-create', [], 'line-create')
 </x-dashboard-layout>

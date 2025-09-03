@@ -57,7 +57,7 @@ class DischargueCreate extends Component
         FacadesDB::beginTransaction();
         try {
             $this->validate([
-                'attach' => 'required|max:10240|mimes:xls,xlsx,csv',
+                'attach' => 'nullable|max:10240|mimes:xls,xlsx,csv',
                 'dischargue.shipping_line_id' => 'required|numeric|exists:shipping_lines,id',
                 'dischargue.vessel_id' => 'required|numeric|exists:vessels,id',
                 'dischargue.eta_date' => 'required|date',
@@ -75,10 +75,13 @@ class DischargueCreate extends Component
             $newDischargue = Dischargue::create($this->dischargue);
 
             //Guardar archivo en disco
-            $filePath = $this->attach->store('imports');
+            if ($this->attach) {
+                $filePath = $this->attach->store('imports');
 
-            //importo los contenedores
-            Excel::import(new ContainerImport($newDischargue->id, $this->dischargue['shipping_line_id']), $filePath);
+                //importo los contenedores
+                Excel::import(new ContainerImport($newDischargue->id, $this->dischargue['shipping_line_id']), $filePath);
+            }
+
             FacadesDB::commit();
 
             $this->reset('attach', 'dischargue', 'openModal');

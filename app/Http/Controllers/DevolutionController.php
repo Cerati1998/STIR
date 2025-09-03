@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Devolution;
+use App\Models\Identity;
 use Illuminate\Http\Request;
 
 class DevolutionController extends Controller
@@ -12,7 +13,8 @@ class DevolutionController extends Controller
      */
     public function index()
     {
-        //
+        $identities = Identity::all();
+        return view('devolutions.index', compact('identities'));
     }
 
     /**
