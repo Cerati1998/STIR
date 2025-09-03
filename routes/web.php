@@ -6,6 +6,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ComponentController;
 use App\Http\Controllers\ContainerController;
 use App\Http\Controllers\ContainerTypeController;
+use App\Http\Controllers\CustomBrokerController;
 use App\Http\Controllers\DamageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DespatchController;
@@ -58,6 +59,7 @@ Route::middleware([
         Route::get('despatchs/create', [DespatchController::class, 'create',])->name('despatchs.create');
 
         Route::resource('clients', ClientController::class);
+        Route::resource('brokers', CustomBrokerController::class);
         Route::resource('transports', TransportController::class)->names('transports');
         Route::get('transport/{transport}/drivers', [TransportController::class, 'drivers'])->name('transport.drivers');
         Route::get('transport/{transport}/vehicles', [TransportController::class, 'vehicles'])->name('transport.vehicles');

@@ -14,7 +14,7 @@
             'name' => 'Descargas',
             'icon' => 'fa-solid fa-arrow-up-from-water-pump',
             'route' => route('discharges.index'),
-            'active' => request()->routeIs(['discharges.*','discharge.*']),
+            'active' => request()->routeIs(['discharges.*', 'discharge.*']),
         ],
         [
             'name' => 'Devoluciones',
@@ -25,7 +25,7 @@
         [
             'name' => 'Contenedores',
             'icon' => 'fa-solid fa-boxes-stacked',
-            'active' => request()->routeIs(['damages.*', 'components.*', 'methods.*', 'containers.*']),
+            'active' => request()->routeIs([]),
             'submenu' => [
                 [
                     'name' => 'Lista',
@@ -110,16 +110,29 @@
             'icon' => 'fa-solid fa-cogs',
         ],
         [
-            'name' => 'Clientes',
-            'icon' => 'fa-solid fa-users',
-            'route' => route('clients.index'),
-            'active' => request()->routeIs('clients.*'),
-        ],
-        [
-            'name' => 'Transportistas',
-            'icon' => 'fa-solid fa-truck-arrow-right',
-            'route' => route('transports.index'),
-            'active' => request()->routeIs(['transports.*','transport.*']),
+            'name' => 'Terceros',
+            'icon' => 'fa-solid fa-briefcase',
+            'active' => request()->routeIs(['clients.*', 'brokers.*','transports.*', 'transport.*']),
+            'submenu' => [
+                [
+                    'name' => 'Clientes',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('clients.index'),
+                    'active' => request()->routeIs('clients.*'),
+                ],
+                [
+                    'name' => 'Agentes de Aduana',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('brokers.index'),
+                    'active' => request()->routeIs('brokers.index'),
+                ],
+                [
+                    'name' => 'Transportistas',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('transports.index'),
+                    'active' => request()->routeIs(['transports.*', 'transport.*']),
+                ],
+            ],
         ],
         [
             'name' => 'Códigos Inspección',

@@ -43,6 +43,10 @@ class Devolution extends Model
     {
         return $this->belongsTo(Client::class);
     }
+    public function customBroker()
+    {
+        return $this->belongsTo(CustomBroker::class);
+    }
     public function shippingLine()
     {
         return $this->belongsTo(ShippingLine::class);

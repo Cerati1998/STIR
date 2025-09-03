@@ -55,6 +55,7 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
 
             PhoneCodeSeeder::class,
+            CustomBrokerSeeder::class,
             LocationSeeder::class,
             DamageSeeder::class,
             ComponentSeeder::class,
