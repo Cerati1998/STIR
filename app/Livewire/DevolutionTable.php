@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Client;
+use App\Models\CustomBroker;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Devolution;
@@ -37,6 +38,8 @@ class DevolutionTable extends DataTableComponent
                 ->sortable(),
             Column::make("Cliente", "client.rznSocial")
                 ->sortable(),
+            Column::make("Agente", "broker.rznSocial")
+                ->sortable(),
             Column::make("BL", "bl_number")
                 ->sortable(),
             Column::make("Memo", "memo_number")
@@ -58,7 +61,7 @@ class DevolutionTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return Devolution::with(['client', 'shippingLine', 'vessel', 'creator', 'branch'])
+        return Devolution::with(['client', 'shippingLine', 'vessel', 'creator', 'branch','broker'])
             ->where('devolutions.branch_id', session('branch')->id);
     }
 
@@ -90,6 +93,22 @@ class DevolutionTable extends DataTableComponent
                 ->filter(function ($query, $value) {
                     if ($value) {
                         $query->whereHas('client', function ($q) use ($value) {
+                            $q->where('id', $value);
+                        });
+                    }
+                }),
+            SelectFilter::make('Agente')
+                ->options(
+                    ['' => 'Todos'] + CustomBroker::query()
+                        ->whereHas('devolutions', function ($query) {
+                            $query->where('devolutions.branch_id', session('branch')->id);
+                        })
+                        ->pluck('rznSocial', 'id')
+                        ->toArray()
+                )
+                ->filter(function ($query, $value) {
+                    if ($value) {
+                        $query->whereHas('broker', function ($q) use ($value) {
                             $q->where('id', $value);
                         });
                     }

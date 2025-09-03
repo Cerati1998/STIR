@@ -17,6 +17,7 @@ class Devolution extends Model
     protected $fillable = [
         'returned_date',
         'client_id',
+        'custom_broker_id',
         'bl_number',
         'memo_number',
         'shipping_line_id',
@@ -42,6 +43,10 @@ class Devolution extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+    public function broker()
+    {
+        return $this->belongsTo(CustomBroker::class,'custom_broker_id');
     }
     public function customBroker()
     {

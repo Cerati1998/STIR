@@ -12,6 +12,7 @@ class DevolutionCreate extends Component
         'shipping_line_id' => '',
         'vessel_id' => '',
         'client_id' => '',
+        'custom_broker_id' => '',
         'bl_number' => '',
         'eta_date' => '',
         'week' => '',

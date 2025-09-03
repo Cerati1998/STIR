@@ -61,6 +61,11 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('no action');
 
+            $table->foreignId('custom_broker_id')
+                ->constrained('custom_brokers')
+                ->onUpdate('cascade')
+                ->onDelete('no action');
+
             $table->string('bl_number', 50)->nullable();
             $table->string('memo_number', 50)->nullable();
 

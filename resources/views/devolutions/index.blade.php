@@ -23,6 +23,7 @@
     </div>
     @livewire('devolution-table', [], 'devolution-table')
     @livewire('devolution-create', [], 'devolution-create')
+    @livewire('custom-broker-create', ['identities' => $identities], 'custom-broker-create')
     @livewire('client-create', ['identities' => $identities], 'client-create')
     @livewire('masters.vessel-create', [], 'vessel-create')
     @livewire('masters.line-create', [], 'line-create')
