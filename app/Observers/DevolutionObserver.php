@@ -14,6 +14,15 @@ class DevolutionObserver
     {
         //
     }
+    public function creating(Devolution $devolution): void
+    {
+        // Solo si está autenticado el usuario y hay una sucursal
+        if (Auth::check() && session()->has('branch')) {
+            $devolution->created_by = Auth::id();
+            $devolution->branch_id = session('branch')->id;
+        }
+    }
+
 
     /**
      * Handle the Devolution "updated" event.
@@ -28,8 +37,7 @@ class DevolutionObserver
      */
     public function deleted(Devolution $devolution): void
     {
-                $devolution->anulated_by = Auth::id();
-
+        $devolution->anulated_by = Auth::id();
     }
 
     /**

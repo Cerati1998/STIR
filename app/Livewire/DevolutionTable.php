@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Client;
 use App\Models\CustomBroker;
+use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Devolution;
@@ -34,31 +35,26 @@ class DevolutionTable extends DataTableComponent
                 ->label(function ($row) {
                     return view('devolutions.actions', ['devolution' => $row]);
                 }),
-            Column::make("Fecha Retorno", "returnedDate")
+            Column::make("Fecha Retorno", "returned_date")
                 ->sortable(),
             Column::make("Cliente", "client.rznSocial")
-                ->sortable(),
+                ->searchable(),
             Column::make("Agente", "broker.rznSocial")
-                ->sortable(),
+                ->searchable(),
             Column::make("BL", "bl_number")
-                ->sortable(),
-            Column::make("Memo", "memo_number")
-                ->sortable(),
+                ->searchable(),
             Column::make("Linea", "shippingLine.name")
-                ->sortable(),
+                ->searchable(),
             Column::make("Nave", "vessel.name")
+                ->searchable(),
+            Column::make("Creado Por", "creator.name")
                 ->sortable(),
-            Column::make("Viaje", "voyage")
-                ->sortable(),
-            Column::make("Sucursal", "branch.name")
-                ->sortable(),
-            Column::make("Creado Por", "created_by")
-                ->sortable(),
-            Column::make("Anulado Por", "anulated_by")
+            Column::make("Anulado Por", "anulator.name")
                 ->sortable()
         ];
     }
 
+    #[On('devolutionAdded')]
     public function builder(): Builder
     {
         return Devolution::with(['client', 'shippingLine', 'vessel', 'creator', 'branch','broker'])

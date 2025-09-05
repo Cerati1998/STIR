@@ -24,6 +24,7 @@ class Devolution extends Model
         'vessel_id',
         'week',
         'voyage',
+        'regimen',
         'created_by',
         'branch_id',
         'anulated_by',
@@ -85,7 +86,7 @@ class Devolution extends Model
     protected function returnedDate(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $value ? Carbon::parse($value)->format('d/m/Y H:i') : null,
+            get: fn($value) => $value ? Carbon::parse($value)->format('d/m/Y') : null,
         );
     }
 }

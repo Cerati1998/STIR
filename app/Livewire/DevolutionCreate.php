@@ -2,22 +2,31 @@
 
 namespace App\Livewire;
 
+use App\Models\Devolution;
+use App\Imports\Devolution\ContainerImport;
 use App\Models\Vessel;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\DB as FacadesDB;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DevolutionCreate extends Component
 {
+    use WithFileUploads;
+
         public $devolution = [
         'shipping_line_id' => '',
         'vessel_id' => '',
         'client_id' => '',
         'custom_broker_id' => '',
         'bl_number' => '',
-        'eta_date' => '',
+        'memo_number' => '',
+        'returned_date' => '',
         'week' => '',
         'voyage' => '',
-        'manifiest_number' => ''
+        'manifiest_number' => '',
+        'regimen'
     ];
 
     public $vessels = [];
@@ -44,6 +53,60 @@ class DevolutionCreate extends Component
                 ->toArray();
         } else {
             $this->vessels = [];
+        }
+    }
+
+    public function save()
+    {
+        FacadesDB::beginTransaction();
+        try {
+            $this->validate([
+                'attach' => 'nullable|max:10240|mimes:xls,xlsx,csv',
+                'devolution.shipping_line_id' => 'required|numeric|exists:shipping_lines,id',
+                'devolution.vessel_id' => 'required|numeric|exists:vessels,id',
+                'devolution.client_id' => 'required|numeric|exists:clients,id',
+                'devolution.custom_broker_id' => 'required|numeric|exists:custom_brokers,id',
+                'devolution.returned_date' => 'required|date',
+                'devolution.bl_number' => 'nullable|string|min:5',
+                'devolution.manifiest_number' => 'nullable|numeric|min:2',
+                'devolution.regimen' => 'required|string|min:6|in:importacion,exportacion',
+            ], [], [
+                'attach' => 'Archivo excel de Descarga',
+                'devolution.shipping_line_id' => 'Linea Naviera',
+                'devolution.vessel_id' => 'Nave',
+                'devolution.client_id' => 'Importador/Cliente',
+                'devolution.custom_broker_id' => 'Agente de Aduana',
+                'devolution.returned_date' => 'Fecha ETA',
+                'devolution.bl_number' => 'Número de BL',
+                'devolution.manifiest_number' => 'Número de Manifiesto',
+            ]);
+
+            $newDevolution = Devolution::create($this->devolution);
+
+            //Guardar archivo en disco
+            if ($this->attach) {
+                $filePath = $this->attach->store('imports');
+
+                //importo los contenedores
+                Excel::import(new ContainerImport($newDevolution->id, $this->devolution['shipping_line_id']), $filePath);
+            }
+
+            FacadesDB::commit();
+
+            $this->reset('attach', 'devolution', 'openModal');
+            $this->dispatch('devolutionAdded');
+            $this->dispatch('swal', [
+                'title' => 'Exito!',
+                'text' => 'Descarga subida con Exito!',
+                'icon' => 'success'
+            ]);
+        } catch (\Exception $e) {
+            FacadesDB::rollBack();
+            $this->dispatch('swal', [
+                'title' => 'Error!',
+                'text' => 'Error durante la importación: ' . $e->getMessage(),
+                'icon' => 'error'
+            ]);
         }
     }
 

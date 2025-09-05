@@ -110,6 +110,8 @@ Route::middleware([
         Route::get('searchVessel', [ShippingLineController::class, 'searchVessels'])->name('vessel.search');
         Route::get('searchPort', [PortController::class, 'searchPorts'])->name('port.search');
         Route::post('searchDocument', [UserController::class, 'searchDocument'])->name('user.searchDocument');
+        Route::get('searchClient', [ClientController::class, 'searchClients'])->name('client.search');
+        Route::get('searchBroker', [CustomBrokerController::class, 'searchBrokers'])->name('broker.search');
     });
 });
 

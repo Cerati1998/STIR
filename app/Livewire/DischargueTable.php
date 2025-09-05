@@ -68,8 +68,6 @@ class DischargueTable extends DataTableComponent
             Column::make("Sucursal", "branch.name")
                 ->searchable()
                 ->sortable(),
-            Column::make("Created at", "created_at")
-                ->sortable(),
         ];
     }
 

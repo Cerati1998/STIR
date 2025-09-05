@@ -7,6 +7,22 @@
         'name' => 'Devoluciones',
     ],
 ]">
+ @push('css')
+        
+        <style>
+            /* body{
+                background-color: #f3f4f6 !important;
+            } */
+
+            table tbody td, table thead th span{
+                font-size: 0.75rem !important;
+                line-height: 1rem !important;
+            }
+
+        </style>
+
+    @endpush
+    
     <x-wire-alert class="mb-4"
         title="Ojo! Recuerda eliminar la fila de ejemplo de la plantilla antes de agregar tu información. Esto evitará errores en la carga masiva."
         warning />
@@ -23,7 +39,7 @@
     </div>
     @livewire('devolution-table', [], 'devolution-table')
     @livewire('devolution-create', [], 'devolution-create')
-    @livewire('custom-broker-create', ['identities' => $identities], 'custom-broker-create')
+    @livewire('custom-broker-create', ['identities' => $identities], 'broker-create')
     @livewire('client-create', ['identities' => $identities], 'client-create')
     @livewire('masters.vessel-create', [], 'vessel-create')
     @livewire('masters.line-create', [], 'line-create')

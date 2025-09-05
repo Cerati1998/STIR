@@ -1,4 +1,4 @@
-<div x-data="dataCreate">
+<div x-data="clientCreate">
     <form wire:submit="save">
 
         <x-wire-modal-card title="Cliente" name="clientCreate" wire:model="openModal" width="3xl">
@@ -65,7 +65,7 @@
 
     @push('js')
         <script>
-            function dataCreate() {
+            function clientCreate() {
                 return {
                     
                     client: @entangle('client'),

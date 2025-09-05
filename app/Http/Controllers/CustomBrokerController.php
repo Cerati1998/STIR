@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomBroker;
 use App\Models\Identity;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CustomBrokerController extends Controller
 {
@@ -64,5 +66,23 @@ class CustomBrokerController extends Controller
     public function destroy(CustomBroker $customBroker)
     {
         //
+    }
+
+      public function searchBrokers(Request $request){
+        return CustomBroker::query()
+        ->select(DB::raw('id,rznSocial'))
+        ->when(
+            $request->search,
+            fn(Builder $query) =>
+            $query->where('rznSocial', 'like', "%{$request->search}%")
+            ->orWhere('numDoc','like',"%$request->search}")
+        )
+        ->when(
+            $request->exists('selected'),
+            fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+            fn(Builder $query) => $query->limit(20)
+        )
+        ->orderBy('id')
+        ->get();
     }
 }
