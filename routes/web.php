@@ -97,6 +97,7 @@ Route::middleware([
         Route::resource('discharges', DischargueController::class)->names('discharges')->except('show');
         Route::get('discharges/{dischargue}/containers', [DischargueController::class, 'dischargue_containers'])->name('discharge.containers');
         Route::resource('devolutions', DevolutionController::class)->names('devolutions')->except('show');
+        Route::get('devolutions/{devolution}/containers', [DevolutionController::class, 'devolution_containers'])->name('devolution.containers');
         Route::resource('containers', ContainerController::class)->names('containers');
         Route::get('downloads/dischargue-template', function () {
             return response()->download(resource_path('templates/massive_dischargue.xlsx'));

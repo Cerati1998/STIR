@@ -114,12 +114,11 @@
                     </p>
                     <hr class="flex-1">
                 </header>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-3">
+                <div class="grid grid-cols-3 gap-4 mb-3">
                     <x-wire-input label="Memo" wire:model="devolution.memo_number" />
                     <x-wire-input label="Viaje" wire:model="devolution.voyage" />
                     <!-- Semana -->
                     <x-wire-input label="Semana" wire:model="devolution.week" />
-                    <x-wire-input label="Manifiesto" wire:model="devolution.manifiest_number" />
                 </div>
                 <template x-if="devolution.regimen === 'importacion'">
                     <div

@@ -25,8 +25,7 @@ class DevolutionCreate extends Component
         'returned_date' => '',
         'week' => '',
         'voyage' => '',
-        'manifiest_number' => '',
-        'regimen'
+        'regimen' => ''
     ];
 
     public $vessels = [];
@@ -68,7 +67,6 @@ class DevolutionCreate extends Component
                 'devolution.custom_broker_id' => 'required|numeric|exists:custom_brokers,id',
                 'devolution.returned_date' => 'required|date',
                 'devolution.bl_number' => 'nullable|string|min:5',
-                'devolution.manifiest_number' => 'nullable|numeric|min:2',
                 'devolution.regimen' => 'required|string|min:6|in:importacion,exportacion',
             ], [], [
                 'attach' => 'Archivo excel de Descarga',
@@ -78,7 +76,6 @@ class DevolutionCreate extends Component
                 'devolution.custom_broker_id' => 'Agente de Aduana',
                 'devolution.returned_date' => 'Fecha ETA',
                 'devolution.bl_number' => 'Número de BL',
-                'devolution.manifiest_number' => 'Número de Manifiesto',
             ]);
 
             $newDevolution = Devolution::create($this->devolution);

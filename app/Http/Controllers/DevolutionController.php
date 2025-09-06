@@ -17,6 +17,13 @@ class DevolutionController extends Controller
         return view('devolutions.index', compact('identities'));
     }
 
+    public function devolution_containers($id)
+    {
+
+        $devolution = Devolution::findOrFail($id);
+        return view('devolutions.containers', compact('devolution'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
