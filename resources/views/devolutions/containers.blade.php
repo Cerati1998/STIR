@@ -4,7 +4,7 @@
         'route' => route('dashboard'),
     ],
     [
-        'name' => 'Descargas',
+        'name' => 'Devoluciones',
         'route' => route('devolutions.index'),
     ],
     [
