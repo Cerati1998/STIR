@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
 
             DocumentSeeder::class,
             OperationSeeder::class,
+            IntegrationSeeder::class,
 
             CurrencySeeder::class,
 

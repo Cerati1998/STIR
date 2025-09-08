@@ -57,4 +57,7 @@ class Branch extends Model
     {
         return $this->hasMany(Dischargue::class);
     }
+     public function branchIntegrations(){
+        return $this->hasMany(BranchIntegration::class);
+    }
 }

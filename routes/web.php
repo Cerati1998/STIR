@@ -76,6 +76,7 @@ Route::middleware([
             ->except('update');
         Route::get('branches-choose', [BranchController::class, 'choose',])->name('branches.choose');
         Route::get('branches/{branch}/series', [BranchController::class, 'series',])->name('branches.series');
+        Route::get('branches/{branch}/integrations', [BranchController::class, 'integrations',])->name('branches.integrations');
 
         Route::resource('users', UserController::class);
 

@@ -118,4 +118,12 @@ class BranchController extends Controller
 
         return view('branches.series', compact('branch'));
     }
+
+    public function integrations($branchId)
+    {
+        $branch = Branch::where('company_id', session('company')->id)
+            ->findOrFail($branchId);
+
+        return view('branches.integrations', compact('branch'));
+    }
 }
