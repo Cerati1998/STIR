@@ -29,6 +29,9 @@ return new class extends Migration
                 ->onDelete('no action');
             $table->string('api_token', 255)->unique();
             $table->boolean('active')->default(1);
+            $table->foreignId('created_by')
+            ->constrained('users','id')
+            ->onDelete('no action');
             $table->timestamps();
         });
     }

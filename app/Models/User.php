@@ -141,4 +141,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(ContainerOperationalTrace::class, 'final_status_user');
     }
+
+    public function branchIntegrations()
+    {
+        return $this->hasMany(BranchIntegration::class,'created_by');
+    }
 }
