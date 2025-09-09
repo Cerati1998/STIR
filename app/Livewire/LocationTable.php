@@ -33,6 +33,7 @@ class LocationTable extends DataTableComponent
                     return view('codes.locations.actions', ['location' => $row]);
                 }),
             Column::make("Código", "code")
+                ->searchable()
                 ->sortable(),
             Column::make("Descripción", "description")
                 ->sortable(),
