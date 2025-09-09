@@ -65,5 +65,6 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-# STIR
-Repositorio para proyecto de inspeccion, reparacion y gestion de contenedores
+# INSPECTEC TERMINALS
+Repositorio para proyecto de inspeccion, reparacion y gestion de contenedores orientado en su versión mas robusta a unidades de negocio como Terminales temporales, Depot de Vacios o deposito de Contenedores. Objetivo claro agilizar su lado de operaciones.
+
